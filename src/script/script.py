@@ -1,4 +1,5 @@
 import datetime
+import os
 import requests
 import time
 
@@ -25,7 +26,11 @@ from rfid.reader_settings import (
 )
 from rfid.status import InventoryStatus
 from rfid.utils import calculate_rssi
+from dotenv import load_dotenv
 
+load_dotenv()
+
+URL: str = os.getenv("URL")
 
 def log(message: str) -> None:
     print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {message}")
@@ -114,13 +119,16 @@ for res in response:
         log(res)
         log(f"Tag: {res.tag} - RSSI: {str(calculate_rssi(res.tag.rssi))[0:3]}")
 
-        response = requests.post("http://localhost:3001/api/response-inventory", json={
-            "rssi": str(res.tag.rssi),
-            "data": str(res.tag.data),
-            "rssiValue": int(str(calculate_rssi(res.tag.rssi))[0:3]),
-        })
+        try:
+            response = requests.post(f"{URL}/api/response-inventory", json={
+                "rssi": str(res.tag.rssi),
+                "data": str(res.tag.data),
+                "rssiValue": int(str(calculate_rssi(res.tag.rssi))[0:3]),
+            })
 
-        log(f"Response: {response.json()}")
+            log(f"Response: {response.json()}")
+        except Exception as e:
+            log(f"Response: {e}")
 
     if (
         res.status == InventoryStatus.NO_COUNT_LABEL
