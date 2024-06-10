@@ -15,19 +15,22 @@
     "start:prod": "node dist/source/main",
     "prisma:migrate": "yarn prisma migrate dev",
     "prisma:generate": "yarn prisma generate",
-    "prisma:seed" : "yarn ts-node ./prisma/seed.ts"
+    "prisma:seed": "yarn ts-node ./prisma/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.3",
     "@nestjs/config": "^3.2.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/platform-socket.io": "^10.3.9",
     "@nestjs/swagger": "^7.3.0",
+    "@nestjs/websockets": "^10.3.9",
     "@prisma/client": "^5.10.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "socket.io": "^4.7.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
