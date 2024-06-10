@@ -5,18 +5,20 @@ export default function Home(): JSX.Element {
         <>
             <section className="hero home has-background-main is-fullheight">
                 <div className="hero-body">
-                    <div className="">
-                        <p className="title has-text-light mb-1">PM-Sense</p>
+                    <div>
+                        <p className="title has-text-light mb-1">
+                            P<span className="is-main">M</span>-Sense
+                        </p>
 
-                        <p className="subtitle has-text-light mb-4">Papaya Maturity Sense, Sistem Deteksi Tingkat Kematangan Pepaya Secara Non-Invasif</p>
+                        <p className="subtitle has-text-light mb-4">Papaya Maturity Sense, Sistem Deteksi Tingkat Kematangan Pepaya</p>
 
-                        <button className="button is-light" type="submit">
+                        <a className="button is-light" href="#manage">
                             <span className="icon">
-                                <i className="fa-solid fa-paper-plane"></i>
+                                <i className="fa-solid fa-right-long"></i>
                             </span>
 
-                            <span>Next</span>
-                        </button>
+                            <span>Berikutnya</span>
+                        </a>
                     </div>
                 </div>
             </section>
