@@ -35,9 +35,10 @@ export default function Home(): JSX.Element {
                     ResponseFormatInterface<ResponseInventoryInterface[]>
                 >("http://localhost:3001/api/response-inventory/latest");
 
-                setResponseInventory(response.data.data);
+                console.log("ResponseInventory:");
+                console.log(response.data.data);
 
-                console.log(`ResponseInventory: ${responseInventory}`);
+                setResponseInventory(response.data.data);
             } catch (error) {
                 console.error("Error fetching data: ", error);
             }
@@ -52,11 +53,10 @@ export default function Home(): JSX.Element {
         });
 
         socket.on("responseInventoryLatest", (models: ResponseInventoryInterface[]) => {
-            console.log(`Models: ${models}`);
+            console.log(`Models:`);
+            console.log(models);
 
             setResponseInventory(models);
-
-            console.log(`ResponseInventory: ${responseInventory}`);
         });
     }, []);
 
@@ -120,9 +120,16 @@ export default function Home(): JSX.Element {
                             <div className="card-content">
                                 <div className="content">
                                     <h4 className="title has-text-main m-0 mb-3 p-0">Latest Data</h4>
-                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">RSSI: -123</h6>
+
+                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">
+                                        RSSI: {responseInventory.length !== 0 ? responseInventory[0].rssiValue : "Loading..."}
+                                    </h6>
+
                                     <h6 className="subtitle has-text-main m-0 mb-1 p-0">Quality: Good</h6>
-                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">Obtained At: 1/1/2024 17:05:05</h6>
+
+                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">
+                                        Obtained At: {responseInventory.length !== 0 ? responseInventory[0].createdAt.toString() : "Loading..."}
+                                    </h6>
                                 </div>
                             </div>
                         </div>
