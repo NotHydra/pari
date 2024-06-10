@@ -101,6 +101,13 @@ response: Iterator[ResponseInventory] | None = reader.start_inventory(
     answer_mode_inventory_parameter=answer_mode_inventory_parameters,
 )
 
+while True:
+    if (response is not None):
+        break
+
+    log("Waiting for response...")
+    time.sleep(1)
+
 index: int = 1
 for res in response:
     log(f"({index}).InventoryThread() > run() > res: {res}")
