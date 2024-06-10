@@ -1,12 +1,64 @@
 "use client";
 
+import axios, { AxiosResponse } from "axios";
 import "chart.js/auto";
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
+import io, { Socket } from "socket.io-client";
+
+interface ResponseFormatInterface<T> {
+    success: boolean;
+    status: number;
+    message: string;
+    data: T;
+}
+
+interface ResponseInventoryInterface {
+    id: number;
+    rssi: String;
+    data: String;
+    rssiValue: number;
+    createdAt: Date;
+}
 
 export default function Home(): JSX.Element {
     const color: { [key: string]: string } = {
         main: "#ff9933",
     };
+
+    const [responseInventory, setResponseInventory] = useState<ResponseInventoryInterface[]>([]);
+
+    useEffect(() => {
+        const fetchData = async (): Promise<void> => {
+            try {
+                const response: AxiosResponse<ResponseFormatInterface<ResponseInventoryInterface[]>> = await axios.get<
+                    ResponseFormatInterface<ResponseInventoryInterface[]>
+                >("http://localhost:3001/api/response-inventory/latest");
+
+                setResponseInventory(response.data.data);
+
+                console.log(`ResponseInventory: ${responseInventory}`);
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const socket: Socket = io("http://localhost:3001", {
+            transports: ["websocket"],
+        });
+
+        socket.on("responseInventoryLatest", (models: ResponseInventoryInterface[]) => {
+            console.log(`Models: ${models}`);
+
+            setResponseInventory(models);
+
+            console.log(`ResponseInventory: ${responseInventory}`);
+        });
+    }, []);
 
     return (
         <>
@@ -46,11 +98,11 @@ export default function Home(): JSX.Element {
                                 <div className="content">
                                     <Line
                                         data={{
-                                            labels: ["1/1/2024 12:12:12", "1/1/2024 12:12:12", "1/1/2024 12:12:12", "1/1/2024 12:12:12", "1/1/2024 12:12:12"],
+                                            labels: responseInventory.map((model: ResponseInventoryInterface) => model.createdAt.toString()).reverse(),
                                             datasets: [
                                                 {
                                                     label: "RSSI",
-                                                    data: [65, 59, 80, 81, 56],
+                                                    data: responseInventory.map((model: ResponseInventoryInterface) => model.rssiValue).reverse(),
                                                     fill: false,
                                                     borderColor: color.main,
                                                     tension: 0.1,
