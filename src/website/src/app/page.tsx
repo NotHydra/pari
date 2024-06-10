@@ -2,9 +2,13 @@
 
 import axios, { AxiosResponse } from "axios";
 import "chart.js/auto";
+import moment from "moment";
+import "moment/locale/id";
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import io, { Socket } from "socket.io-client";
+
+moment.locale("ID");
 
 interface ResponseFormatInterface<T> {
     success: boolean;
@@ -20,6 +24,10 @@ interface ResponseInventoryInterface {
     rssiValue: number;
     createdAt: Date;
 }
+
+const dateToString = (date: Date): String => {
+    return moment(date).format("DD/MMMM/YYYY HH:mm:ss");
+};
 
 export default function Home(): JSX.Element {
     const color: { [key: string]: string } = {
@@ -101,11 +109,17 @@ export default function Home(): JSX.Element {
                                 <div className="content">
                                     <Line
                                         data={{
-                                            labels: responseInventory.map((model: ResponseInventoryInterface) => model.createdAt.toString()).reverse(),
+                                            labels:
+                                                responseInventory.length !== 0
+                                                    ? responseInventory.map((model: ResponseInventoryInterface) => dateToString(model.createdAt)).reverse()
+                                                    : ["Loading"],
                                             datasets: [
                                                 {
                                                     label: "RSSI",
-                                                    data: responseInventory.map((model: ResponseInventoryInterface) => model.rssiValue).reverse(),
+                                                    data:
+                                                        responseInventory.length !== 0
+                                                            ? responseInventory.map((model: ResponseInventoryInterface) => model.rssiValue).reverse()
+                                                            : ["Loading"],
                                                     fill: false,
                                                     borderColor: color.main,
                                                     tension: 0.1,
@@ -128,10 +142,10 @@ export default function Home(): JSX.Element {
                                         RSSI: {responseInventory.length !== 0 ? responseInventory[0].rssiValue : "Loading..."}
                                     </h6>
 
-                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">Kualitas: Bagus</h6>
+                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">Kualitas: Loading...</h6>
 
                                     <h6 className="subtitle has-text-main m-0 mb-1 p-0">
-                                        Diperoleh Pada Saat: {responseInventory.length !== 0 ? responseInventory[0].createdAt.toString() : "Loading..."}
+                                        Diperoleh Pada Saat: {responseInventory.length !== 0 ? dateToString(responseInventory[0].createdAt) : "Loading..."}
                                     </h6>
                                 </div>
                             </div>
