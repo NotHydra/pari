@@ -1,12 +1,12 @@
 import datetime
 import os
 import requests
+import RPi.GPIO as GPIO
 import time
 
-from typing import Iterator
+from dotenv import load_dotenv
 from rfid.reader import Reader
 from rfid.response import ResponseInventory
-from rfid.transport import SerialTransport
 from rfid.reader_settings import (
     Antenna,
     BaudRate,
@@ -25,16 +25,26 @@ from rfid.reader_settings import (
     StopAfter,
 )
 from rfid.status import InventoryStatus
+from rfid.transport import SerialTransport
 from rfid.utils import calculate_rssi
-from dotenv import load_dotenv
+from typing import Iterator
 
 load_dotenv()
 
-URL: str = os.getenv("URL")
 
 def log(message: str) -> None:
     print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {message}")
 
+
+URL: str = os.getenv("URL")
+
+GPIO.setmode(GPIO.BCM)
+
+BUTTON_PIN: int = 18
+LED_GREEN_PIN: int = 23
+
+GPIO.setup(BUTTON_PIN, GPIO.IN)
+GPIO.setup(LED_GREEN_PIN, GPIO.OUT)
 
 log("Starting RFID reader...")
 log(f"Ports: {SerialTransport.scan()}")
@@ -109,35 +119,70 @@ response: Iterator[ResponseInventory] | None = reader.start_inventory(
 )
 
 index: int = 1
-for res in response:
-    log(f"({index}).InventoryThread() > run() > res: {res}")
+switchValue = False
 
-    if res is None:
-        continue
+try:
+    while True:
+        if GPIO.input(BUTTON_PIN) == GPIO.HIGH:
+            switchValue = not switchValue
 
-    if res.status == InventoryStatus.SUCCESS and res.tag:
-        log(res)
-        log(f"Tag: {res.tag} - RSSI: {str(calculate_rssi(res.tag.rssi))[0:3]}")
+            log(f"Button: Pressed, {'Start' if switchValue else 'Pause'}")
 
-        try:
-            response = requests.post(f"{URL}/api/response-inventory", json={
-                "rssi": str(res.tag.rssi),
-                "data": str(res.tag.data),
-                "rssiValue": int(str(calculate_rssi(res.tag.rssi))[0:3]),
-            })
+            time.sleep(0.5)
 
-            log(f"Response: {response.json()}")
-        except Exception as e:
-            log(f"Response: {e}")
+        if not switchValue:
+            GPIO.output(LED_GREEN_PIN, GPIO.LOW)
+        
+        else:
+            GPIO.output(LED_GREEN_PIN, GPIO.HIGH)
 
-    if (
-        res.status == InventoryStatus.NO_COUNT_LABEL
-        and reader.work_mode == WorkMode.ANSWER_MODE
-    ):
-        break
+            for res in response:
+                log(f"({index}).InventoryThread() > run() > res: {res}")
 
-    index += 1
-    time.sleep(1)
+                if GPIO.input(BUTTON_PIN) == GPIO.HIGH:
+                    switchValue = not switchValue
 
-reader.stop_inventory()
-reader.close()
+                    log(f"Button: Pressed, {'Start' if switchValue else 'Pause'}")
+
+                    time.sleep(0.5)
+
+                if not switchValue:
+                    break
+
+                if res is None:
+                    continue
+
+                if res.status == InventoryStatus.SUCCESS and res.tag:
+                    log(res)
+                    log(f"Tag: {res.tag} - RSSI: {str(calculate_rssi(res.tag.rssi))[0:3]}")
+
+                    try:
+                        response = requests.post(
+                            f"{URL}/api/response-inventory",
+                            json={
+                                "rssi": str(res.tag.rssi),
+                                "data": str(res.tag.data),
+                                "rssiValue": int(str(calculate_rssi(res.tag.rssi))[0:3]),
+                            },
+                        )
+
+                        log(f"Response: {response.json()}")
+                    except Exception as e:
+                        log(f"Response: {e}")
+
+                if (
+                    res.status == InventoryStatus.NO_COUNT_LABEL
+                    and reader.work_mode == WorkMode.ANSWER_MODE
+                ):
+                    break
+
+                index += 1
+                time.sleep(1)
+
+except KeyboardInterrupt:
+    pass
+
+finally:
+    GPIO.cleanup()
+    reader.stop_inventory()
+    reader.close()
