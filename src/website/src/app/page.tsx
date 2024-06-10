@@ -66,12 +66,15 @@ export default function Home(): JSX.Element {
                 <div className="hero-body">
                     <div>
                         <p className="title has-text-light mb-1">
-                            P<span className="is-main">M</span>-Sense
+                            <span className="is-main">P</span>M-Sense
                         </p>
 
-                        <p className="subtitle has-text-light mb-4">Papaya Maturity Sense, Sistem Deteksi Tingkat Kematangan Pepaya</p>
+                        <p className="subtitle has-text-light mb-4" style={{ width: "40%", textAlign: "justify" }}>
+                            Papaya Maturity Sense, Sistem Deteksi Tingkat Kematangan Pepaya Secara Non-invasif Berdasarkan Nilai Received Signal Strength
+                            Indicator Pada Gelombang Frekuensi Tinggi
+                        </p>
 
-                        <a className="button is-light" href="#manage">
+                        <a className="button is-light" href="#hasil">
                             <span className="icon">
                                 <i className="fa-solid fa-right-long"></i>
                             </span>
@@ -82,11 +85,11 @@ export default function Home(): JSX.Element {
                 </div>
             </section>
 
-            <section className="section manage has-background-light" id="manage">
+            <section className="section has-background-light" id="hasil">
                 <div className="card has-background-light has-border-main">
                     <div className="card-content">
                         <div className="content">
-                            <h3 className="title has-text-main m-0 p-0">Manage</h3>
+                            <h3 className="title has-text-main m-0 p-0">Hasil</h3>
                         </div>
                     </div>
                 </div>
