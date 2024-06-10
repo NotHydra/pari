@@ -149,7 +149,8 @@ export default function Home(): JSX.Element {
                     </div>
 
                     <p className="has-text-light">
-                        <strong>Copyright © 2024</strong> PM-Sense - Enthusiastic Spirit - Kalimantan's Institute of Technology
+                        <strong>Copyright © 2024</strong> <span className="is-main">P</span>M-Sense - Enthusiastic Spirit - Kalimantan's Institute of
+                        Technology
                     </p>
                 </div>
             </footer>
