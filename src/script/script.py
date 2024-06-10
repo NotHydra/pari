@@ -1,9 +1,11 @@
 import datetime
+import requests
 import time
+
 from typing import Iterator
 from rfid.reader import Reader
 from rfid.response import ResponseInventory
-from rfid.transport import Transport, SerialTransport
+from rfid.transport import SerialTransport
 from rfid.reader_settings import (
     Antenna,
     BaudRate,
@@ -101,13 +103,6 @@ response: Iterator[ResponseInventory] | None = reader.start_inventory(
     answer_mode_inventory_parameter=answer_mode_inventory_parameters,
 )
 
-while True:
-    if (response is not None):
-        break
-
-    log("Waiting for response...")
-    time.sleep(1)
-
 index: int = 1
 for res in response:
     log(f"({index}).InventoryThread() > run() > res: {res}")
@@ -116,7 +111,16 @@ for res in response:
         continue
 
     if res.status == InventoryStatus.SUCCESS and res.tag:
-        log(f"Tag: {res.tag} - RSSI:{str(calculate_rssi(res.tag.rssi))[0:3]}")
+        log(res)
+        log(f"Tag: {res.tag} - RSSI: {str(calculate_rssi(res.tag.rssi))[0:3]}")
+
+        response = requests.post("http://localhost:3001/api/response-inventory", json={
+            "rssi": str(res.tag.rssi),
+            "data": str(res.tag.data),
+            "rssiValue": int(str(calculate_rssi(res.tag.rssi))[0:3]),
+        })
+
+        log(f"Response: {response.json()}")
 
     if (
         res.status == InventoryStatus.NO_COUNT_LABEL
@@ -125,6 +129,7 @@ for res in response:
         break
 
     index += 1
+    time.sleep(1)
 
 reader.stop_inventory()
 reader.close()
