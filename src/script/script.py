@@ -128,7 +128,7 @@ try:
 
             log(f"Button: Pressed, {'Start' if switchValue else 'Pause'}")
 
-            time.sleep(0.5)
+            time.sleep(1)
 
         if not switchValue:
             GPIO.output(LED_GREEN_PIN, GPIO.LOW)
@@ -144,7 +144,7 @@ try:
 
                     log(f"Button: Pressed, {'Start' if switchValue else 'Pause'}")
 
-                    time.sleep(0.5)
+                    time.sleep(1)
 
                 if not switchValue:
                     break
