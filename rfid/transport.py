@@ -10,13 +10,13 @@ from socket import socket, AF_INET, SOCK_STREAM
 from typing import TypeVar
 import serial
 import usb
+from usb.backend import libusb1
 from usb.core import Device, Endpoint
 from rfid.reader_settings import BaudRate
 from rfid.utils import hex_readable
 
 logger = getLogger()
 T = TypeVar('T', bound='Parent')
-
 
 class ConnectionType(Enum):
     SERIAL = 0
@@ -119,7 +119,11 @@ class UsbTransport(Transport):
     @classmethod
     def scan(cls) -> list[DeviceAddress]:
         dev_list = []
-        for dev in usb.core.find(idVendor=0x0483, idProduct=0x5750, find_all=True):
+        print("Scanning for USB devices...")
+        backend = usb.backend.libusb1.get_backend(find_library=lambda x: r"F:\\Python311\\Lib\\site-packages\\libusb\\_platform\\_windows\\x64\\libusb-1.0.dll")  # adapt to your path
+        for dev in usb.core.find(
+            idVendor=0x0483, idProduct=0x5750, find_all=True, backend=backend
+        ):
             dev_list.append(DeviceAddress(dev.bus, dev.address))
         return dev_list
 

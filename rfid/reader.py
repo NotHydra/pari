@@ -4,13 +4,7 @@ from PySide6.QtCore import Signal, QObject
 from usb import USBError
 
 from rfid.command import Command
-from rfid.reader_settings import (
-    AnswerModeInventoryParameter,
-    WorkMode,
-    MemoryBank,
-    LockMemoryBank,
-    LockAction,
-)
+from rfid.reader_settings import AnswerModeInventoryParameter, WorkMode, MemoryBank, LockMemoryBank, LockAction
 from rfid.transport import Transport, UsbTransport, SerialTransport, TcpTransport
 from rfid.response import *
 
@@ -39,12 +33,8 @@ class Reader(QObject):
             self.transport.clear_buffer()
         self.transport.write_bytes(serialize)
 
-    def __receive_response(
-        self,
-        command_request: CommandRequest,
-        verify_header: bool = True,
-        loop_usb: bool = True,
-    ) -> bytes | None:
+    def __receive_response(self, command_request: CommandRequest, verify_header: bool = True, loop_usb: bool = True) \
+            -> bytes | None:
         def __receive():
             raw_resp: bytes | None = None
 
@@ -52,9 +42,8 @@ class Reader(QObject):
                 raw_resp = self.transport.read_bytes()
 
                 if loop_usb:
-                    all_len = (
-                        4 + raw_resp[4] + 2
-                    )  # header(1) + address(1) + command(2) + length(index: 4) + checksum(2)
+                    all_len = 4 + raw_resp[
+                        4] + 2  # header(1) + address(1) + command(2) + length(index: 4) + checksum(2)
                     while len(raw_resp) < all_len:
                         raw_resp += self.transport.read_bytes()
 
@@ -62,20 +51,15 @@ class Reader(QObject):
                 response_header_section = self.transport.read_bytes(length=5)
 
                 if (len(response_header_section) <= 0) or (
-                    not verify_header and response_header_section[0] != HEADER
-                ):
+                        not verify_header and response_header_section[0] != HEADER):
                     self.transport.clear_buffer()
                     return raw_resp
 
-                assert (
-                    len(response_header_section) == 5
-                )  # header(1) + address(1) + command(2) + length(1)
+                assert len(response_header_section) == 5  # header(1) + address(1) + command(2) + length(1)
 
                 # Get body section
                 body_length = response_header_section[-1]
-                response_body_section = self.transport.read_bytes(
-                    length=body_length + 2
-                )  # 2(checksum)
+                response_body_section = self.transport.read_bytes(length=body_length + 2)  # 2(checksum)
 
                 raw_resp = response_header_section + response_body_section
             return raw_resp
@@ -84,18 +68,12 @@ class Reader(QObject):
         for i in range(20):
             raw_response = __receive()
 
-            if (
-                isinstance(raw_response, bytes)
-                or isinstance(raw_response, bytearray)
-                or isinstance(raw_response, array)
-            ):
-                logger.info(
-                    f"Reader() > {i} __receive() > raw_response: {hex_readable(raw_response)}"
-                )
+            if isinstance(raw_response, bytes) \
+                    or isinstance(raw_response, bytearray) \
+                    or isinstance(raw_response, array):
+                logger.info(f"Reader() > {i} __receive() > raw_response: {hex_readable(raw_response)}")
             else:
-                logger.info(
-                    f"Reader() > {i} __receive() > raw_response: {raw_response}"
-                )
+                logger.info(f"Reader() > {i} __receive() > raw_response: {raw_response}")
 
             if raw_response is None:
                 return
@@ -107,15 +85,11 @@ class Reader(QObject):
             command_response: CommandRequest | None = None
 
             try:
-                command_response = CommandRequest(
-                    int.from_bytes(raw_response[2:4], "big")
-                )
+                command_response = CommandRequest(int.from_bytes(raw_response[2:4], "big"))
             except ValueError as e:
                 logger.info(f"Reader() > {i} __receive() > ValueError: {e}")
-            logger.info(
-                f"Reader() > {i} __receive() > "
-                f"command_response: {command_response}, command_request: {command_request}"
-            )
+            logger.info(f"Reader() > {i} __receive() > "
+                        f"command_response: {command_response}, command_request: {command_request}")
 
             if command_response == command_request:
                 break
@@ -182,9 +156,7 @@ class Reader(QObject):
         Only for ISO 18000-6C
         """
         cmd_request = CommandRequest.SET_GET_RFID_PROTOCOL
-        command = Command(
-            cmd_request, data=bytearray([CommandOption.GET.value, 0x00])
-        )  # ? 0x00 ? NC or 1Byte
+        command = Command(cmd_request, data=bytearray([CommandOption.GET.value, 0x00]))  # ? 0x00 ? NC or 1Byte
         self.__send_request(command)
         return ResponseGetRfidProtocol(self.__receive_response(cmd_request))
 
@@ -193,9 +165,7 @@ class Reader(QObject):
         Only for ISO 18000-6C
         """
         cmd_request = CommandRequest.SET_GET_RFID_PROTOCOL
-        command = Command(
-            cmd_request, data=bytearray([CommandOption.SET.value, rfid_protocol.value])
-        )
+        command = Command(cmd_request, data=bytearray([CommandOption.SET.value, rfid_protocol.value]))
         self.__send_request(command)
         return Response(self.__receive_response(cmd_request))
 
@@ -208,9 +178,7 @@ class Reader(QObject):
         return ResponseReaderSettings(self.__receive_response(cmd_request))
 
     def set_reader_settings(self, reader_settings: ReaderSettings) -> Response:
-        logger.info(
-            f"Reader() > set_reader_settings() > reader_settings: {reader_settings}"
-        )
+        logger.info(f"Reader() > set_reader_settings() > reader_settings: {reader_settings}")
 
         cmd_request = CommandRequest.SET_ALL_PARAM
         command = Command(cmd_request, data=reader_settings.to_command_data())
@@ -226,9 +194,7 @@ class Reader(QObject):
         return ResponseNetworkSettings(self.__receive_response(cmd_request))
 
     def set_network_settings(self, network_settings: NetworkSettings) -> Response:
-        logger.info(
-            f"Reader() > set_network_settings() > network_settings: {network_settings}"
-        )
+        logger.info(f"Reader() > set_network_settings() > network_settings: {network_settings}")
 
         cmd_request = CommandRequest.SET_GET_NETWORK
         data = bytearray([CommandOption.SET.value])
@@ -245,13 +211,9 @@ class Reader(QObject):
         self.__send_request(command)
         return ResponseRemoteNetworkSettings(self.__receive_response(cmd_request))
 
-    def set_remote_network_settings(
-        self, remote_network_settings: RemoteNetworkSettings
-    ) -> Response:
-        logger.info(
-            f"Reader() > set_remote_remote_network_settings() "
-            f"> remote_network_settings: {remote_network_settings}"
-        )
+    def set_remote_network_settings(self, remote_network_settings: RemoteNetworkSettings) -> Response:
+        logger.info(f"Reader() > set_remote_remote_network_settings() "
+                    f"> remote_network_settings: {remote_network_settings}")
 
         cmd_request = CommandRequest.SET_GET_REMOTE_NETWORK
         data = bytearray([CommandOption.SET.value])
@@ -279,44 +241,24 @@ class Reader(QObject):
         return ResponseGetAntennaPower(self.__receive_response(cmd_request))
 
     # Failed
-    def set_antenna_power(
-        self,
-        enable: bool,
-        antenna_1_power: int,
-        antenna_2_power: int = 0,
-        antenna_3_power: int = 0,
-        antenna_4_power: int = 0,
-        antenna_5_power: int = 0,
-        antenna_6_power: int = 0,
-        antenna_7_power: int = 0,
-        antenna_8_power: int = 0,
-    ) -> Response:
+    def set_antenna_power(self, enable: bool, antenna_1_power: int,
+                          antenna_2_power: int = 0, antenna_3_power: int = 0, antenna_4_power: int = 0,
+                          antenna_5_power: int = 0, antenna_6_power: int = 0, antenna_7_power: int = 0,
+                          antenna_8_power: int = 0) -> Response:
         cmd_request = CommandRequest.SET_GET_ANTENNA_POWER
-        command = Command(
-            cmd_request,
-            data=bytearray(
-                [
-                    CommandOption.SET.value,
-                    int(enable),
-                    antenna_1_power,
-                    antenna_2_power,
-                    antenna_3_power,
-                    antenna_4_power,
-                    antenna_5_power,
-                    antenna_6_power,
-                    antenna_7_power,
-                    antenna_8_power,
-                ]
-            ),
-        )
+        command = Command(cmd_request, data=bytearray([CommandOption.SET.value, int(enable),
+                                                       antenna_1_power, antenna_2_power, antenna_3_power,
+                                                       antenna_4_power, antenna_5_power, antenna_6_power,
+                                                       antenna_7_power, antenna_8_power
+                                                       ]))
         self.__send_request(command)
         return Response(self.__receive_response(cmd_request))
 
     def select_mask(self, mask: bytes, start_address: int = 0) -> Response:
         """
-        :param mask: The EPC value (odd length)
-        :param start_address: Start address in byte
-        :return:
+                :param mask: The EPC value (odd length)
+                :param start_address: Start address in byte
+                :return:
         """
 
         start_address = start_address * 8  # Pointer in bits
@@ -331,23 +273,17 @@ class Reader(QObject):
             mask = mask + bytes(1)
 
         data.extend(mask)
-        logger.info(
-            f"Reader() > select_mask() > length: {length}, mask: {hex_readable(mask)}, "
-            f"data: {hex_readable(data)}"
-        )
+        logger.info(f"Reader() > select_mask() > length: {length}, mask: {hex_readable(mask)}, "
+                    f"data: {hex_readable(data)}")
 
         cmd_request = CommandRequest.SELECT_MASK
         command = Command(cmd_request, data=data)
         self.__send_request(command)
         return Response(self.__receive_response(cmd_request))
 
-    def read_memory(
-        self,
-        memory_bank: MemoryBank,
-        start_address: int = 0,
-        length: int = 0,
-        access_password: bytes = bytes(4),
-    ) -> Iterator[ResponseReadMemory] | None:
+    def read_memory(self, memory_bank: MemoryBank,
+                    start_address: int = 0, length: int = 0, access_password: bytes = bytes(4)) \
+            -> Iterator[ResponseReadMemory] | None:
         """
                 :param memory_bank: Select the memory bank
                 :param start_address: Start address (in word) to read
@@ -357,10 +293,8 @@ class Reader(QObject):
 
         Can use `select_mask(...)` for filter
         """
-        logger.info(
-            f"Reader() > read_memory() > memory_bank: {memory_bank}, start_address: {start_address}, "
-            f"length: {length}, access_password: {hex_readable(access_password)}"
-        )
+        logger.info(f"Reader() > read_memory() > memory_bank: {memory_bank}, start_address: {start_address}, "
+                    f"length: {length}, access_password: {hex_readable(access_password)}")
 
         assert (0x00 <= start_address <= 0xFFFF) and (0x00 <= length <= 0xFF)
 
@@ -395,14 +329,9 @@ class Reader(QObject):
 
         logger.info(f"Reader() > read_memory() > response: {response}")
 
-    def write_memory(
-        self,
-        memory_bank: MemoryBank,
-        data: bytes,
-        start_address: int = 0,
-        length: int = 0,
-        access_password: bytes = bytes(4),
-    ) -> Iterator[ResponseWriteMemory] | None:
+    def write_memory(self, memory_bank: MemoryBank, data: bytes,
+                     start_address: int = 0, length: int = 0, access_password: bytes = bytes(4)) \
+            -> Iterator[ResponseWriteMemory] | None:
         """
                 :param memory_bank: Select the memory bank
                 :param data: Data to write
@@ -413,11 +342,9 @@ class Reader(QObject):
 
         Can use `select_mask(...)` for filter
         """
-        logger.info(
-            f"Reader() > write_memory() > memory_bank: {memory_bank}, start_address: {start_address}, "
-            f"length: {length}, access_password: {hex_readable(access_password)}, "
-            f"data: {hex_readable(data)}"
-        )
+        logger.info(f"Reader() > write_memory() > memory_bank: {memory_bank}, start_address: {start_address}, "
+                    f"length: {length}, access_password: {hex_readable(access_password)}, "
+                    f"data: {hex_readable(data)}")
 
         assert len(data) > 0
         if length == 0:
@@ -454,12 +381,8 @@ class Reader(QObject):
 
         logger.info(f"Reader() > write_memory() > response: {response}")
 
-    def lock_memory(
-        self,
-        lock_memory_bank: LockMemoryBank,
-        lock_action: LockAction,
-        access_password: bytes = bytes(4),
-    ) -> Iterator[ResponseLockMemory] | None:
+    def lock_memory(self, lock_memory_bank: LockMemoryBank, lock_action: LockAction,
+                    access_password: bytes = bytes(4)) -> Iterator[ResponseLockMemory] | None:
         """
             :param lock_memory_bank: Select the lock memory bank
             :param lock_action: Select the lock type
@@ -468,10 +391,8 @@ class Reader(QObject):
 
         Can use `select_mask(...)` for filter
         """
-        logger.info(
-            f"Reader() > lock_memory() > lock_memory_bank: {lock_memory_bank}, "
-            f"lock_action: {lock_action}, access_password: {hex_readable(access_password)}"
-        )
+        logger.info(f"Reader() > lock_memory() > lock_memory_bank: {lock_memory_bank}, "
+                    f"lock_action: {lock_action}, access_password: {hex_readable(access_password)}")
 
         cmd_data = bytearray(access_password)
         cmd_data.extend([lock_memory_bank.value])
@@ -500,18 +421,14 @@ class Reader(QObject):
 
         logger.info(f"Reader() > lock_memory() > response: {response}")
 
-    def kill_tag(
-        self, kill_password: bytes = bytes(4)
-    ) -> Iterator[ResponseKillTag] | None:
+    def kill_tag(self, kill_password: bytes = bytes(4)) -> Iterator[ResponseKillTag] | None:
         """
             :param kill_password: Default is bytes(4) 0x00000000
             :return:
 
         Can use `select_mask(...)` for filter
         """
-        logger.info(
-            f"Reader() > kill_tag() > kill_password: {hex_readable(kill_password)}"
-        )
+        logger.info(f"Reader() > kill_tag() > kill_password: {hex_readable(kill_password)}")
 
         self.is_inventory = True
 
@@ -565,12 +482,8 @@ class Reader(QObject):
         self.__send_request(command)
         return ResponseMaskInventoryPermission(self.__receive_response(cmd_request))
 
-    def set_mask_inventory_permission(
-        self, mask_inventory_permission: MaskInventoryPermission
-    ) -> Response:
-        logger.info(
-            f"Reader() > set_mask_inventory() > mask_inventory_permission: {mask_inventory_permission}"
-        )
+    def set_mask_inventory_permission(self, mask_inventory_permission: MaskInventoryPermission) -> Response:
+        logger.info(f"Reader() > set_mask_inventory() > mask_inventory_permission: {mask_inventory_permission}")
 
         cmd_request = CommandRequest.SET_GET_PERMISSION
         data = bytearray([CommandOption.SET.value])
@@ -584,9 +497,7 @@ class Reader(QObject):
         """
         To stop inventory `counting type == TIME and time == 0`
         """
-        logger.info(
-            f"Reader() > stop_inventory() > START > is_inventory: {self.is_inventory}"
-        )
+        logger.info(f"Reader() > stop_inventory() > START > is_inventory: {self.is_inventory}")
 
         cmd_request = CommandRequest.INVENTORY_STOP
 
@@ -598,19 +509,15 @@ class Reader(QObject):
             try:
                 self.__receive_response(cmd_request)
             except (USBError, TimeoutError) as _:
-                logger.info(f"Reader() > stop_inventory() > timeout")
+                logger.info(f'Reader() > stop_inventory() > timeout')
 
         self.is_inventory = False
 
-        logger.info(
-            f"Reader() > stop_inventory() > DONE > is_inventory: {self.is_inventory}"
-        )
+        logger.info(f"Reader() > stop_inventory() > DONE > is_inventory: {self.is_inventory}")
 
-    def start_inventory(
-        self,
-        work_mode: WorkMode,
-        answer_mode_inventory_parameter: AnswerModeInventoryParameter | None = None,
-    ) -> Iterator[ResponseInventory] | None:
+    def start_inventory(self, work_mode: WorkMode,
+                        answer_mode_inventory_parameter: AnswerModeInventoryParameter | None = None) \
+            -> Iterator[ResponseInventory] | None:
         """
         :param work_mode: Work mode type
         :param answer_mode_inventory_parameter: By Time or by number, and the value
@@ -625,16 +532,10 @@ class Reader(QObject):
 
         self.is_inventory = True
 
-        if (
-            work_mode == WorkMode.ANSWER_MODE
-            and answer_mode_inventory_parameter is None
-        ):
+        if work_mode == WorkMode.ANSWER_MODE and answer_mode_inventory_parameter is None:
             raise ValueError("Answer mode inventory parameter is None")
 
-        if (
-            work_mode == WorkMode.ANSWER_MODE
-            and answer_mode_inventory_parameter is not None
-        ):
+        if work_mode == WorkMode.ANSWER_MODE and answer_mode_inventory_parameter is not None:
             data = bytearray([answer_mode_inventory_parameter.stop_after.value])
             data.extend(answer_mode_inventory_parameter.value.to_bytes(4, "big"))
             command = Command(cmd_request, data=data)
@@ -644,33 +545,25 @@ class Reader(QObject):
         while self.is_inventory:
             try:
                 if response is None:
-                    response = self.__receive_response(
-                        cmd_request, verify_header=False, loop_usb=False
-                    )
+                    response = self.__receive_response(cmd_request, verify_header=False, loop_usb=False)
                 # Sisa buffer diabaikan, kalau diambil takutnya tidak relevan (1 tag, tapi ada 2 di UI)
                 # elif len(response) > 8 and isinstance(self.transport, UsbTransport):
                 #     response = response[len(frame):]
                 else:
-                    response = self.__receive_response(
-                        cmd_request, verify_header=False, loop_usb=False
-                    )
+                    response = self.__receive_response(cmd_request, verify_header=False, loop_usb=False)
             except (USBError, TimeoutError) as _:
                 response = []
                 yield None
                 continue
 
             if response is None or len(response) <= 0:
-                logger.info(
-                    f"Reader() > start_inventory() > continue, response > {response}"
-                )
+                logger.info(f"Reader() > start_inventory() > continue, response > {response}")
                 response = []
                 yield None
                 continue
 
             if response[0] != HEADER:  # Next
-                logger.info(
-                    f"Reader() > start_inventory() > break, response[0] != HEADER > {response[0]}"
-                )
+                logger.info(f"Reader() > start_inventory() > break, response[0] != HEADER > {response[0]}")
                 response = []
                 continue
 
@@ -680,9 +573,7 @@ class Reader(QObject):
             if command_request == CommandRequest.INVENTORY_STOP:
                 response = []
                 continue
-            body_n_checksum_section = response[
-                5 : 4 + length + 2 + 1
-            ]  # length(N) + 2(checksum) + 1 (end of index)
+            body_n_checksum_section = response[5: 4 + length + 2 + 1]  # length(N) + 2(checksum) + 1 (end of index)
             status = InventoryStatus(body_n_checksum_section[0])
             body_section = body_n_checksum_section[1:-2]
 
@@ -692,10 +583,7 @@ class Reader(QObject):
                 continue
 
             # Check length of data tag (for USB)
-            if (
-                isinstance(self.transport, UsbTransport)
-                and status == InventoryStatus.SUCCESS
-            ):
+            if isinstance(self.transport, UsbTransport) and status == InventoryStatus.SUCCESS:
                 tag_length = body_section[4]
                 tag_data = body_section[0:tag_length]
                 if len(tag_data) != tag_length:  # Next
@@ -729,9 +617,7 @@ class Reader(QObject):
         :param start_address: Start address in byte
         :param length: Length in byte. if length 0x00 = All output
         """
-        logger.info(
-            f"Reader() > set_inventory_range() > start_address: {start_address}, length: {length}"
-        )
+        logger.info(f"Reader() > set_inventory_range() > start_address: {start_address}, length: {length}")
 
         assert 0x00 <= start_address <= 0xFF
         assert 0x00 <= length <= 0xFF
