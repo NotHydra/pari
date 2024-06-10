@@ -38,6 +38,44 @@ export default function Home(): JSX.Element {
                         </div>
                     </div>
                 </div>
+
+                <div className="columns">
+                    <div className="column is-two-thirds">
+                        <div className="card has-background-light has-border-main">
+                            <div className="card-content">
+                                <div className="content">
+                                    <Line
+                                        data={{
+                                            labels: ["1/1/2024 12:12:12", "1/1/2024 12:12:12", "1/1/2024 12:12:12", "1/1/2024 12:12:12", "1/1/2024 12:12:12"],
+                                            datasets: [
+                                                {
+                                                    label: "RSSI",
+                                                    data: [65, 59, 80, 81, 56],
+                                                    fill: false,
+                                                    borderColor: color.main,
+                                                    tension: 0.1,
+                                                },
+                                            ],
+                                        }}
+                                    ></Line>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="column">
+                        <div className="card has-background-light has-border-main">
+                            <div className="card-content">
+                                <div className="content">
+                                    <h4 className="title has-text-main m-0 mb-3 p-0">Latest Data</h4>
+                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">RSSI: -123</h6>
+                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">Quality: Good</h6>
+                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">Obtained At: 1/1/2024 17:05:05</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <footer className="footer has-background-secondary">

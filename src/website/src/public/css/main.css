@@ -34,6 +34,10 @@ html {
   border: 3px solid var(--main) !important;
 }
 
+.card {
+  height: 100% !important;
+}
+
 .footer-link {
   color: #ffffff !important;
 }/*# sourceMappingURL=main.css.map */
