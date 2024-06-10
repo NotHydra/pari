@@ -22,6 +22,15 @@ export class ResponseInventoryService
         super(ResponseInventoryService.name, prismaService.responseInventory);
     }
 
+    public async findLatest(): Promise<ResponseInventoryModel[]> {
+        try {
+            return await this.prismaModel.findMany({ take: 5, orderBy: { createdAt: "desc" } });
+        } catch (error) {
+            this.loggerService.error(`Latest: ${error.message}`);
+            throw new InternalServerErrorException("Internal Server Error");
+        }
+    }
+
     @Override
     public async add(payload: ResponseInventoryCreateDTO): Promise<ResponseInventoryModel> {
         try {
