@@ -1,4 +1,8 @@
+import datetime
+import time
+from typing import Iterator
 from rfid.reader import Reader
+from rfid.response import ResponseInventory
 from rfid.transport import Transport, SerialTransport
 from rfid.reader_settings import (
     Antenna,
@@ -20,31 +24,32 @@ from rfid.reader_settings import (
 from rfid.status import InventoryStatus
 from rfid.utils import calculate_rssi
 
-print("Starting RFID reader...")
 
-print(SerialTransport.scan())
+def log(message: str) -> None:
+    print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {message}")
 
-port = SerialTransport.scan()[0]
-print("Port: " + port)
-transport = SerialTransport(serial_port=port, baud_rate=BaudRate.BPS_115200, timeout=1)
 
-print("RFID reader started")
-reader = Reader(transport)
-print("00 70 : Device Information")
-reader.get_device_info()
-print("00 50 : Initialize")
-reader.init()
-print("00 72 : Get Reader Information")
-reader.get_reader_settings()
-print("00 70 : Set Reader Settings")
+log("Starting RFID reader...")
+log(f"Ports: {SerialTransport.scan()}")
 
-wiegand = Wiegand(
+port: str = SerialTransport.scan()[0]
+log(f"Port: {port}")
+
+transport: SerialTransport = SerialTransport(
+    serial_port=port, baud_rate=BaudRate.BPS_115200, timeout=1
+)
+log(f"Transport: {transport}")
+
+reader: Reader = Reader(transport)
+log("RFID reader started")
+
+wiegand: Wiegand = Wiegand(
     is_open=False,
     byte_first_type=WiegandByteFirstType.LOW_BYTE_FIRST,
     protocol=WiegandProtocol.WG_26,
 )
 
-antenna = Antenna(
+antenna: Antenna = Antenna(
     ant_1=True,
     ant_2=False,
     ant_3=False,
@@ -55,12 +60,11 @@ antenna = Antenna(
     ant_8=False,
 )
 
-frequency = Frequency(
+frequency: Frequency = Frequency(
     region=REGION_MALAYSIA,
     min_frequency=920.00,
     max_frequency=925.00,
 )
-
 
 reader.set_reader_settings(
     ReaderSettings(
@@ -85,29 +89,35 @@ reader.set_reader_settings(
     )
 )
 
-# run the reader
-answer_mode_inventory_parameters = AnswerModeInventoryParameter(
-    stop_after=StopAfter.NUMBER,
-    value=10,
+answer_mode_inventory_parameters: AnswerModeInventoryParameter = (
+    AnswerModeInventoryParameter(
+        stop_after=StopAfter.NUMBER,
+        value=10,
+    )
 )
 
-response = reader.start_inventory(
+response: Iterator[ResponseInventory] | None = reader.start_inventory(
     work_mode=WorkMode.ANSWER_MODE,
     answer_mode_inventory_parameter=answer_mode_inventory_parameters,
 )
-i = 0
+
+index: int = 1
 for res in response:
-    i += 1
-    print(f"({i}).InventoryThread() > run() > res: {res}")
+    log(f"({index}).InventoryThread() > run() > res: {res}")
 
     if res is None:
         continue
 
     if res.status == InventoryStatus.SUCCESS and res.tag:
-        print(f"Tag: {res.tag} - RSSI:{str(calculate_rssi(res.tag.rssi))[0:3]}")
+        log(f"Tag: {res.tag} - RSSI:{str(calculate_rssi(res.tag.rssi))[0:3]}")
 
-    if res.status == InventoryStatus.NO_COUNT_LABEL and reader.work_mode == WorkMode.ANSWER_MODE:
+    if (
+        res.status == InventoryStatus.NO_COUNT_LABEL
+        and reader.work_mode == WorkMode.ANSWER_MODE
+    ):
         break
+
+    index += 1
 
 reader.stop_inventory()
 reader.close()
