@@ -148,36 +148,37 @@ try:
 
                 if not switchValue:
                     break
+                
+                else:
+                    if res is None:
+                        continue
 
-                if res is None:
-                    continue
+                    if res.status == InventoryStatus.SUCCESS and res.tag:
+                        log(res)
+                        log(f"Tag: {res.tag} - RSSI: {str(calculate_rssi(res.tag.rssi))[0:3]}")
 
-                if res.status == InventoryStatus.SUCCESS and res.tag:
-                    log(res)
-                    log(f"Tag: {res.tag} - RSSI: {str(calculate_rssi(res.tag.rssi))[0:3]}")
+                        try:
+                            response = requests.post(
+                                f"{URL}/api/response-inventory",
+                                json={
+                                    "rssi": str(res.tag.rssi),
+                                    "data": str(res.tag.data),
+                                    "rssiValue": int(str(calculate_rssi(res.tag.rssi))[0:3]),
+                                },
+                            )
 
-                    try:
-                        response = requests.post(
-                            f"{URL}/api/response-inventory",
-                            json={
-                                "rssi": str(res.tag.rssi),
-                                "data": str(res.tag.data),
-                                "rssiValue": int(str(calculate_rssi(res.tag.rssi))[0:3]),
-                            },
-                        )
+                            log(f"Response: {response.json()}")
+                        except Exception as e:
+                            log(f"Response: {e}")
 
-                        log(f"Response: {response.json()}")
-                    except Exception as e:
-                        log(f"Response: {e}")
+                    if (
+                        res.status == InventoryStatus.NO_COUNT_LABEL
+                        and reader.work_mode == WorkMode.ANSWER_MODE
+                    ):
+                        break
 
-                if (
-                    res.status == InventoryStatus.NO_COUNT_LABEL
-                    and reader.work_mode == WorkMode.ANSWER_MODE
-                ):
-                    break
-
-                index += 1
-                time.sleep(1)
+                    index += 1
+                    time.sleep(1)
 
 except KeyboardInterrupt:
     pass
