@@ -122,16 +122,16 @@ export default function Home(): JSX.Element {
                         <div className="card has-background-light has-border-main">
                             <div className="card-content">
                                 <div className="content">
-                                    <h4 className="title has-text-main m-0 mb-3 p-0">Latest Data</h4>
+                                    <h4 className="title has-text-main m-0 mb-3 p-0">Hasil Terbaru</h4>
 
                                     <h6 className="subtitle has-text-main m-0 mb-1 p-0">
                                         RSSI: {responseInventory.length !== 0 ? responseInventory[0].rssiValue : "Loading..."}
                                     </h6>
 
-                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">Quality: Good</h6>
+                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">Kualitas: Bagus</h6>
 
                                     <h6 className="subtitle has-text-main m-0 mb-1 p-0">
-                                        Obtained At: {responseInventory.length !== 0 ? responseInventory[0].createdAt.toString() : "Loading..."}
+                                        Diperoleh Pada Saat: {responseInventory.length !== 0 ? responseInventory[0].createdAt.toString() : "Loading..."}
                                     </h6>
                                 </div>
                             </div>
