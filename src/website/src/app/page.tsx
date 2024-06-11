@@ -82,7 +82,7 @@ export default function Home(): JSX.Element {
                             Indicator Pada Gelombang Frekuensi Tinggi
                         </p>
 
-                        <a className="button is-light" href="#hasil">
+                        <a className="button is-light has-text-weight-semibold" href="#hasil">
                             <span className="icon">
                                 <i className="fa-solid fa-right-long"></i>
                             </span>
