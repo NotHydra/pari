@@ -150,7 +150,7 @@ export default function Home(): JSX.Element {
                                         </div>
 
                                         <div className="mb-5">
-                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Diperoleh Pada Saat:</h6>
+                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Diperoleh Pada:</h6>
                                             <p className="has-text-main has-text-weight-semibold m-0 p-0">
                                                 {responseInventory.length !== 0 ? dateToString(responseInventory[0].createdAt) : "Loading..."}
                                             </p>
