@@ -77,7 +77,7 @@ export default function Home(): JSX.Element {
                             <span className="is-main">P</span>M-Sense
                         </p>
 
-                        <p className="subtitle has-text-light mb-4" style={{ width: "40%", textAlign: "justify" }}>
+                        <p className="subtitle has-text-light has-text-weight-semibold mb-4">
                             Papaya Maturity Sense, Sistem Deteksi Tingkat Kematangan Pepaya Secara Non-invasif Berdasarkan Nilai Received Signal Strength
                             Indicator Pada Gelombang Frekuensi Tinggi
                         </p>
