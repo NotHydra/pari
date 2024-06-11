@@ -1,48 +1,48 @@
 html {
-  scroll-behavior: smooth !important;
+    scroll-behavior: smooth !important;
 }
 
 :root {
-  --main: #ff9933;
-  --secondary: #7f4c19;
-  --dark: #2e333d;
+    --main: #ff9933;
+    --secondary: #7f4c19;
+    --dark: #2e333d;
 }
 
 .home {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./../images/home-background.png") !important;
-  background-size: contain !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./../images/home-background.png") !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
 }
 .home .subtitle {
-  width: 40% !important;
-  text-align: justify !important;
+    width: 40% !important;
+    text-align: justify !important;
 }
 
 .is-main {
-  color: var(--main) !important;
+    color: var(--main) !important;
 }
 
 .has-text-main {
-  color: var(--main) !important;
+    color: var(--main) !important;
 }
 
 .has-background-main {
-  background-color: var(--main) !important;
+    background-color: var(--main) !important;
 }
 
 .has-background-secondary {
-  background-color: var(--secondary) !important;
+    background-color: var(--secondary) !important;
 }
 
 .has-border-dark {
-  border: 3px solid var(--dark) !important;
+    border: 3px solid var(--dark) !important;
 }
 
 .card {
-  height: 100% !important;
+    height: 100% !important;
 }
 
 .footer-link {
-  color: #ffffff !important;
-}/*# sourceMappingURL=main.css.map */
+    color: #ffffff !important;
+} /*# sourceMappingURL=main.css.map */

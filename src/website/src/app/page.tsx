@@ -25,11 +25,11 @@ interface ResponseInventoryInterface {
     createdAt: Date;
 }
 
-const dateToString = (date: Date): String => {
-    return moment(date).format(`HH:mm:ss DD-MMMM-YYYY`);
-};
-
 export default function Home(): JSX.Element {
+    const dateToString = (date: Date): String => {
+        return moment(date).format(`HH:mm:ss DD-MMMM-YYYY`);
+    };
+
     const color: { [key: string]: string } = {
         main: "#ff9933",
     };
@@ -60,7 +60,7 @@ export default function Home(): JSX.Element {
             transports: ["websocket"],
         });
 
-        socket.on("responseInventoryLatest", (models: ResponseInventoryInterface[]) => {
+        socket.on("responseInventoryLatest", (models: ResponseInventoryInterface[]): void => {
             console.log(`Models:`);
             console.log(models);
 
