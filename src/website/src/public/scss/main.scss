@@ -5,6 +5,7 @@ html {
 :root {
     --main: #ff9933;
     --secondary: #7f4c19;
+    --dark: #2e333d;
 }
 
 .home {
@@ -35,8 +36,8 @@ html {
     background-color: var(--secondary) !important;
 }
 
-.has-border-main {
-    border: 3px solid var(--main) !important;
+.has-border-dark {
+    border: 3px solid var(--dark) !important;
 }
 
 .card {

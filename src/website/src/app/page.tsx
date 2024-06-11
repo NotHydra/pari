@@ -26,7 +26,7 @@ interface ResponseInventoryInterface {
 }
 
 const dateToString = (date: Date): String => {
-    return moment(date).format("DD/MMMM/YYYY HH:mm:ss");
+    return moment(date).format(`HH:mm:ss DD-MMMM-YYYY`);
 };
 
 export default function Home(): JSX.Element {
@@ -93,60 +93,69 @@ export default function Home(): JSX.Element {
                 </div>
             </section>
 
-            <section className="section has-background-light" id="hasil">
-                <div className="card has-background-light has-border-main">
-                    <div className="card-content">
-                        <div className="content">
-                            <h3 className="title has-text-main m-0 p-0">Hasil</h3>
-                        </div>
-                    </div>
-                </div>
+            <section className="section has-background-light is-medium" id="hasil">
+                <div className="container" style={{ width: "75%" }}>
+                    <h3 className="title has-text-dark has-text-centered m-0 mb-6 p-0">Hasil Data</h3>
 
-                <div className="columns">
-                    <div className="column is-two-thirds">
-                        <div className="card has-background-light has-border-main">
-                            <div className="card-content">
-                                <div className="content">
-                                    <Line
-                                        data={{
-                                            labels:
-                                                responseInventory.length !== 0
-                                                    ? responseInventory.map((model: ResponseInventoryInterface) => dateToString(model.createdAt)).reverse()
-                                                    : ["Loading"],
-                                            datasets: [
-                                                {
-                                                    label: "RSSI",
-                                                    data:
-                                                        responseInventory.length !== 0
-                                                            ? responseInventory.map((model: ResponseInventoryInterface) => model.rssiValue).reverse()
-                                                            : ["Loading"],
-                                                    fill: false,
-                                                    borderColor: color.main,
-                                                    tension: 0.1,
-                                                },
-                                            ],
-                                        }}
-                                    ></Line>
+                    <div className="columns is-vcentered">
+                        <div className="column is-three-quarters">
+                            <div className="card has-background-light">
+                                <div className="card-content">
+                                    <div className="content">
+                                        <Line
+                                            data={{
+                                                labels:
+                                                    responseInventory.length !== 0
+                                                        ? responseInventory
+                                                              .map((model: ResponseInventoryInterface): String[] => dateToString(model.createdAt).split(" "))
+                                                              .reverse()
+                                                        : [["Loading"]],
+                                                datasets: [
+                                                    {
+                                                        label: "RSSI",
+                                                        data:
+                                                            responseInventory.length !== 0
+                                                                ? responseInventory
+                                                                      .map((model: ResponseInventoryInterface): number => model.rssiValue)
+                                                                      .reverse()
+                                                                : ["Loading"],
+                                                        fill: false,
+                                                        borderColor: color.main,
+                                                        tension: 0.1,
+                                                    },
+                                                ],
+                                            }}
+                                        ></Line>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="column">
-                        <div className="card has-background-light has-border-main">
-                            <div className="card-content">
-                                <div className="content">
-                                    <h4 className="title has-text-main m-0 mb-3 p-0">Hasil Terbaru</h4>
+                        <div className="column" style={{ height: "85%" }}>
+                            <div className="card has-background-light has-border-dark">
+                                <div className="card-content">
+                                    <div className="content">
+                                        <h3 className="title has-text-dark m-0 mb-3 p-0">Hasil Terbaru</h3>
 
-                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">
-                                        RSSI: {responseInventory.length !== 0 ? responseInventory[0].rssiValue : "Loading..."}
-                                    </h6>
+                                        <div className="mb-5">
+                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">RSSI:</h6>
+                                            <p className="has-text-main has-text-weight-semibold m-0 p-0">
+                                                {responseInventory.length !== 0 ? responseInventory[0].rssiValue : "Loading..."}
+                                            </p>
+                                        </div>
 
-                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">Kualitas: Loading...</h6>
+                                        <div className="mb-5">
+                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Kualitas:</h6>
+                                            <p className="has-text-main has-text-weight-semibold m-0 p-0">Loading...</p>
+                                        </div>
 
-                                    <h6 className="subtitle has-text-main m-0 mb-1 p-0">
-                                        Diperoleh Pada Saat: {responseInventory.length !== 0 ? dateToString(responseInventory[0].createdAt) : "Loading..."}
-                                    </h6>
+                                        <div className="mb-5">
+                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Diperoleh Pada Saat:</h6>
+                                            <p className="has-text-main has-text-weight-semibold m-0 p-0">
+                                                {responseInventory.length !== 0 ? dateToString(responseInventory[0].createdAt) : "Loading..."}
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
