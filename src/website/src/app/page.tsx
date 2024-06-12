@@ -1,13 +1,14 @@
 "use client";
 
 import axios, { AxiosResponse } from "axios";
-import "chart.js/auto";
+import { defaults } from "chart.js/auto";
 import moment from "moment";
 import "moment/locale/id";
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import io, { Socket } from "socket.io-client";
 
+defaults.font.size = 9;
 moment.locale("ID");
 
 interface ResponseFormatInterface<T> {
