@@ -137,22 +137,33 @@ export default function Home(): JSX.Element {
                                     <div className="content">
                                         <h3 className="title has-text-dark m-0 mb-3 p-0">Hasil Terbaru</h3>
 
-                                        <div className="mb-5">
+                                        <div className="mb-3">
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">RSSI:</h6>
                                             <p className="has-text-main has-text-weight-semibold m-0 p-0">
                                                 {responseInventory.length !== 0 ? responseInventory[0].rssiValue : "Loading..."}
                                             </p>
                                         </div>
 
-                                        <div className="mb-5">
+                                        <div className="mb-3">
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Kualitas:</h6>
                                             <p className="has-text-main has-text-weight-semibold m-0 p-0">Loading...</p>
                                         </div>
 
-                                        <div className="mb-5">
+                                        <div className="mb-3">
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Diperoleh Pada:</h6>
                                             <p className="has-text-main has-text-weight-semibold m-0 p-0">
                                                 {responseInventory.length !== 0 ? dateToString(responseInventory[0].createdAt) : "Loading..."}
+                                            </p>
+                                        </div>
+
+                                        <div className="mb-3">
+                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Rata-Rata RSSI:</h6>
+                                            <p className="has-text-main has-text-weight-semibold m-0 p-0">
+                                                {responseInventory.length !== 0
+                                                    ? responseInventory.reduce((sum, model) => {
+                                                          return sum + model.rssiValue;
+                                                      }, 0) / responseInventory.length
+                                                    : "Loading..."}
                                             </p>
                                         </div>
                                     </div>
