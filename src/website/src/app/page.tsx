@@ -106,11 +106,9 @@ export default function Home(): JSX.Element {
                                             data={{
                                                 labels:
                                                     responseInventory.length !== 0
-                                                        ? responseInventory
-                                                              .map((model: ResponseInventoryInterface, index: number): String[] =>
-                                                                  [`Count: ${(index + 1).toString()}`].concat(dateToString(model.createdAt).split(" "))
-                                                              )
-                                                              .reverse()
+                                                        ? responseInventory.map((model: ResponseInventoryInterface, index: number): String[] =>
+                                                              [`Count: ${(index + 1).toString()}`].concat(dateToString(model.createdAt).split(" "))
+                                                          )
                                                         : [["Loading"]],
                                                 datasets: [
                                                     {
@@ -158,7 +156,7 @@ export default function Home(): JSX.Element {
                                             </p>
                                         </div>
 
-                                        <div className="mb-3">
+                                        <div>
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Rata-Rata RSSI:</h6>
                                             <p className="has-text-main has-text-weight-semibold m-0 p-0">
                                                 {responseInventory.length !== 0
