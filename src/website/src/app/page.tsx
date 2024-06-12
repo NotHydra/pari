@@ -107,7 +107,9 @@ export default function Home(): JSX.Element {
                                                 labels:
                                                     responseInventory.length !== 0
                                                         ? responseInventory
-                                                              .map((model: ResponseInventoryInterface): String[] => dateToString(model.createdAt).split(" "))
+                                                              .map((model: ResponseInventoryInterface, index: number): String[] =>
+                                                                  [`Count: ${(index + 1).toString()}`].concat(dateToString(model.createdAt).split(" "))
+                                                              )
                                                               .reverse()
                                                         : [["Loading"]],
                                                 datasets: [
