@@ -37,7 +37,7 @@ export class ResponseInventoryService
             const model: ResponseInventoryModel = await this.prismaModel.create({ data: payload });
 
             this.socketGateway.handleResponseInventoryLatest(
-                await this.prismaModel.findMany({ take: 5, orderBy: { createdAt: "desc" } })
+                await this.prismaModel.findMany({ take: 10, orderBy: { createdAt: "desc" } })
             );
 
             this.loggerService.log(`Add: ${JSON.stringify(model)}`);
