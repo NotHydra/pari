@@ -198,7 +198,7 @@ try:
             for averageRSSIIndex, averageRSSIValue in enumerate(
                 averageRSSIList, start=1
             ):
-                log(f"Frequency {averageRSSIIndex} Average RSSI: {averageRSSIValue}dBm")
+                log(f"Frequency {averageRSSIIndex} ({FREQUENCY_LIST[averageRSSIIndex-1]}MHz) Average RSSI: {averageRSSIValue}dBm")
 
             finalRSSI: float = sum(averageRSSIList) / len(averageRSSIList)
             log(f"Final RSSI: {finalRSSI}dBm")
