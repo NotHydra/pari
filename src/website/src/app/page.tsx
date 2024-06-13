@@ -232,11 +232,13 @@ export default function Home(): JSX.Element {
                                                     attempt.frequency[index] !== undefined &&
                                                     attempt.frequency[index].rssi.length > 0 &&
                                                     attempt.frequency[index].rssi !== undefined
-                                                        ? `${
-                                                              attempt.frequency[index].rssi.reduce((sum, model) => {
-                                                                  return sum + model.rssi;
-                                                              }, 0) / attempt.frequency[index].rssi.length
-                                                          }dBm`
+                                                        ? `${Number(
+                                                              (
+                                                                  attempt.frequency[index].rssi.reduce((sum, model) => {
+                                                                      return sum + model.rssi;
+                                                                  }, 0) / attempt.frequency[index].rssi.length
+                                                              ).toFixed(4)
+                                                          )}dBm`
                                                         : "Loading..."}
                                                 </p>
                                             </div>
