@@ -169,7 +169,7 @@ export default function Home(): JSX.Element {
 
             <section className="section has-background-light is-medium" id="hasil">
                 <div className="container" style={{ width: "75%" }}>
-                    <h3 className="title has-text-dark has-text-centered m-0 mb-6 p-0">Hasil Data</h3>
+                    <h3 className="title has-text-dark has-text-centered m-0 mb-3 p-0">Hasil Data</h3>
 
                     <div className="columns is-vcentered">
                         <div className="column is-three-quarters">
@@ -221,7 +221,7 @@ export default function Home(): JSX.Element {
                             <div className="card has-background-light has-border-dark">
                                 <div className="card-content">
                                     <div className="content">
-                                        <h3 className="title has-text-dark m-0 mb-3 p-0">Rata-Rata RSSI</h3>
+                                        <h3 className="title has-text-dark m-0 mb-2 p-0">Rata-Rata RSSI</h3>
 
                                         {[919.5, 920.0, 920.5, 921.0, 921.5, 922.0, 922.5].map((value: number, index: number) => (
                                             <div className="mb-2">
@@ -244,7 +244,7 @@ export default function Home(): JSX.Element {
                                             </div>
                                         ))}
 
-                                        <div>
+                                        <div className="mb-2">
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Keseluruhan:</h6>
                                             <p className="has-text-main has-text-weight-semibold m-0 p-0">
                                                 {attempt !== null && attempt.frequency.length > 0 ? `${averageRSSI(attempt)}dBm` : "Loading..."}
