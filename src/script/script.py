@@ -42,9 +42,11 @@ GPIO.setmode(GPIO.BCM)
 
 BUTTON_PIN: int = 18
 LED_GREEN_PIN: int = 23
+LED_RED_PIN: int = 24
 
 GPIO.setup(BUTTON_PIN, GPIO.IN)
 GPIO.setup(LED_GREEN_PIN, GPIO.OUT)
+GPIO.setup(LED_RED_PIN, GPIO.OUT)
 
 log("Starting RFID reader...")
 log(f"Ports: {SerialTransport.scan()}")
@@ -132,9 +134,11 @@ try:
 
         if not switchValue:
             GPIO.output(LED_GREEN_PIN, GPIO.LOW)
-        
+            GPIO.output(LED_RED_PIN, GPIO.HIGH)
+
         else:
             GPIO.output(LED_GREEN_PIN, GPIO.HIGH)
+            GPIO.output(LED_RED_PIN, GPIO.LOW)
 
             for res in response:
                 log(f"({index}).InventoryThread() > run() > res: {res}")
@@ -148,14 +152,16 @@ try:
 
                 if not switchValue:
                     break
-                
+
                 else:
                     if res is None:
                         continue
 
                     if res.status == InventoryStatus.SUCCESS and res.tag:
                         log(res)
-                        log(f"Tag: {res.tag} - RSSI: {str(calculate_rssi(res.tag.rssi))[0:3]}")
+                        log(
+                            f"Tag: {res.tag} - RSSI: {str(calculate_rssi(res.tag.rssi))[0:3]}"
+                        )
 
                         try:
                             response = requests.post(
@@ -163,7 +169,9 @@ try:
                                 json={
                                     "rssi": str(res.tag.rssi),
                                     "data": str(res.tag.data),
-                                    "rssiValue": int(str(calculate_rssi(res.tag.rssi))[0:3]),
+                                    "rssiValue": int(
+                                        str(calculate_rssi(res.tag.rssi))[0:3]
+                                    ),
                                 },
                             )
 
