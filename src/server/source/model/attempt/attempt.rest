@@ -1,0 +1,30 @@
+@base_url = {{$dotenv URL}}/api
+@url={{base_url}}/attempt
+
+GET {{url}}
+
+###
+
+GET {{url}}?page=1&count=5
+
+###
+
+GET {{url}}/id/1
+
+###
+
+GET {{url}}/detailed
+
+###
+
+GET {{url}}/detailed?page=1&count=5
+
+###
+
+GET {{url}}/id/1/detailed
+
+###
+
+POST {{url}}
+
+###
