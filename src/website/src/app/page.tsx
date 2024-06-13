@@ -64,11 +64,11 @@ export default function Home(): JSX.Element {
     };
 
     const averageRSSI = (attempt: AttemptInterface): number => {
-        let totalSum = 0;
-        let totalCount = 0;
+        let totalSum: number = 0;
+        let totalCount: number = 0;
 
-        attempt.frequency.forEach((frequency) => {
-            frequency.rssi.forEach((rssi) => {
+        attempt.frequency.forEach((frequency: FrequencyInterface) => {
+            frequency.rssi.forEach((rssi: RSSIInterface) => {
                 totalSum += rssi.rssi;
                 totalCount++;
             });
@@ -246,6 +246,13 @@ export default function Home(): JSX.Element {
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Keseluruhan:</h6>
                                             <p className="has-text-main has-text-weight-semibold m-0 p-0">
                                                 {attempt !== null && attempt.frequency.length > 0 ? `${averageRSSI(attempt)}dBm` : "Loading..."}
+                                            </p>
+                                        </div>
+
+                                        <div>
+                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Diperoleh Pada:</h6>
+                                            <p className="has-text-main has-text-weight-semibold m-0 p-0">
+                                                {attempt !== null ? dateToString(attempt.createdAt) : "Loading..."}
                                             </p>
                                         </div>
                                     </div>
