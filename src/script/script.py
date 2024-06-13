@@ -38,7 +38,7 @@ def log(message: str) -> None:
 
 URL: str = os.getenv("URL")
 
-FREQUENCY: list[float] = [919.5, 920.0, 920.5, 921.0, 921.5, 922.0, 922.5]
+FREQUENCY_LIST: list[float] = [919.5, 920.0, 920.5, 921.0, 921.5, 922.0, 922.5]
 
 GPIO.setmode(GPIO.BCM)
 
@@ -72,7 +72,8 @@ try:
             GPIO.output(LED_GREEN_PIN, GPIO.HIGH)
             GPIO.output(LED_RED_PIN, GPIO.LOW)
 
-            for frequencyIndex, frequencyValue in enumerate(FREQUENCY, start=1):
+            averageRSSIList: list[float] = []
+            for frequencyIndex, frequencyValue in enumerate(FREQUENCY_LIST, start=1):
                 log(f"Frequency {frequencyIndex}: {frequencyValue}MHz")
 
                 READER.set_reader_settings(
@@ -126,39 +127,66 @@ try:
                 )
 
                 count: int = 1
-                for res in response:
-                    print()
+                rssiList: list[int] = []
+               
+                try:
+                    for res in response:
+                        print()
 
-                    # log(f"({count}).InventoryThread() > run() > res: {res}")
+                        if res is None:
+                            continue
 
-                    if res is None:
-                        continue
+                        if res.status == InventoryStatus.SUCCESS and res.tag:
+                            rssiValue: int = int(str(calculate_rssi(res.tag.rssi))[0:3])
 
-                    if res.status == InventoryStatus.SUCCESS and res.tag:
-                        # log(res)
-                        # log(
-                        #     f"Tag: {res.tag} - RSSI: {str(calculate_rssi(res.tag.rssi))[0:3]}"
-                        # )
-                        log(
-                            f"Frequency {frequencyIndex} RSSI {count}: {int(str(calculate_rssi(res.tag.rssi))[0:3])}dBm"
-                        )
+                            log(f"Frequency {frequencyIndex} RSSI {count}: {rssiValue}dBm")
 
-                        count += 1
-                        if count > 10:
+                            rssiList.append(rssiValue)
+
+                            count += 1
+                            if count > 10:
+                                break
+
+                        if (
+                            res.status == InventoryStatus.NO_COUNT_LABEL
+                            and READER.work_mode == WorkMode.ANSWER_MODE
+                        ):
                             break
 
-                    if (
-                        res.status == InventoryStatus.NO_COUNT_LABEL
-                        and READER.work_mode == WorkMode.ANSWER_MODE
-                    ):
-                        break
+                        time.sleep(0.1)
 
-                    time.sleep(0.25)
+                except:
+                    log(f"Frequency {frequencyIndex} RSSI {count}: Error")
+
 
                 READER.stop_inventory()
+
+                print()
+                log(f"Frequency {frequencyIndex}: {frequencyValue}MHz")
+                for rssiIndex, rssiValue in enumerate(rssiList, start=1):
+                    log(f"RSSI {rssiIndex}: {rssiValue}dBm")
+
+                averageRSSI: float = sum(rssiList) / len(rssiList)
+                averageRSSIList.append(averageRSSI)
+
+                log(f"Average RSSI: {averageRSSI}dBm")
+
                 print()
 
+            log("RSSI Summary Of All Frequencies")
+            for averageRSSIIndex, averageRSSIValue in enumerate(
+                averageRSSIList, start=1
+            ):
+                log(f"Frequency {averageRSSIIndex} Average RSSI: {averageRSSIValue}dBm")
+
+            averageRSSISummary: float = sum(averageRSSIList) / len(averageRSSIList)
+            log(f"Average RSSI: {averageRSSISummary}dBm")
+
+            print()
+
             log("Finished...")
+
+            print()
 
         GPIO.output(LED_GREEN_PIN, GPIO.LOW)
         GPIO.output(LED_RED_PIN, GPIO.HIGH)
