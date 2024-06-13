@@ -191,7 +191,7 @@ try:
         GPIO.output(LED_GREEN_PIN, GPIO.LOW)
         GPIO.output(LED_RED_PIN, GPIO.HIGH)
 
-        time.sleep(1)
+        time.sleep(0.5)
 
 
 except KeyboardInterrupt:
