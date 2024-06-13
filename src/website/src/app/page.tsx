@@ -40,11 +40,36 @@ export default function Home(): JSX.Element {
         return moment(date).format(`HH:mm:ss DD-MMMM-YYYY`);
     };
 
+    const minMaxRSSI = (attempt: AttemptInterface): { min: number; max: number } | null => {
+        let min: number | null = null;
+        let max: number | null = null;
+
+        for (const freq of attempt.frequency) {
+            for (const rssiObj of freq.rssi) {
+                if (min === null || rssiObj.rssi < min) {
+                    min = rssiObj.rssi;
+                }
+
+                if (max === null || rssiObj.rssi > max) {
+                    max = rssiObj.rssi;
+                }
+            }
+        }
+
+        if (min === null || max === null) {
+            return null;
+        }
+
+        return { min, max };
+    };
+
     const color: { [key: string]: string } = {
         main: "#ff9933",
     };
 
     const [attempt, setAttempt] = useState<AttemptInterface | null>(null);
+    const [minValue, setMinValue] = useState<number | null>(null);
+    const [maxValue, setMaxValue] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
@@ -57,6 +82,16 @@ export default function Home(): JSX.Element {
                 console.log(response.data.data);
 
                 setAttempt(response.data.data);
+
+                const minMaxValue: {
+                    min: number;
+                    max: number;
+                } | null = minMaxRSSI(response.data.data);
+
+                if (minMaxValue !== null) {
+                    setMinValue(minMaxValue.min);
+                    setMaxValue(minMaxValue.max);
+                }
             } catch (error) {
                 console.error("Error fetching data: ", error);
             }
@@ -75,6 +110,16 @@ export default function Home(): JSX.Element {
             console.log(model);
 
             setAttempt(model);
+
+            const minMaxValue: {
+                min: number;
+                max: number;
+            } | null = minMaxRSSI(model);
+
+            if (minMaxValue !== null) {
+                setMinValue(minMaxValue.min);
+                setMaxValue(minMaxValue.max);
+            }
         });
     }, []);
 
@@ -115,7 +160,7 @@ export default function Home(): JSX.Element {
                                         {attempt !== null ? (
                                             <Line
                                                 data={{
-                                                    labels: [1, 2, 3, 4, 5, 6, 7].map((value: number): string => `Count: ${value}`),
+                                                    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value: number): string => `Count: ${value}`),
                                                     datasets: attempt.frequency.map((frequencyModel: FrequencyInterface) => {
                                                         return {
                                                             label: frequencyModel.frequency,
@@ -130,8 +175,8 @@ export default function Home(): JSX.Element {
                                                     scales: {
                                                         y: {
                                                             type: "linear",
-                                                            suggestedMin: -80,
-                                                            suggestedMax: -30,
+                                                            suggestedMin: minValue !== null ? minValue - 5 : -30,
+                                                            suggestedMax: maxValue !== null ? maxValue + 5 : -30,
                                                             ticks: {
                                                                 callback: (value: string | number) => {
                                                                     if (Number(value) % 5 === 0) {
