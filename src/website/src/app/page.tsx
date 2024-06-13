@@ -18,9 +18,16 @@ interface ResponseFormatInterface<T> {
     data: T;
 }
 
-interface ResponseInventoryInterface {
+interface AttemptInterface {
     id: number;
-    rssi: number;
+    frequency: {
+        id: number;
+        frequency: string;
+        rssi: {
+            id: number;
+            rssi: number;
+        }[];
+    }[];
     createdAt: Date;
 }
 
@@ -33,19 +40,19 @@ export default function Home(): JSX.Element {
         main: "#ff9933",
     };
 
-    const [responseInventory, setResponseInventory] = useState<ResponseInventoryInterface[]>([]);
+    const [attempt, setAttempt] = useState<AttemptInterface | null>(null);
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
             try {
-                const response: AxiosResponse<ResponseFormatInterface<ResponseInventoryInterface[]>> = await axios.get<
-                    ResponseFormatInterface<ResponseInventoryInterface[]>
-                >("http://localhost:3001/api/response-inventory/latest");
+                const response: AxiosResponse<ResponseFormatInterface<AttemptInterface>> = await axios.get<ResponseFormatInterface<AttemptInterface>>(
+                    "http://localhost:3001/api/attempt/latest"
+                );
 
-                console.log("ResponseInventory:");
+                console.log("Attempt:");
                 console.log(response.data.data);
 
-                setResponseInventory(response.data.data);
+                setAttempt(response.data.data);
             } catch (error) {
                 console.error("Error fetching data: ", error);
             }
@@ -59,11 +66,11 @@ export default function Home(): JSX.Element {
             transports: ["websocket"],
         });
 
-        socket.on("responseInventoryLatest", (models: ResponseInventoryInterface[]): void => {
-            console.log(`Models:`);
-            console.log(models);
+        socket.on("attemptLatest", (model: AttemptInterface): void => {
+            console.log(`Model:`);
+            console.log(model);
 
-            setResponseInventory(models);
+            setAttempt(model);
         });
     }, []);
 
@@ -101,29 +108,30 @@ export default function Home(): JSX.Element {
                             <div className="card has-background-light">
                                 <div className="card-content">
                                     <div className="content">
-                                        <Line
-                                            data={{
-                                                labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value: number): string => `Count: ${value}`),
-                                                datasets: [
-                                                    {
-                                                        label: "RSSI",
-                                                        data:
-                                                            responseInventory.length !== 0
-                                                                ? responseInventory.map((model: ResponseInventoryInterface): number => model.rssi).reverse()
-                                                                : ["Loading"],
-                                                        fill: false,
-                                                        borderColor: color.main,
-                                                        tension: 0.1,
-                                                    },
-                                                ],
-                                            }}
-                                        ></Line>
+                                        {attempt !== null ? (
+                                            <Line
+                                                data={{
+                                                    labels: [1, 2, 3, 4, 5, 6, 7].map((value: number): string => `Count: ${value}`),
+                                                    datasets: attempt.frequency.map((frequencyModel) => {
+                                                        return {
+                                                            label: frequencyModel.frequency,
+                                                            data: frequencyModel.rssi.map((rssiModel) => rssiModel.rssi),
+                                                            fill: false,
+                                                            borderColor: color.main,
+                                                            tension: 0.1,
+                                                        };
+                                                    }),
+                                                }}
+                                            ></Line>
+                                        ) : (
+                                            "Loading..."
+                                        )}
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="column" style={{ height: "85%" }}>
+                        {/* <div className="column" style={{ height: "85%" }}>
                             <div className="card has-background-light has-border-dark">
                                 <div className="card-content">
                                     <div className="content">
@@ -161,7 +169,7 @@ export default function Home(): JSX.Element {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </section>
