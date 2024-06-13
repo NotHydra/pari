@@ -7,8 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ResponseInventory {
+model Attempt {
   id Int @id @default(autoincrement())
-  rssi Int
+  frequency Frequency[]
   createdAt DateTime @default(now())
+}
+
+model Frequency {
+  id Int @id @default(autoincrement())
+  id_attempt Int
+  attempt Attempt @relation(fields: [id_attempt], references: [id])
+  frequency String
+  rssi RSSI[]
+}
+
+model RSSI {
+  id Int @id @default(autoincrement())
+  id_frequency Int
+  frequency Frequency @relation(fields: [id_frequency], references: [id])
+  rssi Int
 }
