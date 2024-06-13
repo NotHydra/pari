@@ -20,9 +20,7 @@ interface ResponseFormatInterface<T> {
 
 interface ResponseInventoryInterface {
     id: number;
-    rssi: String;
-    data: String;
-    rssiValue: number;
+    rssi: number;
     createdAt: Date;
 }
 
@@ -105,22 +103,13 @@ export default function Home(): JSX.Element {
                                     <div className="content">
                                         <Line
                                             data={{
-                                                labels:
-                                                    responseInventory.length !== 0
-                                                        ? responseInventory
-                                                              .map((model: ResponseInventoryInterface, index: number): String[] =>
-                                                                  [`Count: ${(index + 1).toString()}`].concat(dateToString(model.createdAt).split(" "))
-                                                              )
-                                                              .reverse()
-                                                        : [["Loading"]],
+                                                labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value: number): string => `Count: ${value}`),
                                                 datasets: [
                                                     {
                                                         label: "RSSI",
                                                         data:
                                                             responseInventory.length !== 0
-                                                                ? responseInventory
-                                                                      .map((model: ResponseInventoryInterface): number => model.rssiValue)
-                                                                      .reverse()
+                                                                ? responseInventory.map((model: ResponseInventoryInterface): number => model.rssi).reverse()
                                                                 : ["Loading"],
                                                         fill: false,
                                                         borderColor: color.main,
@@ -143,7 +132,7 @@ export default function Home(): JSX.Element {
                                         <div className="mb-3">
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">RSSI:</h6>
                                             <p className="has-text-main has-text-weight-semibold m-0 p-0">
-                                                {responseInventory.length !== 0 ? responseInventory[0].rssiValue : "Loading..."}
+                                                {responseInventory.length !== 0 ? responseInventory[0].rssi : "Loading..."}
                                             </p>
                                         </div>
 
@@ -164,7 +153,7 @@ export default function Home(): JSX.Element {
                                             <p className="has-text-main has-text-weight-semibold m-0 p-0">
                                                 {responseInventory.length !== 0
                                                     ? responseInventory.reduce((sum, model) => {
-                                                          return sum + model.rssiValue;
+                                                          return sum + model.rssi;
                                                       }, 0) / responseInventory.length
                                                     : "Loading..."}
                                             </p>
