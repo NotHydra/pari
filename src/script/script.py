@@ -186,7 +186,11 @@ try:
                 averageRSSI: float = sum(rssiList) / len(rssiList)
                 averageRSSIList.append(averageRSSI)
 
+                time.sleep(0.5)
                 log(f"Average RSSI: {averageRSSI}dBm")
+                LCD.text("Average RSSI:", 1)
+                LCD.text(f"{averageRSSI}dBm", 2)
+                time.sleep(1)
 
                 print()
 
@@ -196,8 +200,10 @@ try:
             ):
                 log(f"Frequency {averageRSSIIndex} Average RSSI: {averageRSSIValue}dBm")
 
-            averageRSSISummary: float = sum(averageRSSIList) / len(averageRSSIList)
-            log(f"Average RSSI: {averageRSSISummary}dBm")
+            finalRSSI: float = sum(averageRSSIList) / len(averageRSSIList)
+            log(f"Final RSSI: {finalRSSI}dBm")
+            LCD.text("Final RSSI:", 1)
+            LCD.text(f"{finalRSSI}dBm", 2)
 
             print()
 
@@ -215,6 +221,6 @@ except KeyboardInterrupt:
     pass
 
 finally:
-    GPIO.cleanup()
     LCD.clear()
+    GPIO.cleanup()
     READER.close()
