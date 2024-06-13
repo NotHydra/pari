@@ -24,7 +24,7 @@ export class ResponseInventoryService
 
     public async findLatest(): Promise<ResponseInventoryModel[]> {
         try {
-            return await this.prismaModel.findMany({ take: 5, orderBy: { createdAt: "desc" } });
+            return await this.prismaModel.findMany({ take: 10, orderBy: { createdAt: "desc" } });
         } catch (error) {
             this.loggerService.error(`Latest: ${error.message}`);
             throw new InternalServerErrorException("Internal Server Error");
