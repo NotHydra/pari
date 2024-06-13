@@ -15,15 +15,15 @@ model Attempt {
 
 model Frequency {
   id Int @id @default(autoincrement())
-  id_attempt Int
-  attempt Attempt @relation(fields: [id_attempt], references: [id])
+  attemptId Int
+  attempt Attempt? @relation(fields: [attemptId], references: [id], onDelete: Cascade)
   frequency String
   rssi RSSI[]
 }
 
 model RSSI {
   id Int @id @default(autoincrement())
-  id_frequency Int
-  frequency Frequency @relation(fields: [id_frequency], references: [id])
+  frequencyId Int
+  frequency Frequency? @relation(fields: [frequencyId], references: [id], onDelete: Cascade)
   rssi Int
 }
