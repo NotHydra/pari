@@ -9,8 +9,6 @@ datasource db {
 
 model ResponseInventory {
   id Int @id @default(autoincrement())
-  rssi String
-  data String
-  rssiValue Int
+  rssi Int
   createdAt DateTime @default(now())
 }
