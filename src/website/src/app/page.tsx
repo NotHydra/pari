@@ -20,15 +20,19 @@ interface ResponseFormatInterface<T> {
 
 interface AttemptInterface {
     id: number;
-    frequency: {
-        id: number;
-        frequency: string;
-        rssi: {
-            id: number;
-            rssi: number;
-        }[];
-    }[];
+    frequency: FrequencyInterface[];
     createdAt: Date;
+}
+
+interface FrequencyInterface {
+    id: number;
+    frequency: string;
+    rssi: RSSIInterface[];
+}
+
+interface RSSIInterface {
+    id: number;
+    rssi: number;
 }
 
 export default function Home(): JSX.Element {
@@ -112,10 +116,10 @@ export default function Home(): JSX.Element {
                                             <Line
                                                 data={{
                                                     labels: [1, 2, 3, 4, 5, 6, 7].map((value: number): string => `Count: ${value}`),
-                                                    datasets: attempt.frequency.map((frequencyModel) => {
+                                                    datasets: attempt.frequency.map((frequencyModel: FrequencyInterface) => {
                                                         return {
                                                             label: frequencyModel.frequency,
-                                                            data: frequencyModel.rssi.map((rssiModel) => rssiModel.rssi),
+                                                            data: frequencyModel.rssi.map((rssiModel: RSSIInterface) => rssiModel.rssi),
                                                             fill: false,
                                                             borderColor: color.main,
                                                             tension: 0.1,
@@ -129,7 +133,7 @@ export default function Home(): JSX.Element {
                                                             suggestedMin: -80,
                                                             suggestedMax: -30,
                                                             ticks: {
-                                                                callback: (value) => {
+                                                                callback: (value: string | number) => {
                                                                     if (Number(value) % 5 === 0) {
                                                                         return value;
                                                                     }
