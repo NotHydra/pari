@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import io, { Socket } from "socket.io-client";
 
-defaults.font.size = 9;
+defaults.font.size = 10;
 moment.locale("ID");
 
 interface ResponseFormatInterface<T> {
@@ -63,8 +63,9 @@ export default function Home(): JSX.Element {
         return { min, max };
     };
 
-    const color: { [key: string]: string } = {
-        main: "#ff9933",
+    const color: { [key: string]: string | string[] } = {
+        main: "#FF9933",
+        frequency: ["#3E26A8", "#9EACFD", "#23A0E5", "#2EC4A4", "#B6C532", "#F4BA3A", "#F9D82C"],
     };
 
     const [attempt, setAttempt] = useState<AttemptInterface | null>(null);
@@ -161,12 +162,12 @@ export default function Home(): JSX.Element {
                                             <Line
                                                 data={{
                                                     labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value: number): string => `Count: ${value}`),
-                                                    datasets: attempt.frequency.map((frequencyModel: FrequencyInterface) => {
+                                                    datasets: attempt.frequency.map((frequencyModel: FrequencyInterface, frequencyIndex: number) => {
                                                         return {
                                                             label: `${frequencyModel.frequency}Hz`,
                                                             data: frequencyModel.rssi.map((rssiModel: RSSIInterface): number => rssiModel.rssi),
                                                             fill: false,
-                                                            borderColor: color.main,
+                                                            borderColor: color.frequency[frequencyIndex],
                                                             tension: 0.1,
                                                         };
                                                     }),
