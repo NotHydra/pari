@@ -63,6 +63,24 @@ export default function Home(): JSX.Element {
         return { min, max };
     };
 
+    const averageRSSI = (attempt: AttemptInterface): number => {
+        let totalSum = 0;
+        let totalCount = 0;
+
+        attempt.frequency.forEach((frequency) => {
+            frequency.rssi.forEach((rssi) => {
+                totalSum += rssi.rssi;
+                totalCount++;
+            });
+        });
+
+        if (totalCount === 0) {
+            return 0;
+        }
+
+        return Number((totalSum / totalCount).toFixed(4));
+    };
+
     const color: { [key: string]: string | string[] } = {
         main: "#FF9933",
         frequency: ["#3E26A8", "#9EACFD", "#23A0E5", "#2EC4A4", "#B6C532", "#F4BA3A", "#F9D82C"],
@@ -199,45 +217,41 @@ export default function Home(): JSX.Element {
                             </div>
                         </div>
 
-                        {/* <div className="column" style={{ height: "85%" }}>
+                        <div className="column" style={{ height: "85%" }}>
                             <div className="card has-background-light has-border-dark">
                                 <div className="card-content">
                                     <div className="content">
-                                        <h3 className="title has-text-dark m-0 mb-3 p-0">Hasil Terbaru</h3>
+                                        <h3 className="title has-text-dark m-0 mb-3 p-0">Rata-Rata RSSI</h3>
 
-                                        <div className="mb-3">
-                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">RSSI:</h6>
-                                            <p className="has-text-main has-text-weight-semibold m-0 p-0">
-                                                {responseInventory.length !== 0 ? responseInventory[0].rssi : "Loading..."}
-                                            </p>
-                                        </div>
-
-                                        <div className="mb-3">
-                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Kualitas:</h6>
-                                            <p className="has-text-main has-text-weight-semibold m-0 p-0">Loading...</p>
-                                        </div>
-
-                                        <div className="mb-3">
-                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Diperoleh Pada:</h6>
-                                            <p className="has-text-main has-text-weight-semibold m-0 p-0">
-                                                {responseInventory.length !== 0 ? dateToString(responseInventory[0].createdAt) : "Loading..."}
-                                            </p>
-                                        </div>
+                                        {[919.5, 920.0, 920.5, 921.0, 921.5, 922.0, 922.5].map((value: number, index: number) => (
+                                            <div className="mb-2">
+                                                <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Frekuensi {value}Hz:</h6>
+                                                <p className="has-text-main has-text-weight-semibold m-0 p-0">
+                                                    {attempt !== null &&
+                                                    attempt.frequency.length > 0 &&
+                                                    attempt.frequency[index] !== undefined &&
+                                                    attempt.frequency[index].rssi.length > 0 &&
+                                                    attempt.frequency[index].rssi !== undefined
+                                                        ? `${
+                                                              attempt.frequency[index].rssi.reduce((sum, model) => {
+                                                                  return sum + model.rssi;
+                                                              }, 0) / attempt.frequency[index].rssi.length
+                                                          }dBm`
+                                                        : "Loading..."}
+                                                </p>
+                                            </div>
+                                        ))}
 
                                         <div>
-                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Rata-Rata RSSI:</h6>
+                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Keseluruhan:</h6>
                                             <p className="has-text-main has-text-weight-semibold m-0 p-0">
-                                                {responseInventory.length !== 0
-                                                    ? responseInventory.reduce((sum, model) => {
-                                                          return sum + model.rssi;
-                                                      }, 0) / responseInventory.length
-                                                    : "Loading..."}
+                                                {attempt !== null && attempt.frequency.length > 0 ? `${averageRSSI(attempt)}dBm` : "Loading..."}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             </section>
