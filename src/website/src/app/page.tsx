@@ -163,8 +163,8 @@ export default function Home(): JSX.Element {
                                                     labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value: number): string => `Count: ${value}`),
                                                     datasets: attempt.frequency.map((frequencyModel: FrequencyInterface) => {
                                                         return {
-                                                            label: frequencyModel.frequency,
-                                                            data: frequencyModel.rssi.map((rssiModel: RSSIInterface) => rssiModel.rssi),
+                                                            label: `${frequencyModel.frequency}Hz`,
+                                                            data: frequencyModel.rssi.map((rssiModel: RSSIInterface): number => rssiModel.rssi),
                                                             fill: false,
                                                             borderColor: color.main,
                                                             tension: 0.1,
@@ -178,10 +178,12 @@ export default function Home(): JSX.Element {
                                                             suggestedMin: minValue !== null ? minValue - 5 : -30,
                                                             suggestedMax: maxValue !== null ? maxValue + 5 : -30,
                                                             ticks: {
-                                                                callback: (value: string | number) => {
+                                                                callback: (value: string | number): string => {
                                                                     if (Number(value) % 5 === 0) {
-                                                                        return value;
+                                                                        return value.toString();
                                                                     }
+
+                                                                    return "";
                                                                 },
                                                             },
                                                         },
