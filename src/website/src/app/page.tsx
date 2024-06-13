@@ -180,15 +180,17 @@ export default function Home(): JSX.Element {
                                             <Line
                                                 data={{
                                                     labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value: number): string => `Count: ${value}`),
-                                                    datasets: attempt.frequency.map((frequencyModel: FrequencyInterface, frequencyIndex: number) => {
-                                                        return {
-                                                            label: `${frequencyModel.frequency}Hz`,
-                                                            data: frequencyModel.rssi.map((rssiModel: RSSIInterface): number => rssiModel.rssi),
-                                                            fill: false,
-                                                            borderColor: color.frequency[frequencyIndex],
-                                                            tension: 0.1,
-                                                        };
-                                                    }),
+                                                    datasets: attempt.frequency
+                                                        .map((frequencyModel: FrequencyInterface, frequencyIndex: number) => {
+                                                            return {
+                                                                label: `${frequencyModel.frequency}Hz`,
+                                                                data: frequencyModel.rssi.map((rssiModel: RSSIInterface): number => rssiModel.rssi),
+                                                                fill: false,
+                                                                borderColor: color.frequency[frequencyIndex],
+                                                                tension: 0.1,
+                                                            };
+                                                        })
+                                                        .reverse(),
                                                 }}
                                                 options={{
                                                     scales: {
@@ -205,6 +207,11 @@ export default function Home(): JSX.Element {
                                                                     return "";
                                                                 },
                                                             },
+                                                        },
+                                                    },
+                                                    plugins: {
+                                                        legend: {
+                                                            reverse: true,
                                                         },
                                                     },
                                                 }}
