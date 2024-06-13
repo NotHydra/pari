@@ -122,6 +122,22 @@ export default function Home(): JSX.Element {
                                                         };
                                                     }),
                                                 }}
+                                                options={{
+                                                    scales: {
+                                                        y: {
+                                                            type: "linear",
+                                                            suggestedMin: -80,
+                                                            suggestedMax: -30,
+                                                            ticks: {
+                                                                callback: (value) => {
+                                                                    if (Number(value) % 5 === 0) {
+                                                                        return value;
+                                                                    }
+                                                                },
+                                                            },
+                                                        },
+                                                    },
+                                                }}
                                             ></Line>
                                         ) : (
                                             "Loading..."
