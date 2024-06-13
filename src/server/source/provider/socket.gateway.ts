@@ -1,7 +1,6 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+import { Attempt } from "@prisma/client";
 import { Server } from "socket.io";
-
-import { AttemptModel } from "source/model/attempt/attempt";
 
 @WebSocketGateway()
 export class SocketGateway {
@@ -9,7 +8,7 @@ export class SocketGateway {
     server: Server;
 
     @SubscribeMessage("attemptLatest")
-    handleAttemptLatest(@MessageBody() attempt: AttemptModel): void {
+    handleAttemptLatest(@MessageBody() attempt: Attempt): void {
         console.log(attempt);
 
         this.server.emit("attemptLatest", attempt);

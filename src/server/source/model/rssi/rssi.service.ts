@@ -31,7 +31,12 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
             const model: RSSIModel = await this.prismaModel.create({ data: payload });
 
             this.socketGateway.handleAttemptLatest(
-                await this.prismaService.attempt.findFirst({ orderBy: { createdAt: "desc" } })
+                await this.prismaService.attempt.findFirst({
+                    orderBy: { createdAt: "desc" },
+                    include: {
+                        frequency: { include: { rssi: true } },
+                    },
+                })
             );
 
             this.loggerService.log(`Add: ${JSON.stringify(model)}`);
