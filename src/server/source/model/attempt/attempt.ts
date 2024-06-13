@@ -7,7 +7,7 @@ export class AttemptModel implements Prisma.AttemptCreateInput {
 
     @IsOptional()
     @IsArray()
-    frequency?: Prisma.FrequencyCreateNestedManyWithoutAttemptInput;
+    frequency?: Prisma.FrequencyCreateNestedManyWithoutAttemptInput | undefined;
 
     @IsDate()
     createdAt: Date;

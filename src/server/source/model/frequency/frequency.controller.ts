@@ -6,19 +6,19 @@ import { ResponseFormatInterface } from "../../common/interface/response-format"
 
 import { DetailedController } from "source/global/detailed.controller";
 
-import { AttemptModel, AttemptCreateDTO, AttemptUpdateDTO } from "./attempt";
-import { AttemptService } from "./attempt.service";
+import { FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO } from "./frequency";
+import { FrequencyService } from "./frequency.service";
 
-interface AttemptControllerInterface {}
+interface FrequencyControllerInterface {}
 
-@Controller("attempt")
+@Controller("frequency")
 @UseInterceptors(ResponseFormatInterceptor)
-export class AttemptController
-    extends DetailedController<AttemptModel, AttemptCreateDTO, AttemptUpdateDTO, AttemptService>
-    implements AttemptControllerInterface
+export class FrequencyController
+    extends DetailedController<FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO, FrequencyService>
+    implements FrequencyControllerInterface
 {
-    constructor(modelService: AttemptService) {
-        super(AttemptController.name, modelService);
+    constructor(modelService: FrequencyService) {
+        super(FrequencyController.name, modelService);
     }
 
     @Override
@@ -26,8 +26,8 @@ export class AttemptController
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         @Param("id", ParseIntPipe) id: number,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        @Body() payload: AttemptUpdateDTO
-    ): Promise<ResponseFormatInterface<AttemptModel>> {
+        @Body() payload: FrequencyUpdateDTO
+    ): Promise<ResponseFormatInterface<FrequencyModel>> {
         this.loggerService.error(`Change: Method Is Disabled`);
         throw new ForbiddenException("Method Is Disabled");
     }
@@ -36,7 +36,7 @@ export class AttemptController
     public async remove(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         @Param("id", ParseIntPipe) id: number
-    ): Promise<ResponseFormatInterface<AttemptModel>> {
+    ): Promise<ResponseFormatInterface<FrequencyModel>> {
         this.loggerService.error(`Remove: Method Is Disabled`);
         throw new ForbiddenException("Method Is Disabled");
     }

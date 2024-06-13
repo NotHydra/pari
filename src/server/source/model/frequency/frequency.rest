@@ -1,0 +1,36 @@
+@base_url = {{$dotenv URL}}/api
+@url={{base_url}}/frequency
+
+GET {{url}}
+
+###
+
+GET {{url}}?page=1&count=5
+
+###
+
+GET {{url}}/id/1
+
+###
+
+GET {{url}}/detailed
+
+###
+
+GET {{url}}/detailed?page=1&count=5
+
+###
+
+GET {{url}}/id/1/detailed
+
+###
+
+POST {{url}}
+Content-Type: application/json
+
+{   
+    "attemptId": 1,
+    "frequency": "192.5"
+}
+
+###
