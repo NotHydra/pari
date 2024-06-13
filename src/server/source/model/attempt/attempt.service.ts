@@ -1,11 +1,14 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
 
-import { DetailedService } from "source/global/detailed.service";
 import { PrismaService } from "../../provider/prisma.service";
+
+import { DetailedService } from "../../global/detailed.service";
 
 import { AttemptModel, AttemptCreateDTO, AttemptUpdateDTO } from "./attempt";
 
-interface AttemptServiceInterface {}
+interface AttemptServiceInterface {
+    findLatest(): Promise<AttemptModel>;
+}
 
 @Injectable()
 export class AttemptService
@@ -16,5 +19,14 @@ export class AttemptService
         super(AttemptService.name, prismaService.attempt, {
             frequency: { include: { rssi: true } },
         });
+    }
+
+    public async findLatest(): Promise<AttemptModel> {
+        try {
+            return await this.prismaModel.findFirst({ orderBy: { createdAt: "desc" }, include: this.detailed });
+        } catch (error) {
+            this.loggerService.error(`Latest: ${error.message}`);
+            throw new InternalServerErrorException("Internal Server Error");
+        }
     }
 }

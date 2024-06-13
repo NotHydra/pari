@@ -4,7 +4,7 @@ import { Override } from "../../common/decorator/override";
 import { ResponseFormatInterceptor } from "../../common/interceptor/response-format.interceptor";
 import { ResponseFormatInterface } from "../../common/interface/response-format";
 
-import { BaseController } from "source/global/base.controller";
+import { BaseController } from "../../global/base.controller";
 
 import { RSSIModel, RSSICreateDTO, RSSIUpdateDTO } from "./rssi";
 import { RSSIService } from "./rssi.service";

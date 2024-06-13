@@ -4,7 +4,7 @@ import { Override } from "../../common/decorator/override";
 import { ResponseFormatInterceptor } from "../../common/interceptor/response-format.interceptor";
 import { ResponseFormatInterface } from "../../common/interface/response-format";
 
-import { DetailedController } from "source/global/detailed.controller";
+import { DetailedController } from "../../global/detailed.controller";
 
 import { FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO } from "./frequency";
 import { FrequencyService } from "./frequency.service";

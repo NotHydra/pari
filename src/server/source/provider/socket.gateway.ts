@@ -1,17 +1,17 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server } from "socket.io";
 
-// import { ResponseInventoryModel } from "../model/response-inventory/response-inventory";
+import { AttemptModel } from "source/model/attempt/attempt";
 
 @WebSocketGateway()
 export class SocketGateway {
     @WebSocketServer()
     server: Server;
 
-    // @SubscribeMessage("responseInventoryLatest")
-    // handleResponseInventoryLatest(@MessageBody() responseInventory: ResponseInventoryModel[]): void {
-    //     console.log(responseInventory);
+    @SubscribeMessage("attemptLatest")
+    handleAttemptLatest(@MessageBody() attempt: AttemptModel): void {
+        console.log(attempt);
 
-    //     this.server.emit("responseInventoryLatest", responseInventory);
-    // }
+        this.server.emit("attemptLatest", attempt);
+    }
 }

@@ -1,15 +1,17 @@
-import { Body, Controller, ForbiddenException, Param, ParseIntPipe, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, UseInterceptors } from "@nestjs/common";
 
 import { Override } from "../../common/decorator/override";
-import { ResponseFormatInterceptor } from "../../common/interceptor/response-format.interceptor";
+import { ResponseFormatInterceptor, formatResponse } from "../../common/interceptor/response-format.interceptor";
 import { ResponseFormatInterface } from "../../common/interface/response-format";
 
-import { DetailedController } from "source/global/detailed.controller";
+import { DetailedController } from "../../global/detailed.controller";
 
 import { AttemptModel, AttemptCreateDTO, AttemptUpdateDTO } from "./attempt";
 import { AttemptService } from "./attempt.service";
 
-interface AttemptControllerInterface {}
+interface AttemptControllerInterface {
+    findLatest(): Promise<ResponseFormatInterface<AttemptModel>>;
+}
 
 @Controller("attempt")
 @UseInterceptors(ResponseFormatInterceptor)
@@ -19,6 +21,25 @@ export class AttemptController
 {
     constructor(modelService: AttemptService) {
         super(AttemptController.name, modelService);
+    }
+
+    @Get("latest")
+    public async findLatest(): Promise<ResponseFormatInterface<AttemptModel>> {
+        try {
+            const response: ResponseFormatInterface<AttemptModel> = formatResponse<AttemptModel>(
+                true,
+                200,
+                "Found Latest",
+                await this.modelService.findLatest()
+            );
+
+            this.loggerService.log(`Find Latest: ${JSON.stringify(response)}`);
+
+            return response;
+        } catch (error) {
+            this.loggerService.error(`Find Latest: ${error.message}`);
+            return formatResponse<null>(false, 500, error.message, null);
+        }
     }
 
     @Override
