@@ -32,6 +32,7 @@ from typing import Iterator
 
 load_dotenv()
 
+
 def log(message: str) -> None:
     print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {message}")
 
@@ -83,12 +84,44 @@ try:
             GPIO.output(LED_GREEN_PIN, GPIO.HIGH)
             GPIO.output(LED_RED_PIN, GPIO.LOW)
 
+            attempt_id: int = None
+            try:
+                response_attempt = requests.post(f"{URL}/api/attempt", timeout=5)
+
+                log(f"Response: {response_attempt.json()}")
+
+                attempt_id = response_attempt.json()["data"]["id"]
+            except Exception as e:
+                log(f"Response: {e}")
+                break
+
+            if attempt_id is None:
+                break
+
             averageRSSIList: list[float] = []
             for frequencyIndex, frequencyValue in enumerate(FREQUENCY_LIST, start=1):
                 log(f"Frequency {frequencyIndex}: {frequencyValue}MHz")
                 LCD.text(f"Frequency {frequencyIndex}:", 1)
                 LCD.text(f"{frequencyValue}MHz", 2)
                 time.sleep(0.5)
+
+                frequency_id: int = None
+                try:
+                    response_frequency = requests.post(
+                        f"{URL}/api/frequency",
+                        json={"attemptId": attempt_id, "frequency": str(frequencyValue)},
+                        timeout=5,
+                    )
+
+                    log(f"Response: {response_frequency.json()}")
+
+                    frequency_id = response_frequency.json()["data"]["id"]
+                except Exception as e:
+                    log(f"Response: {e}")
+                    break
+
+                if frequency_id is None:
+                    break
 
                 READER.set_reader_settings(
                     ReaderSettings(
@@ -152,9 +185,32 @@ try:
                         if res.status == InventoryStatus.SUCCESS and res.tag:
                             rssiValue: int = int(str(calculate_rssi(res.tag.rssi))[0:3])
 
-                            log(f"Frequency {frequencyIndex} RSSI {count}: {rssiValue}dBm")
+                            log(
+                                f"Frequency {frequencyIndex} RSSI {count}: {rssiValue}dBm"
+                            )
                             LCD.text(f"RSSI {count}:", 1)
                             LCD.text(f"{rssiValue}dBm", 2)
+
+                            rssi_id: int = None
+                            try:
+                                response_rssi = requests.post(
+                                    f"{URL}/api/rssi",
+                                    json={
+                                        "frequencyId": frequency_id,
+                                        "rssi": rssiValue,
+                                    },
+                                    timeout=5,
+                                )
+
+                                log(f"Response: {response_rssi.json()}")
+
+                                rssi_id = response_rssi.json()["data"]["id"]
+                            except Exception as e:
+                                log(f"Response: {e}")
+                                break
+
+                            if rssi_id is None:
+                                break
 
                             rssiList.append(rssiValue)
 
@@ -174,7 +230,6 @@ try:
                     log(f"Frequency {frequencyIndex} RSSI {count}: Read Error")
                     LCD.text(f"RSSI {count}:", 1)
                     LCD.text("Read Error", 2)
-
 
                 READER.stop_inventory()
 
@@ -198,7 +253,9 @@ try:
             for averageRSSIIndex, averageRSSIValue in enumerate(
                 averageRSSIList, start=1
             ):
-                log(f"Frequency {averageRSSIIndex} ({FREQUENCY_LIST[averageRSSIIndex-1]}MHz) Average RSSI: {averageRSSIValue}dBm")
+                log(
+                    f"Frequency {averageRSSIIndex} ({FREQUENCY_LIST[averageRSSIIndex-1]}MHz) Average RSSI: {averageRSSIValue}dBm"
+                )
 
             finalRSSI: float = sum(averageRSSIList) / len(averageRSSIList)
             log(f"Final RSSI: {finalRSSI}dBm")
