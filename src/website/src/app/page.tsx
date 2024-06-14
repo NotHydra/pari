@@ -233,7 +233,7 @@ export default function Home(): JSX.Element {
                             <div className="card has-background-light has-border-dark">
                                 <div className="card-content">
                                     <div className="content">
-                                        <h3 className="title has-text-dark m-0 mb-2 p-0">Rata-Rata RSSI</h3>
+                                        <h4 className="title has-text-dark m-0 mb-2 p-0">Rata-Rata RSSI</h4>
 
                                         {[919.5, 920.0, 920.5, 921.0, 921.5, 922.0, 922.5].map((value: number, index: number) => (
                                             <div className="mb-2">
@@ -263,19 +263,19 @@ export default function Home(): JSX.Element {
                                             </p>
                                         </div>
 
-                                        <div className="mb-2">
+                                        <div>
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Klasifikasi:</h6>
                                             <p className="has-text-dark has-text-weight-semibold m-0 p-0">
                                                 {averageValue !== null ? (averageValue < -63 ? "Matang" : "Mentah") : "Waiting..."}
                                             </p>
                                         </div>
 
-                                        <div>
+                                        {/* <div>
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Diperoleh Pada:</h6>
                                             <p className="has-text-dark has-text-weight-semibold m-0 p-0">
                                                 {attempt !== null ? dateToString(attempt.createdAt) : "Loading..."}
                                             </p>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>
