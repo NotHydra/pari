@@ -172,7 +172,7 @@ export default function Home(): JSX.Element {
                 </div>
             </section>
 
-            <section className="section has-background-light is-medium" id="hasil">
+            <section className="section has-background-light" style={{ paddingBottom: "12rem" }} id="hasil">
                 <div className="container" style={{ width: "75%" }}>
                     <h3 className="title has-text-dark has-text-centered m-0 mb-3 p-0">Hasil Data</h3>
 
@@ -184,7 +184,7 @@ export default function Home(): JSX.Element {
                                         {attempt !== null ? (
                                             <Line
                                                 data={{
-                                                    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value: number): string => `Count: ${value}`),
+                                                    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value: number): string => `Data: ${value}`),
                                                     datasets: attempt.frequency
                                                         .map((frequencyModel: FrequencyInterface, frequencyIndex: number) => {
                                                             return {
