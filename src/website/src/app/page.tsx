@@ -172,9 +172,9 @@ export default function Home(): JSX.Element {
                 </div>
             </section>
 
-            <section className="section has-background-light" style={{ paddingBottom: "12rem" }} id="hasil">
+            <section className="section has-background-light" style={{ padding: "4rem 0 10rem 0" }} id="hasil">
                 <div className="container" style={{ width: "75%" }}>
-                    <h3 className="title has-text-dark has-text-centered m-0 mb-3 p-0">Hasil Data</h3>
+                    <h3 className="title has-text-dark has-text-centered m-0 mb-5 p-0">Hasil Data</h3>
 
                     <div className="columns is-vcentered">
                         <div className="column is-three-quarters">
