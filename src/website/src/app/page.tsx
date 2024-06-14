@@ -89,6 +89,7 @@ export default function Home(): JSX.Element {
     const [attempt, setAttempt] = useState<AttemptInterface | null>(null);
     const [minValue, setMinValue] = useState<number | null>(null);
     const [maxValue, setMaxValue] = useState<number | null>(null);
+    const [averageValue, setAverageValue] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
@@ -111,6 +112,8 @@ export default function Home(): JSX.Element {
                     setMinValue(minMaxValue.min);
                     setMaxValue(minMaxValue.max);
                 }
+
+                setAverageValue(averageRSSI(response.data.data));
             } catch (error) {
                 console.error("Error fetching data: ", error);
             }
@@ -139,6 +142,8 @@ export default function Home(): JSX.Element {
                 setMinValue(minMaxValue.min);
                 setMaxValue(minMaxValue.max);
             }
+
+            setAverageValue(averageRSSI(model));
         });
     }, []);
 
@@ -233,7 +238,7 @@ export default function Home(): JSX.Element {
                                         {[919.5, 920.0, 920.5, 921.0, 921.5, 922.0, 922.5].map((value: number, index: number) => (
                                             <div className="mb-2">
                                                 <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Frekuensi {value}Hz:</h6>
-                                                <p className="has-text-main has-text-weight-semibold m-0 p-0">
+                                                <p className="has-text-weight-semibold m-0 p-0" style={{ color: color.frequency[index] }}>
                                                     {attempt !== null &&
                                                     attempt.frequency.length > 0 &&
                                                     attempt.frequency[index] !== undefined &&
@@ -246,21 +251,28 @@ export default function Home(): JSX.Element {
                                                                   }, 0) / attempt.frequency[index].rssi.length
                                                               ).toFixed(4)
                                                           )}dBm`
-                                                        : "Loading..."}
+                                                        : "Waiting..."}
                                                 </p>
                                             </div>
                                         ))}
 
                                         <div className="mb-2">
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Keseluruhan:</h6>
-                                            <p className="has-text-main has-text-weight-semibold m-0 p-0">
-                                                {attempt !== null && attempt.frequency.length > 0 ? `${averageRSSI(attempt)}dBm` : "Loading..."}
+                                            <p className="has-text-dark has-text-weight-semibold m-0 p-0">
+                                                {averageValue !== null ? `${averageValue}dBm` : "Waiting..."}
+                                            </p>
+                                        </div>
+
+                                        <div className="mb-2">
+                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Klasifikasi:</h6>
+                                            <p className="has-text-dark has-text-weight-semibold m-0 p-0">
+                                                {averageValue !== null ? (averageValue < -63 ? "Matang" : "Mentah") : "Waiting..."}
                                             </p>
                                         </div>
 
                                         <div>
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Diperoleh Pada:</h6>
-                                            <p className="has-text-main has-text-weight-semibold m-0 p-0">
+                                            <p className="has-text-dark has-text-weight-semibold m-0 p-0">
                                                 {attempt !== null ? dateToString(attempt.createdAt) : "Loading..."}
                                             </p>
                                         </div>
