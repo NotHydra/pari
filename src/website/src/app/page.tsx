@@ -233,11 +233,11 @@ export default function Home(): JSX.Element {
                             <div className="card has-background-light has-border-dark">
                                 <div className="card-content">
                                     <div className="content">
-                                        <h4 className="title has-text-dark m-0 mb-2 p-0">Rata-Rata RSSI</h4>
+                                        <h5 className="title has-text-dark m-0 mb-2 p-0">Rata-Rata RSSI</h5>
 
                                         {[919.5, 920.0, 920.5, 921.0, 921.5, 922.0, 922.5].map((value: number, index: number) => (
-                                            <div className="mb-2">
-                                                <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Frekuensi {value}Hz:</h6>
+                                            <div className="mb-1">
+                                                <h6 className="subtitle has-text-dark m-0 p-0">Frekuensi {value}Hz:</h6>
                                                 <p className="has-text-weight-semibold m-0 p-0" style={{ color: color.frequency[index] }}>
                                                     {attempt !== null &&
                                                     attempt.frequency.length > 0 &&
@@ -257,7 +257,7 @@ export default function Home(): JSX.Element {
                                         ))}
 
                                         <div>
-                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Keseluruhan:</h6>
+                                            <h6 className="subtitle has-text-dark m-0 p-0">Keseluruhan:</h6>
                                             <p className="has-text-dark has-text-weight-semibold m-0 p-0">
                                                 {averageValue !== null ? `${averageValue}dBm (${averageValue < -63 ? "Matang" : "Mentah"})` : "Waiting..."}
                                             </p>
