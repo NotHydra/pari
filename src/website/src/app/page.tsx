@@ -256,17 +256,10 @@ export default function Home(): JSX.Element {
                                             </div>
                                         ))}
 
-                                        <div className="mb-2">
+                                        <div>
                                             <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Keseluruhan:</h6>
                                             <p className="has-text-dark has-text-weight-semibold m-0 p-0">
-                                                {averageValue !== null ? `${averageValue}dBm` : "Waiting..."}
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <h6 className="subtitle has-text-dark m-0 mb-1 p-0">Klasifikasi:</h6>
-                                            <p className="has-text-dark has-text-weight-semibold m-0 p-0">
-                                                {averageValue !== null ? (averageValue < -63 ? "Matang" : "Mentah") : "Waiting..."}
+                                                {averageValue !== null ? `${averageValue}dBm (${averageValue < -63 ? "Matang" : "Mentah"})` : "Waiting..."}
                                             </p>
                                         </div>
 
