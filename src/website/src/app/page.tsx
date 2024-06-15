@@ -36,9 +36,9 @@ interface RSSIInterface {
 }
 
 export default function Home(): JSX.Element {
-    const dateToString = (date: Date): String => {
-        return moment(date).format(`HH:mm:ss DD-MMMM-YYYY`);
-    };
+    // const dateToString = (date: Date): String => {
+    //     return moment(date).format(`HH:mm:ss DD-MMMM-YYYY`);
+    // };
 
     const minMaxRSSI = (attempt: AttemptInterface): { min: number; max: number } | null => {
         let min: number | null = null;
