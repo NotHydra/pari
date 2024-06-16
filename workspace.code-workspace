@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "diagram"
+		},
+		{
+			"path": "."
 		}
 	],
 	"settings": {}
