@@ -1,19 +1,24 @@
 {
 	"folders": [
 		{
-			"path": "src/website"
+			"name": "program",
+			"path": "."
 		},
 		{
-			"path": "src/server"
-		},
-		{
-			"path": "src/script"
-		},
-		{
+			"name": "diagram",
 			"path": "diagram"
 		},
 		{
-			"path": "."
+			"name": "website",
+			"path": "src/website"
+		},
+		{
+			"name": "server",
+			"path": "src/server"
+		},
+		{
+			"name": "script",
+			"path": "src/script"
 		}
 	],
 	"settings": {}
