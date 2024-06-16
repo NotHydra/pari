@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 import time
 
 from dotenv import load_dotenv
+from requests import Response
 from rfid.reader import Reader
 from rfid.response import ResponseInventory
 from rfid.reader_settings import (
@@ -86,7 +87,7 @@ try:
 
             attempt_id: int = None
             try:
-                response_attempt = requests.post(f"{URL}/api/attempt", timeout=5)
+                response_attempt: Response = requests.post(f"{URL}/api/attempt", timeout=5)
 
                 log(f"Response: {response_attempt.json()}")
 
@@ -98,18 +99,18 @@ try:
             if attempt_id is None:
                 break
 
-            averageRSSIList: list[float] = []
-            for frequencyIndex, frequencyValue in enumerate(FREQUENCY_LIST, start=1):
-                log(f"Frequency {frequencyIndex}: {frequencyValue}MHz")
-                LCD.text(f"Frequency {frequencyIndex}:", 1)
-                LCD.text(f"{frequencyValue}MHz", 2)
+            average_rssi_list: list[float] = []
+            for frequency_index, frequency_value in enumerate(FREQUENCY_LIST, start=1):
+                log(f"Frequency {frequency_index}: {frequency_value}MHz")
+                LCD.text(f"Frequency {frequency_index}:", 1)
+                LCD.text(f"{frequency_value}MHz", 2)
                 time.sleep(0.5)
 
                 frequency_id: int = None
                 try:
                     response_frequency = requests.post(
                         f"{URL}/api/frequency",
-                        json={"attemptId": attempt_id, "frequency": str(frequencyValue)},
+                        json={"attemptId": attempt_id, "frequency": str(frequency_value)},
                         timeout=5,
                     )
 
@@ -147,8 +148,8 @@ try:
                         ),
                         frequency=Frequency(
                             region=REGION_MALAYSIA,
-                            min_frequency=frequencyValue,
-                            max_frequency=frequencyValue,
+                            min_frequency=frequency_value,
+                            max_frequency=frequency_value,
                         ),
                         power=30,
                         output_memory_bank=MemoryBank.EPC,
@@ -174,7 +175,7 @@ try:
                 )
 
                 count: int = 1
-                rssiList: list[int] = []
+                rssi_list: list[int] = []
                 try:
                     for res in response:
                         print()
@@ -183,13 +184,13 @@ try:
                             continue
 
                         if res.status == InventoryStatus.SUCCESS and res.tag:
-                            rssiValue: int = int(str(calculate_rssi(res.tag.rssi))[0:3])
+                            rssi_value: int = int(str(calculate_rssi(res.tag.rssi))[0:3])
 
                             log(
-                                f"Frequency {frequencyIndex} RSSI {count}: {rssiValue}dBm"
+                                f"Frequency {frequency_index} RSSI {count}: {rssi_value}dBm"
                             )
                             LCD.text(f"RSSI {count}:", 1)
-                            LCD.text(f"{rssiValue}dBm", 2)
+                            LCD.text(f"{rssi_value}dBm", 2)
 
                             rssi_id: int = None
                             try:
@@ -197,7 +198,7 @@ try:
                                     f"{URL}/api/rssi",
                                     json={
                                         "frequencyId": frequency_id,
-                                        "rssi": rssiValue,
+                                        "rssi": rssi_value,
                                     },
                                     timeout=5,
                                 )
@@ -212,7 +213,7 @@ try:
                             if rssi_id is None:
                                 break
 
-                            rssiList.append(rssiValue)
+                            rssi_list.append(rssi_value)
 
                             count += 1
                             if count > 10:
@@ -227,40 +228,40 @@ try:
                         time.sleep(0.1)
 
                 except:
-                    log(f"Frequency {frequencyIndex} RSSI {count}: Read Error")
+                    log(f"Frequency {frequency_index} RSSI {count}: Read Error")
                     LCD.text(f"RSSI {count}:", 1)
                     LCD.text("Read Error", 2)
 
                 READER.stop_inventory()
 
                 print()
-                log(f"Frequency {frequencyIndex}: {frequencyValue}MHz")
-                for rssiIndex, rssiValue in enumerate(rssiList, start=1):
-                    log(f"RSSI {rssiIndex}: {rssiValue}dBm")
+                log(f"Frequency {frequency_index}: {frequency_value}MHz")
+                for rssi_index, rssi_value in enumerate(rssi_list, start=1):
+                    log(f"RSSI {rssi_index}: {rssi_value}dBm")
 
-                averageRSSI: float = sum(rssiList) / len(rssiList)
-                averageRSSIList.append(averageRSSI)
+                average_rssi: float = sum(rssi_list) / len(rssi_list)
+                average_rssi_list.append(average_rssi)
 
                 time.sleep(0.5)
-                log(f"Average RSSI: {averageRSSI}dBm")
+                log(f"Average RSSI: {average_rssi}dBm")
                 LCD.text("Average RSSI:", 1)
-                LCD.text(f"{averageRSSI}dBm", 2)
+                LCD.text(f"{average_rssi}dBm", 2)
                 time.sleep(1)
 
                 print()
 
             log("RSSI Summary Of All Frequencies")
-            for averageRSSIIndex, averageRSSIValue in enumerate(
-                averageRSSIList, start=1
+            for average_rssi_index, average_rssi_value in enumerate(
+                average_rssi_list, start=1
             ):
                 log(
-                    f"Frequency {averageRSSIIndex} ({FREQUENCY_LIST[averageRSSIIndex-1]}MHz) Average RSSI: {averageRSSIValue}dBm"
+                    f"Frequency {average_rssi_index} ({FREQUENCY_LIST[average_rssi_index-1]}MHz) Average RSSI: {average_rssi_value}dBm"
                 )
 
-            finalRSSI: float = sum(averageRSSIList) / len(averageRSSIList)
-            log(f"Final RSSI: {finalRSSI}dBm")
+            final_rssi: float = sum(average_rssi_list) / len(average_rssi_list)
+            log(f"Final RSSI: {final_rssi}dBm")
             LCD.text("Final RSSI:", 1)
-            LCD.text(f"{finalRSSI}dBm", 2)
+            LCD.text(f"{final_rssi}dBm", 2)
 
             print()
 
