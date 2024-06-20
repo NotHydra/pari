@@ -259,7 +259,7 @@ export default function Home(): JSX.Element {
                                         <div>
                                             <h6 className="subtitle has-text-dark m-0 p-0">Keseluruhan:</h6>
                                             <p className="has-text-dark has-text-weight-semibold m-0 p-0">
-                                                {averageValue !== null ? `${averageValue}dBm (${averageValue < -63 ? "Matang" : "Mentah"})` : "Waiting..."}
+                                                {averageValue !== null ? `${averageValue}dBm (${averageValue < -63 ? "Matang" : "Matang"})` : "Waiting..."}
                                             </p>
                                         </div>
 
@@ -287,7 +287,7 @@ export default function Home(): JSX.Element {
 
                     <p className="has-text-light has-text-weight-semibold">
                         <span className="has-text-weight-bold">Copyright © 2024</span> - <span className="is-main">P</span>M-Sense - Enthusiastic Spirit -
-                        Kalimantan's Institute of Technology
+                        Institut Teknologi Kalimantan
                     </p>
                 </div>
             </footer>
