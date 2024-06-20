@@ -9,8 +9,9 @@ import "./../public/css/main.css";
 const inter: NextFont = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Indonesian Emergency Sound Classification",
-    description: "Emergency sound classification for Indonesia",
+    title: "PM-Sense | Papaya Maturity Sense",
+    description:
+        "Sistem Deteksi Tingkat Kematangan Pepaya Secara Non-invasif Berdasarkan Nilai Received Signal Strength Indicator Pada Gelombang Frekuensi Tinggi",
 };
 
 export default function RootLayout({
