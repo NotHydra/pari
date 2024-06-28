@@ -157,8 +157,8 @@ export default function Home(): JSX.Element {
                         </p>
 
                         <p className="subtitle has-text-light has-text-weight-semibold mb-4">
-                            <span className="is-main">Papaya</span> Ripeness Identification, SISTEM KLASIFIKASI KEMATANGAN PEPAYA SECARA NON-INVASIF BERBASIS
-                            GELOMBANG ELEKTROMAGNETIK FREKUENSI ULTRA TINGGI
+                            <span className="is-main">Papaya</span> Ripeness Identification, Sistem Klasifikasi Kematangan Pepaya Secara Non-Invasif Berbasis
+                            Gelombang Elektromagnetik Frekuensi Ultra Tinggi
                         </p>
 
                         <a className="button is-light has-text-weight-semibold" href="#hasil">
