@@ -9,9 +9,8 @@ import "./../public/css/main.css";
 const inter: NextFont = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "PM-Sense | Papaya Maturity Sense",
-    description:
-        "Sistem Deteksi Tingkat Kematangan Pepaya Secara Non-invasif Berdasarkan Nilai Received Signal Strength Indicator Pada Gelombang Frekuensi Tinggi",
+    title: "PARI | Papaya Ripeness Identification",
+    description: "SISTEM KLASIFIKASI KEMATANGAN PEPAYA (Carica papaya) SECARA NON-INVASIF BERBASIS GELOMBANG ELEKTROMAGNETIK FREKUENSI ULTRA TINGGI",
 };
 
 export default function RootLayout({

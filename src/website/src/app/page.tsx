@@ -153,12 +153,12 @@ export default function Home(): JSX.Element {
                 <div className="hero-body">
                     <div>
                         <p className="title has-text-light mb-1">
-                            <span className="is-main">P</span>M-Sense
+                            <span className="is-main">PA</span>RI
                         </p>
 
                         <p className="subtitle has-text-light has-text-weight-semibold mb-4">
-                            Papaya Maturity Sense, Sistem Deteksi Tingkat Kematangan Pepaya Secara Non-invasif Berdasarkan Nilai Received Signal Strength
-                            Indicator Pada Gelombang Frekuensi Tinggi
+                            <span className="is-main">Papaya</span> Ripeness Identification, SISTEM KLASIFIKASI KEMATANGAN PEPAYA SECARA NON-INVASIF BERBASIS
+                            GELOMBANG ELEKTROMAGNETIK FREKUENSI ULTRA TINGGI
                         </p>
 
                         <a className="button is-light has-text-weight-semibold" href="#hasil">
@@ -286,8 +286,8 @@ export default function Home(): JSX.Element {
                     </div>
 
                     <p className="has-text-light has-text-weight-semibold">
-                        <span className="has-text-weight-bold">Copyright © 2024</span> - <span className="is-main">P</span>M-Sense - Enthusiastic Spirit -
-                        Institut Teknologi Kalimantan
+                        <span className="has-text-weight-bold">Copyright © 2024</span> - <span className="is-main">PA</span>RI - Enthusiastic Spirit - Institut
+                        Teknologi Kalimantan
                     </p>
                 </div>
             </footer>
