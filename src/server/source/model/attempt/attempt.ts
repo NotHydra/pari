@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+
 import { IsArray, IsDate, IsNumber, IsOptional } from "class-validator";
 
 export class AttemptModel implements Prisma.AttemptCreateInput {

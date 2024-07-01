@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+
 import { IsArray, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class FrequencyModel implements Prisma.FrequencyCreateInput {

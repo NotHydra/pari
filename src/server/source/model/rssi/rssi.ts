@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
-import { IsArray, IsNumber, IsOptional } from "class-validator";
+
+import { IsNumber, IsOptional } from "class-validator";
 
 export class RSSIModel implements Prisma.RSSICreateInput {
     @IsNumber()
