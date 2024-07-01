@@ -3,10 +3,10 @@
 import axios, { AxiosResponse } from "axios";
 import { defaults } from "chart.js/auto";
 import moment from "moment";
-import "moment/locale/id";
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import io, { Socket } from "socket.io-client";
+import "moment/locale/id";
 
 defaults.font.size = 10;
 moment.locale("ID");
