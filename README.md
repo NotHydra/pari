@@ -4,6 +4,10 @@
     <b><span style="color: FF9933">PA</span>RI</b> is a system designed to classify the ripeness of <b><span style="color: FF9933">papaya</span></b> (Carica papaya) using ultra-high frequency electromagnetic waves. The system employs Radio Signal Strength Indicator (RSSI) technology to measure the interaction of electromagnetic waves with the fruit. By analyzing the RSSI values, <b><span style="color: FF9933">PA</span>RI</b> accurately determines the ripeness stage of the papaya in a non-invasive manner.
 </p>
 
+> <p style="text-align: justify"><b><span style="color: FF9933">PA</span>RI</b> is actively being developed as a Minimum Viable Product (MVP) for the "Gemastik 2024 XVII Smart Device, Embedded System & IoT" competition by <b>Balai Pengembangan Talenta Indonesia (BPTI)</b>, <b>Pusat Prestasi Nasional (Puspresnas)</b> & <b>Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi (Kemendikbudristek)</b> and is not an application for production purposes.
+
+</p>
+
 ## Tech Stack
 
 ![Raspberry Pi](https://img.shields.io/badge/-RaspberryPi-C51A4A?style=for-the-badge&logo=Raspberry-Pi)
