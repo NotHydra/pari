@@ -23,7 +23,7 @@ async function bootstrap(): Promise<void> {
     SwaggerModule.setup(
         globalPrefix,
         app,
-        SwaggerModule.createDocument(app, new DocumentBuilder().setTitle("NestJS Prisma OOP CRUD Boilerplate").build())
+        SwaggerModule.createDocument(app, new DocumentBuilder().setTitle("PARI Server").build())
     );
 
     await app.listen(configService.getPort());
