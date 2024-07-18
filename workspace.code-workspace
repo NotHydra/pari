@@ -19,6 +19,9 @@
 		{
 			"name": "script",
 			"path": "src/script"
+		},
+		{
+			"path": "src/script/test/esp8266"
 		}
 	],
 	"settings": {}
