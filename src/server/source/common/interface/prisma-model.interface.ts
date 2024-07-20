@@ -1,7 +1,6 @@
-export interface PrismaModel<ModelType> {
+export interface PrismaModelInterface<ModelType> {
     findMany(options?: any): Promise<ModelType[]>;
     findUnique(options?: any): Promise<ModelType>;
-    findFirst(options?: any): Promise<ModelType>;
     create(options?: any): Promise<ModelType>;
     update(options?: any): Promise<ModelType>;
     delete(options?: any): Promise<ModelType>;
