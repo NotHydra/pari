@@ -1,32 +1,32 @@
 import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, UseInterceptors } from "@nestjs/common";
 
-import { Override } from "../../common/decorator/override";
-import { ResponseFormatInterceptor, formatResponse } from "../../common/interceptor/response-format.interceptor";
-import { ResponseFormatInterface } from "../../common/interface/response-format";
+import { Override } from "./../../common/decorator/override.decorator";
+import { ResponseFormatInterceptor, formatResponse } from "./../../common/interceptor/response-format.interceptor";
+import { ResponseFormatInterface } from "./../../common/interface/response-format.interface";
 
-import { DetailedController } from "../../global/detailed.controller";
+import { DetailedController } from "./../../global/detailed.controller";
 
-import { AttemptModel, AttemptCreateDTO, AttemptUpdateDTO } from "./attempt";
-import { AttemptService } from "./attempt.service";
+import { TagModel, TagCreateDTO, TagUpdateDTO } from "./tag";
+import { TagService } from "./tag.service";
 
-interface AttemptControllerInterface {
-    findLatest(): Promise<ResponseFormatInterface<AttemptModel>>;
+interface TagControllerInterface {
+    findLatest(): Promise<ResponseFormatInterface<TagModel>>;
 }
 
-@Controller("attempt")
+@Controller("tag")
 @UseInterceptors(ResponseFormatInterceptor)
-export class AttemptController
-    extends DetailedController<AttemptModel, AttemptCreateDTO, AttemptUpdateDTO, AttemptService>
-    implements AttemptControllerInterface
+export class TagController
+    extends DetailedController<TagModel, TagCreateDTO, TagUpdateDTO, TagService>
+    implements TagControllerInterface
 {
-    constructor(modelService: AttemptService) {
-        super(AttemptController.name, modelService);
+    constructor(modelService: TagService) {
+        super(TagController.name, modelService);
     }
 
     @Get("latest")
-    public async findLatest(): Promise<ResponseFormatInterface<AttemptModel>> {
+    public async findLatest(): Promise<ResponseFormatInterface<TagModel>> {
         try {
-            const response: ResponseFormatInterface<AttemptModel> = formatResponse<AttemptModel>(
+            const response: ResponseFormatInterface<TagModel> = formatResponse<TagModel>(
                 true,
                 200,
                 "Found Latest",
@@ -38,6 +38,7 @@ export class AttemptController
             return response;
         } catch (error) {
             this.loggerService.error(`Find Latest: ${error.message}`);
+
             return formatResponse<null>(false, 500, error.message, null);
         }
     }
@@ -47,9 +48,10 @@ export class AttemptController
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         @Param("id", ParseIntPipe) id: number,
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        @Body() payload: AttemptUpdateDTO
-    ): Promise<ResponseFormatInterface<AttemptModel>> {
+        @Body() payload: TagUpdateDTO
+    ): Promise<ResponseFormatInterface<TagModel>> {
         this.loggerService.error(`Change: Method Is Disabled`);
+
         throw new ForbiddenException("Method Is Disabled");
     }
 
@@ -57,8 +59,9 @@ export class AttemptController
     public async remove(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         @Param("id", ParseIntPipe) id: number
-    ): Promise<ResponseFormatInterface<AttemptModel>> {
+    ): Promise<ResponseFormatInterface<TagModel>> {
         this.loggerService.error(`Remove: Method Is Disabled`);
+        
         throw new ForbiddenException("Method Is Disabled");
     }
 }

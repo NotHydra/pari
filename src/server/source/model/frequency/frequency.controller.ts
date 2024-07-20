@@ -1,10 +1,10 @@
 import { Body, Controller, ForbiddenException, Param, ParseIntPipe, UseInterceptors } from "@nestjs/common";
 
-import { Override } from "../../common/decorator/override";
-import { ResponseFormatInterceptor } from "../../common/interceptor/response-format.interceptor";
-import { ResponseFormatInterface } from "../../common/interface/response-format";
+import { Override } from "./../../common/decorator/override.decorator";
+import { ResponseFormatInterceptor } from "./../../common/interceptor/response-format.interceptor";
+import { ResponseFormatInterface } from "./../../common/interface/response-format.interface";
 
-import { DetailedController } from "../../global/detailed.controller";
+import { DetailedController } from "./../../global/detailed.controller";
 
 import { FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO } from "./frequency";
 import { FrequencyService } from "./frequency.service";
@@ -29,6 +29,7 @@ export class FrequencyController
         @Body() payload: FrequencyUpdateDTO
     ): Promise<ResponseFormatInterface<FrequencyModel>> {
         this.loggerService.error(`Change: Method Is Disabled`);
+
         throw new ForbiddenException("Method Is Disabled");
     }
 
@@ -38,6 +39,7 @@ export class FrequencyController
         @Param("id", ParseIntPipe) id: number
     ): Promise<ResponseFormatInterface<FrequencyModel>> {
         this.loggerService.error(`Remove: Method Is Disabled`);
+        
         throw new ForbiddenException("Method Is Disabled");
     }
 }

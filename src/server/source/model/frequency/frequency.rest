@@ -1,4 +1,4 @@
-@base_url = {{$dotenv URL}}/api
+@base_url = {{$dotenv REST_CLIENT_URL}}/api
 @url={{base_url}}/frequency
 
 GET {{url}}
@@ -29,7 +29,7 @@ POST {{url}}
 Content-Type: application/json
 
 {   
-    "attemptId": 1,
+    "tagId": 1,
     "frequency": "192.5"
 }
 

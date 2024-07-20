@@ -1,5 +1,5 @@
-@base_url = {{$dotenv URL}}/api
-@url={{base_url}}/attempt
+@base_url = {{$dotenv REST_CLIENT_URL}}/api
+@url={{base_url}}/tag
 
 GET {{url}}
 

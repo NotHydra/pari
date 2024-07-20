@@ -1,4 +1,4 @@
-@base_url = {{$dotenv URL}}/api
+@base_url = {{$dotenv REST_CLIENT_URL}}/api
 @url={{base_url}}/rssi
 
 GET {{url}}

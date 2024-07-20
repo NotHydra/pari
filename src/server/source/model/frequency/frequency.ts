@@ -7,10 +7,10 @@ export class FrequencyModel implements Prisma.FrequencyCreateInput {
     id: number;
 
     @IsNumber()
-    attemptId: number;
+    tagId: number;
 
     @IsOptional()
-    attempt?: Prisma.AttemptCreateNestedOneWithoutFrequencyInput | undefined;
+    tag?: Prisma.TagCreateNestedOneWithoutFrequencyInput | undefined;
 
     @IsString()
     frequency: string;
@@ -22,7 +22,7 @@ export class FrequencyModel implements Prisma.FrequencyCreateInput {
 
 export class FrequencyCreateDTO {
     @IsNumber()
-    attemptId: number;
+    tagId: number;
 
     @IsString()
     frequency: string;

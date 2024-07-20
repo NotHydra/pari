@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 
-import { PrismaService } from "../../provider/prisma.service";
+import { PrismaService } from "./../../provider/prisma.service";
 
-import { DetailedService } from "../../global/detailed.service";
+import { DetailedService } from "./../../global/detailed.service";
 
 import { FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO } from "./frequency";
 

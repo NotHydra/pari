@@ -2,18 +2,20 @@ import { Prisma } from "@prisma/client";
 
 import { IsArray, IsDate, IsNumber, IsOptional } from "class-validator";
 
-export class AttemptModel implements Prisma.AttemptCreateInput {
+export class TagModel implements Prisma.TagCreateInput {
     @IsNumber()
     id: number;
 
+    tag: Buffer;
+
     @IsOptional()
     @IsArray()
-    frequency?: Prisma.FrequencyCreateNestedManyWithoutAttemptInput | undefined;
+    frequency?: Prisma.FrequencyCreateNestedManyWithoutTagInput | undefined;
 
     @IsDate()
     createdAt: Date;
 }
 
-export class AttemptCreateDTO {}
+export class TagCreateDTO {}
 
-export class AttemptUpdateDTO {}
+export class TagUpdateDTO {}
