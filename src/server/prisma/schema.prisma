@@ -7,16 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Attempt {
+model Tag {
   id Int @id @default(autoincrement())
+  tag Bytes
   frequency Frequency[]
   createdAt DateTime @default(now())
 }
 
 model Frequency {
   id Int @id @default(autoincrement())
-  attemptId Int
-  attempt Attempt? @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  tagId Int
+  tag Tag? @relation(fields: [tagId], references: [id], onDelete: Cascade)
   frequency String
   rssi RSSI[]
 }
