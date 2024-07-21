@@ -3,6 +3,9 @@ import time
 
 from rpi_lcd import LCD as LCDRPi
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
 LCD: LCDRPi = LCDRPi()
 
 try:
