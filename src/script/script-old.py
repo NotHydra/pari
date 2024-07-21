@@ -38,132 +38,96 @@ def log(message: str) -> None:
     print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {message}")
 
 
+URL: str = os.getenv("URL")
+
+FREQUENCY_LIST: list[float] = [919.5, 920.0, 920.5, 921.0, 921.5, 922.0, 922.5]
+
+GPIO.setmode(GPIO.BCM)
+
+LCD: LCDRPi = LCDRPi()
+BUTTON_PIN: int = 18
+LED_GREEN_PIN: int = 23
+LED_RED_PIN: int = 24
+
+GPIO.setup(BUTTON_PIN, GPIO.IN)
+GPIO.setup(LED_GREEN_PIN, GPIO.OUT)
+GPIO.setup(LED_RED_PIN, GPIO.OUT)
+
+log("Initializing Reader")
+LCD.text("Reader:", 1)
+LCD.text("Initializing", 2)
+time.sleep(0.5)
+
+PORTS: list[str] = SerialTransport.scan()
+log(f"Ports: {PORTS}")
+
+PORT: str = SerialTransport.scan()[0]
+log(f"Port: {PORT}")
+
+TRANSPORT: SerialTransport = SerialTransport(
+    serial_port=PORT, baud_rate=BaudRate.BPS_115200, timeout=1
+)
+log(f"Transport: {TRANSPORT}")
+
+READER: Reader = Reader(TRANSPORT)
+log("Reader Initialized")
+LCD.text("Reader:", 1)
+LCD.text("Initialized", 2)
+
 try:
-    SERVER_URL: str = os.getenv("SERVER_URL")
-
-    BUTTON_GREEN_PIN: int = 16
-    BUTTON_YELLOW_PIN: int = 20
-    BUTTON_RED_PIN: int = 21
-
-    TRAFFIC_LIGHT_GREEN_PIN: int = 25
-    TRAFFIC_LIGHT_YELLOW_PIN: int = 8
-    TRAFFIC_LIGHT_RED_PIN: int = 7
-
-    LCD: LCDRPi = LCDRPi()
-
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setwarnings(False)
-
-    GPIO.setup(BUTTON_GREEN_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.setup(BUTTON_YELLOW_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.setup(BUTTON_RED_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
-    GPIO.setup(TRAFFIC_LIGHT_GREEN_PIN, GPIO.OUT)
-    GPIO.setup(TRAFFIC_LIGHT_YELLOW_PIN, GPIO.OUT)
-    GPIO.setup(TRAFFIC_LIGHT_RED_PIN, GPIO.OUT)
-
-    log("Initializing Reader")
-    LCD.text("Reader:", 1)
-    LCD.text("Initializing", 2)
-    time.sleep(1)
-
-    PORTS: list[str] = SerialTransport.scan()
-    log(f"Ports: {PORTS}")
-
-    PORT: str = PORTS[0]
-    log(f"Port: {PORT}")
-
-    TRANSPORT: SerialTransport = SerialTransport(
-        serial_port=PORT, baud_rate=BaudRate.BPS_115200, timeout=1
-    )
-    log(f"Transport: {TRANSPORT}")
-
-    READER: Reader = Reader(TRANSPORT)
-    log("Reader Initialized")
-    LCD.text("Reader:", 1)
-    LCD.text("Initialized", 2)
-    time.sleep(1)
-
     while True:
-        if GPIO.input(BUTTON_YELLOW_PIN) == GPIO.LOW:
-            log("ID Scan")
-
-        elif GPIO.input(BUTTON_GREEN_PIN) == GPIO.LOW:
-            log("RSSI Mode Starting")
-            LCD.text("RSSI Mode:", 1)
+        if GPIO.input(BUTTON_PIN) == GPIO.HIGH:
+            log("Starting")
+            LCD.text("Reader:", 1)
             LCD.text("Starting", 2)
-            time.sleep(1)
+            time.sleep(0.5)
 
-            GPIO.output(TRAFFIC_LIGHT_GREEN_PIN, GPIO.HIGH)
-            GPIO.output(TRAFFIC_LIGHT_YELLOW_PIN, GPIO.LOW)
-            GPIO.output(TRAFFIC_LIGHT_RED_PIN, GPIO.LOW)
+            GPIO.output(LED_GREEN_PIN, GPIO.HIGH)
+            GPIO.output(LED_RED_PIN, GPIO.LOW)
 
-            response_tag: Response | None = None
+            attempt_id: int = None
             try:
-                response_tag = requests.post(f"{SERVER_URL}/api/tag", timeout=5)
+                response_attempt: Response = requests.post(
+                    f"{URL}/api/attempt", timeout=5
+                )
 
+                log(f"Response: {response_attempt.json()}")
+
+                attempt_id = response_attempt.json()["data"]["id"]
             except Exception as e:
                 log(f"Response: {e}")
-                LCD.text("RSSI Mode:", 1)
-                LCD.text("POST Fail", 2)
-                time.sleep(1)
                 break
 
-            if (
-                (response_tag is None)
-                or (response_tag.json()["data"] is None)
-                or (response_tag.json()["data"]["id"] is None)
-            ):
-                log(f"Invalid Response")
-                LCD.text("RSSI Mode:", 1)
-                LCD.text("Invalid Response", 2)
-                time.sleep(1)
+            if attempt_id is None:
                 break
-
-            log(f"Response: {response_tag.json()}")
-            tag_id: int = response_tag.json()["data"]["id"]
-            LCD.text("RSSI Mode:", 1)
-            LCD.text(f"New ID {tag_id}", 2)
-
-            frequency_list = [197.5]
 
             average_rssi_list: list[float] = []
-            for frequency_index, frequency_value in enumerate(frequency_list, start=1):
+            for frequency_index, frequency_value in enumerate(FREQUENCY_LIST, start=1):
                 log(f"Frequency {frequency_index}: {frequency_value}MHz")
                 LCD.text(f"Frequency {frequency_index}:", 1)
                 LCD.text(f"{frequency_value}MHz", 2)
                 time.sleep(0.5)
 
-                response_frequency: Response | None = None
+                frequency_id: int = None
                 try:
                     response_frequency = requests.post(
-                        f"{SERVER_URL}/api/frequency",
-                        json={"tagId": tag_id, "frequency": str(frequency_value)},
+                        f"{URL}/api/frequency",
+                        json={
+                            "attemptId": attempt_id,
+                            "frequency": str(frequency_value),
+                        },
                         timeout=5,
                     )
 
+                    log(f"Response: {response_frequency.json()}")
+
+                    frequency_id = response_frequency.json()["data"]["id"]
                 except Exception as e:
                     log(f"Response: {e}")
-                    LCD.text(f"Frequency {frequency_index}:", 1)
-                    LCD.text("POST Fail", 2)
-                    time.sleep(1)
                     break
 
-                if (
-                    (response_frequency is None)
-                    or (response_frequency.json()["data"] is None)
-                    or (response_frequency.json()["data"]["id"] is None)
-                ):
-                    log(f"Invalid Response")
-                    LCD.text(f"Frequency {frequency_index}:", 1)
-                    LCD.text("Invalid Response", 2)
-                    time.sleep(1)
+                if frequency_id is None:
                     break
-
-                log(f"Response: {response_frequency.json()}")
-                frequency_id: int = response_frequency.json()["data"]["id"]
-                LCD.text(f"Frequency {frequency_index}:", 1)
-                LCD.text(f"New ID {frequency_id}", 2)
 
                 READER.set_reader_settings(
                     ReaderSettings(
@@ -235,10 +199,10 @@ try:
                             LCD.text(f"RSSI {count}:", 1)
                             LCD.text(f"{rssi_value}dBm", 2)
 
-                            response_rssi: Response | None = None
+                            rssi_id: int = None
                             try:
                                 response_rssi = requests.post(
-                                    f"{SERVER_URL}/api/rssi",
+                                    f"{URL}/api/rssi",
                                     json={
                                         "frequencyId": frequency_id,
                                         "rssi": rssi_value,
@@ -246,28 +210,15 @@ try:
                                     timeout=5,
                                 )
 
+                                log(f"Response: {response_rssi.json()}")
+
+                                rssi_id = response_rssi.json()["data"]["id"]
                             except Exception as e:
                                 log(f"Response: {e}")
-                                LCD.text(f"RSSI {count}:", 1)
-                                LCD.text("POST Fail", 2)
-                                time.sleep(1)
                                 break
 
-                            if (
-                                (response_rssi is None)
-                                or (response_frequency.json()["data"] is None)
-                                or (response_frequency.json()["data"]["id"] is None)
-                            ):
-                                log(f"Invalid Response")
-                                LCD.text(f"RSSI {count}:", 1)
-                                LCD.text("Invalid Response", 2)
-                                time.sleep(1)
+                            if rssi_id is None:
                                 break
-
-                            log(f"Response: {response_rssi.json()}")
-                            rssi_id: int = response_rssi.json()["data"]["id"]
-                            LCD.text(f"RSSI {count}:", 1)
-                            LCD.text(f"New ID {rssi_id}", 2)
 
                             rssi_list.append(rssi_value)
 
@@ -303,6 +254,7 @@ try:
                 LCD.text("Average RSSI:", 1)
                 LCD.text(f"{average_rssi}dBm", 2)
                 time.sleep(1)
+
                 print()
 
             log("RSSI Summary Of All Frequencies")
@@ -310,21 +262,22 @@ try:
                 average_rssi_list, start=1
             ):
                 log(
-                    f"Frequency {average_rssi_index} ({frequency_list[average_rssi_index-1]}MHz) Average RSSI: {average_rssi_value}dBm"
+                    f"Frequency {average_rssi_index} ({FREQUENCY_LIST[average_rssi_index-1]}MHz) Average RSSI: {average_rssi_value}dBm"
                 )
 
             final_rssi: float = sum(average_rssi_list) / len(average_rssi_list)
             log(f"Final RSSI: {final_rssi}dBm")
             LCD.text("Final RSSI:", 1)
             LCD.text(f"{final_rssi}dBm", 2)
+
             print()
 
             log("Finished")
+
             print()
 
-        GPIO.output(TRAFFIC_LIGHT_GREEN_PIN, GPIO.LOW)
-        GPIO.output(TRAFFIC_LIGHT_YELLOW_PIN, GPIO.LOW)
-        GPIO.output(TRAFFIC_LIGHT_RED_PIN, GPIO.HIGH)
+        GPIO.output(LED_GREEN_PIN, GPIO.LOW)
+        GPIO.output(LED_RED_PIN, GPIO.HIGH)
 
         time.sleep(0.5)
 

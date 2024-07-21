@@ -64,7 +64,7 @@ try:
 
         count += 1
 
-        time.sleep(0.5)
+        time.sleep(0.1)
 
 except KeyboardInterrupt:
     pass
