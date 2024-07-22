@@ -90,20 +90,82 @@ try:
 
         elif GPIO.input(BUTTON_GREEN_PIN) == GPIO.LOW:
             log("RSSI Mode Starting")
-            LCD.text("RSSI Mode:", 1)
-            LCD.text("Starting", 2)
-            time.sleep(1)
 
             GPIO.output(TRAFFIC_LIGHT_GREEN_PIN, GPIO.HIGH)
             GPIO.output(TRAFFIC_LIGHT_YELLOW_PIN, GPIO.LOW)
             GPIO.output(TRAFFIC_LIGHT_RED_PIN, GPIO.LOW)
 
-            response_tag: Response | None = None
+            LCD.text("RSSI Mode:", 1)
+            LCD.text("Starting", 2)
+            time.sleep(1)
+
+            response_configuration: Response | None = None
             try:
-                response_tag = requests.post(f"{SERVER_URL}/api/tag", timeout=5)
+                response_configuration = requests.get(
+                    f"{SERVER_URL}/api/active-reader-configuration/configuration",
+                    timeout=5,
+                )
 
             except Exception as e:
-                log(f"Response: {e}")
+                log(f"GET Response: {e}")
+                LCD.text("RSSI Mode:", 1)
+                LCD.text("GET Fail", 2)
+                time.sleep(1)
+                break
+
+            if (response_configuration is None) or (
+                response_configuration.json()["data"] is None
+            ):
+                log(f"GET Response: Invalid")
+                LCD.text("RSSI Mode:", 1)
+                LCD.text("GET Invalid", 2)
+                time.sleep(1)
+                break
+
+            log(f"GET Response: {response_configuration.json()}")
+            configuration_id: int = response_configuration.json()["data"]["id"]
+            configuration_rssi_scan_count: int = response_configuration.json()["data"][
+                "rssiScanCount"
+            ]
+            configuration_rssi_scan_interval: int = (
+                response_configuration.json()["data"]["rssiScanInterval"] / 1000
+            )
+            configuration_frequency_configuration_list: list[str] = (
+                response_configuration.json()["data"]["frequencyConfiguration"]
+            )
+
+            log("Config")
+            log(f"ID: {configuration_id}")
+            LCD.text("Config ID:", 1)
+            LCD.text(str(configuration_id), 2)
+            time.sleep(1)
+
+            log(f"Scan Count: {configuration_rssi_scan_count}")
+            LCD.text("Scan Count:", 1)
+            LCD.text(str(configuration_rssi_scan_count), 2)
+            time.sleep(1)
+
+            log(f"Scan Interval: {configuration_rssi_scan_interval}")
+            LCD.text("Scan Interval:", 1)
+            LCD.text(str(configuration_rssi_scan_interval), 2)
+            time.sleep(1)
+
+            log(f"Frequency Count: {len(configuration_frequency_configuration_list)}")
+            log(f"Frequency: {configuration_frequency_configuration_list}")
+            LCD.text("Frequency Count:", 1)
+            LCD.text(str(len(configuration_frequency_configuration_list)), 2)
+            time.sleep(1)
+
+            response_tag: Response | None = None
+            try:
+                response_tag = requests.post(
+                    f"{SERVER_URL}/api/tag",
+                    json={"readerConfigurationId": configuration_id},
+                    timeout=5,
+                )
+
+            except Exception as e:
+                log(f"POST Response: {e}")
                 LCD.text("RSSI Mode:", 1)
                 LCD.text("POST Fail", 2)
                 time.sleep(1)
@@ -114,21 +176,21 @@ try:
                 or (response_tag.json()["data"] is None)
                 or (response_tag.json()["data"]["id"] is None)
             ):
-                log(f"Invalid Response")
+                log(f"POST Response: Invalid")
                 LCD.text("RSSI Mode:", 1)
-                LCD.text("Invalid Response", 2)
+                LCD.text("POST Invalid", 2)
                 time.sleep(1)
                 break
 
-            log(f"Response: {response_tag.json()}")
+            log(f"POST Response: {response_tag.json()}")
             tag_id: int = response_tag.json()["data"]["id"]
             LCD.text("RSSI Mode:", 1)
             LCD.text(f"New ID {tag_id}", 2)
 
-            frequency_list = [197.5]
-
             average_rssi_list: list[float] = []
-            for frequency_index, frequency_value in enumerate(frequency_list, start=1):
+            for frequency_index, frequency_value in enumerate(
+                configuration_frequency_configuration_list, start=1
+            ):
                 log(f"Frequency {frequency_index}: {frequency_value}MHz")
                 LCD.text(f"Frequency {frequency_index}:", 1)
                 LCD.text(f"{frequency_value}MHz", 2)
@@ -138,12 +200,12 @@ try:
                 try:
                     response_frequency = requests.post(
                         f"{SERVER_URL}/api/frequency",
-                        json={"tagId": tag_id, "frequency": str(frequency_value)},
+                        json={"tagId": tag_id, "frequency": frequency_value},
                         timeout=5,
                     )
 
                 except Exception as e:
-                    log(f"Response: {e}")
+                    log(f"Frequency Response: {e}")
                     LCD.text(f"Frequency {frequency_index}:", 1)
                     LCD.text("POST Fail", 2)
                     time.sleep(1)
@@ -154,16 +216,14 @@ try:
                     or (response_frequency.json()["data"] is None)
                     or (response_frequency.json()["data"]["id"] is None)
                 ):
-                    log(f"Invalid Response")
+                    log(f"Frequency Response: Invalid")
                     LCD.text(f"Frequency {frequency_index}:", 1)
-                    LCD.text("Invalid Response", 2)
+                    LCD.text("POST Invalid", 2)
                     time.sleep(1)
                     break
 
-                log(f"Response: {response_frequency.json()}")
+                log(f"Frequency Response: {response_frequency.json()}")
                 frequency_id: int = response_frequency.json()["data"]["id"]
-                LCD.text(f"Frequency {frequency_index}:", 1)
-                LCD.text(f"New ID {frequency_id}", 2)
 
                 READER.set_reader_settings(
                     ReaderSettings(
@@ -189,8 +249,8 @@ try:
                         ),
                         frequency=Frequency(
                             region=REGION_MALAYSIA,
-                            min_frequency=frequency_value,
-                            max_frequency=frequency_value,
+                            min_frequency=float(frequency_value),
+                            max_frequency=float(frequency_value),
                         ),
                         power=30,
                         output_memory_bank=MemoryBank.EPC,
@@ -265,14 +325,11 @@ try:
                                 break
 
                             log(f"Response: {response_rssi.json()}")
-                            rssi_id: int = response_rssi.json()["data"]["id"]
-                            LCD.text(f"RSSI {count}:", 1)
-                            LCD.text(f"New ID {rssi_id}", 2)
 
                             rssi_list.append(rssi_value)
 
                             count += 1
-                            if count > 10:
+                            if count > configuration_rssi_scan_count:
                                 break
 
                         if (
@@ -281,7 +338,7 @@ try:
                         ):
                             break
 
-                        time.sleep(0.1)
+                        time.sleep(configuration_rssi_scan_interval)
 
                 except:
                     log(f"Frequency {frequency_index} RSSI {count}: Read Error")
@@ -310,7 +367,7 @@ try:
                 average_rssi_list, start=1
             ):
                 log(
-                    f"Frequency {average_rssi_index} ({frequency_list[average_rssi_index-1]}MHz) Average RSSI: {average_rssi_value}dBm"
+                    f"Frequency {average_rssi_index} ({configuration_frequency_configuration_list[average_rssi_index-1]}MHz) Average RSSI: {average_rssi_value}dBm"
                 )
 
             final_rssi: float = sum(average_rssi_list) / len(average_rssi_list)
