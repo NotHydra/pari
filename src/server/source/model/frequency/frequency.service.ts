@@ -5,7 +5,7 @@ import { PrismaService } from "./../../provider/prisma.service";
 import { DetailedService } from "./../../global/detailed.service";
 
 import { FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO, FrequencyDetailedModel } from "./frequency";
-import { PrismaDetailedModelInterface } from "source/common/interface/prisma-model.interface";
+import { PrismaDetailedModelInterface } from "./../../common/interface/prisma-model.interface";
 
 interface FrequencyServiceInterface {}
 

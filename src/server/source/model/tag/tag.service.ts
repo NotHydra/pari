@@ -1,11 +1,12 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 
+import { PrismaDetailedModelInterface } from "./../../common/interface/prisma-model.interface";
+
 import { PrismaService } from "./../../provider/prisma.service";
 
 import { DetailedService } from "./../../global/detailed.service";
 
 import { TagModel, TagCreateDTO, TagUpdateDTO, TagDetailedModel } from "./tag";
-import { PrismaDetailedModelInterface } from "source/common/interface/prisma-model.interface";
 
 interface TagServiceInterface {
     findLatest(): Promise<TagModel>;

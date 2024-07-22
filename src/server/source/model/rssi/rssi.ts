@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-import { IsNumber, IsOptional } from "class-validator";
+import { IsNumber } from "class-validator";
 
 export class RSSIModel implements Prisma.RSSICreateInput {
     @IsNumber()
@@ -11,9 +11,6 @@ export class RSSIModel implements Prisma.RSSICreateInput {
 
     @IsNumber()
     rssi: number;
-
-    // @IsOptional()
-    // frequency?: Prisma.FrequencyCreateNestedOneWithoutRssiInput | undefined;
 }
 
 export class RSSICreateDTO {

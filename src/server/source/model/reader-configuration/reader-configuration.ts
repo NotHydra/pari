@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client";
 
-import { IsNumber, IsString, IsDate, IsOptional, IsArray } from "class-validator";
+import { IsNumber, IsString, IsDate } from "class-validator";
 
-import { FrequencyConfigurationModel } from "../frequency-configuration/frequency-configuration";
+import { FrequencyConfigurationModel } from "./../frequency-configuration/frequency-configuration";
 
 export class ReaderConfigurationModel implements Prisma.ReaderConfigurationCreateInput {
     @IsNumber()
@@ -22,19 +22,6 @@ export class ReaderConfigurationModel implements Prisma.ReaderConfigurationCreat
 
     @IsDate()
     updatedAt: Date;
-
-    // @IsOptional()
-    // activeReaderConfiguration?:
-    //     | Prisma.ActiveReaderConfigurationCreateNestedOneWithoutReaderConfigurationInput
-    //     | undefined;
-
-    // @IsOptional()
-    // @IsArray()
-    // frequencyConfiguration?: Prisma.FrequencyConfigurationCreateNestedManyWithoutReaderConfigurationInput | undefined;
-
-    // @IsOptional()
-    // @IsArray()
-    // tag?: Prisma.TagCreateNestedManyWithoutReaderConfigurationInput | undefined;
 }
 
 export class ReaderConfigurationDetailedModel extends ReaderConfigurationModel {

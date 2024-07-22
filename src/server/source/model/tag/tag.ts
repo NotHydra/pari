@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client";
 
-import { IsArray, IsDate, IsNumber, IsOptional } from "class-validator";
+import { IsDate, IsNumber } from "class-validator";
 
-import { FrequencyDetailedModel } from "../frequency/frequency";
+import { FrequencyDetailedModel } from "./../frequency/frequency";
 
 export class TagModel implements Prisma.TagCreateInput {
     @IsNumber()
@@ -15,17 +15,6 @@ export class TagModel implements Prisma.TagCreateInput {
 
     @IsDate()
     createdAt: Date;
-
-    // @IsOptional()
-    // readerConfiguration?: Prisma.ReaderConfigurationCreateNestedOneWithoutTagInput | undefined;
-
-    // @IsOptional()
-    // @IsArray()
-    // frequencyConfiguration?: Prisma.FrequencyConfigurationCreateNestedManyWithoutTagInput | undefined;
-
-    // @IsOptional()
-    // @IsArray()
-    // frequency?: Prisma.FrequencyCreateNestedManyWithoutTagInput | undefined;
 }
 
 export class TagDetailedModel extends TagModel {
