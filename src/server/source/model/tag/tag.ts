@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-import { IsDate, IsNumber } from "class-validator";
+import { IsDate, IsNumber, IsOptional } from "class-validator";
 
 import { FrequencyDetailedModel } from "./../frequency/frequency";
 
@@ -11,7 +11,8 @@ export class TagModel implements Prisma.TagCreateInput {
     @IsNumber()
     readerConfigurationId: number;
 
-    tag: Buffer;
+    @IsOptional()
+    tag?: Buffer;
 
     @IsDate()
     createdAt: Date;
