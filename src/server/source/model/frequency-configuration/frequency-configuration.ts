@@ -27,6 +27,9 @@ export class FrequencyConfigurationModel implements Prisma.FrequencyConfiguratio
 }
 
 export class FrequencyConfigurationCreateDTO {
+    @IsNumber()
+    readerConfigurationId: number;
+
     @IsString()
     frequency: string;
 }
