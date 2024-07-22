@@ -9,61 +9,73 @@ datasource db {
 
 model ActiveReaderConfiguration {
   id                    Int      @id @default(autoincrement())
-  readerConfigurationId Int      @unique
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  readerConfigurationId Int      @unique @map("reader_configuration_id")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
 
   readerConfiguration ReaderConfiguration @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)
+
+  @@map("active_reader_configuration")
 }
 
 model ReaderConfiguration {
   id               Int      @id @default(autoincrement())
   name             String
-  rssiScanCount    Int
-  rssiScanInterval Int
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  rssiScanCount    Int      @map("rssi_scan_count")
+  rssiScanInterval Int      @map("rssi_scan_interval")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 
   activeReaderConfiguration ActiveReaderConfiguration?
   frequencyConfiguration    FrequencyConfiguration[]
   Tag                       Tag[]
+
+  @@map("reader_configuration")
 }
 
 model FrequencyConfiguration {
   id                    Int      @id @default(autoincrement())
-  readerConfigurationId Int
+  readerConfigurationId Int      @map("reader_configuration_id")
   frequency             String
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
 
-  readerConfiguration ReaderConfiguration? @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)
+  readerConfiguration ReaderConfiguration @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)
   tag                 Tag[]
+
+  @@map("frequency_configuration")
 }
 
 model Tag {
   id                    Int      @id @default(autoincrement())
-  readerConfigurationId Int
+  readerConfigurationId Int      @map("reader_configuration_id")
   tag                   Bytes
-  createdAt             DateTime @default(now())
+  createdAt             DateTime @default(now()) @map("created_at")
 
-  readerConfiguration    ReaderConfiguration?     @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)
+  readerConfiguration    ReaderConfiguration      @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)
   frequencyConfiguration FrequencyConfiguration[]
   frequency              Frequency[]
+
+  @@map("tag")
 }
 
 model Frequency {
   id        Int    @id @default(autoincrement())
-  tagId     Int
+  tagId     Int    @map("tag_id")
   frequency String
 
   tag  Tag?   @relation(fields: [tagId], references: [id], onDelete: Cascade)
   rssi RSSI[]
+
+  @@map("frequency")
 }
 
 model RSSI {
   id          Int @id @default(autoincrement())
-  frequencyId Int
+  frequencyId Int @map("frequency_id")
   rssi        Int
 
   frequency Frequency? @relation(fields: [frequencyId], references: [id], onDelete: Cascade)
+
+  @@map("rssi")
 }
