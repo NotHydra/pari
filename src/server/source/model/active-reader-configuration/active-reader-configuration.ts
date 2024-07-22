@@ -1,6 +1,7 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, ReaderConfiguration } from "@prisma/client";
 
 import { IsNumber, IsDate, IsOptional } from "class-validator";
+
 import { ReaderConfigurationDetailedModel } from "../reader-configuration/reader-configuration";
 
 export class ActiveReaderConfigurationModel implements Prisma.ActiveReaderConfigurationCreateInput {
@@ -22,6 +23,13 @@ export class ActiveReaderConfigurationModel implements Prisma.ActiveReaderConfig
 
 export class ActiveReaderConfigurationDetailedModel extends ActiveReaderConfigurationModel {
     readerConfiguration: ReaderConfigurationDetailedModel;
+}
+
+export class ActiveReaderConfigurationRawModel {
+    id: number;
+    rssiScanCount: number;
+    rssiScanInterval: number;
+    frequencyConfiguration: string[];
 }
 
 export class ActiveReaderConfigurationCreateDTO {}

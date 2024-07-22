@@ -1,7 +1,7 @@
-import { Body, Controller, ForbiddenException, Param, ParseIntPipe, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, UseInterceptors } from "@nestjs/common";
 
 import { Override } from "./../../common/decorator/override.decorator";
-import { ResponseFormatInterceptor } from "./../../common/interceptor/response-format.interceptor";
+import { formatResponse, ResponseFormatInterceptor } from "./../../common/interceptor/response-format.interceptor";
 import { ResponseFormatInterface } from "./../../common/interface/response-format.interface";
 
 import { DetailedController } from "./../../global/detailed.controller";
@@ -11,6 +11,7 @@ import {
     ActiveReaderConfigurationCreateDTO,
     ActiveReaderConfigurationUpdateDTO,
     ActiveReaderConfigurationDetailedModel,
+    ActiveReaderConfigurationRawModel,
 } from "./active-reader-configuration";
 import { ActiveReaderConfigurationService } from "./active-reader-configuration.service";
 
@@ -30,6 +31,27 @@ export class ActiveReaderConfigurationController
 {
     constructor(modelService: ActiveReaderConfigurationService) {
         super(ActiveReaderConfigurationController.name, modelService);
+    }
+
+    @Get("configuration")
+    public async findConfiguration() {
+        try {
+            const response: ResponseFormatInterface<ActiveReaderConfigurationRawModel> =
+                formatResponse<ActiveReaderConfigurationRawModel>(
+                    true,
+                    200,
+                    "Configuration Found",
+                    await this.modelService.findConfiguration()
+                );
+
+            this.loggerService.log(`Find Configuration: ${JSON.stringify(response)}`);
+
+            return response;
+        } catch (error) {
+            this.loggerService.error(`Find Configuration: ${error.message}`);
+
+            return formatResponse<null>(false, 500, error.message, null);
+        }
     }
 
     @Override

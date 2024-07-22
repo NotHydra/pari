@@ -45,6 +45,7 @@ export class DetailedService<
             return models;
         } catch (error) {
             this.loggerService.error(`Find Detailed: ${error.message}`);
+
             throw new InternalServerErrorException("Internal Server Error");
         }
     }

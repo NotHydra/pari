@@ -1,4 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
+
+import { PrismaDetailedModelInterface } from "./../../common/interface/prisma-model.interface";
 
 import { PrismaService } from "./../../provider/prisma.service";
 
@@ -9,8 +11,10 @@ import {
     ActiveReaderConfigurationCreateDTO,
     ActiveReaderConfigurationUpdateDTO,
     ActiveReaderConfigurationDetailedModel,
+    ActiveReaderConfigurationRawModel,
 } from "./active-reader-configuration";
-import { PrismaDetailedModelInterface } from "source/common/interface/prisma-model.interface";
+
+import { FrequencyConfigurationModel } from "./../frequency-configuration/frequency-configuration";
 
 interface ActiveReaderConfigurationServiceInterface {}
 
@@ -35,5 +39,32 @@ export class ActiveReaderConfigurationService
                 readerConfiguration: { include: { frequencyConfiguration: true } },
             }
         );
+    }
+
+    public async findConfiguration(): Promise<ActiveReaderConfigurationRawModel> {
+        try {
+            const model: ActiveReaderConfigurationDetailedModel = await this.prismaModel.findFirst({
+                include: this.detailed,
+            });
+
+            const rawModel: ActiveReaderConfigurationRawModel = {
+                id: model.id,
+                rssiScanCount: model.readerConfiguration.rssiScanCount,
+                rssiScanInterval: model.readerConfiguration.rssiScanInterval,
+                frequencyConfiguration: model.readerConfiguration.frequencyConfiguration.map(
+                    (frequencyConfiguration: FrequencyConfigurationModel): string => {
+                        return frequencyConfiguration.frequency;
+                    }
+                ),
+            };
+
+            this.loggerService.log(`Find Configuration: ${JSON.stringify(rawModel)}`);
+
+            return rawModel;
+        } catch (error) {
+            this.loggerService.error(`Find Configuration: ${error.message}`);
+
+            throw new InternalServerErrorException("Internal Server Error");
+        }
     }
 }
