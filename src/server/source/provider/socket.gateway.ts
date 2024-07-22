@@ -9,7 +9,7 @@ export class SocketGateway {
     server: Server;
 
     @SubscribeMessage("tagLatest")
-    handleTagLatest(@MessageBody() tag: Tag): void {
+    handleTagLatest(@MessageBody() tag: Tag | null): void {
         console.log(tag);
 
         this.server.emit("tagLatest", tag);

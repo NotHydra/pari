@@ -9,6 +9,7 @@ import { PrismaService } from "./../../provider/prisma.service";
 import { BaseService } from "./../../global/base.service";
 
 import { RSSIModel, RSSICreateDTO, RSSIUpdateDTO } from "./rssi";
+import { PrismaModelInterface } from "source/common/interface/prisma-model.interface";
 
 interface RSSIServiceInterface {}
 
@@ -20,7 +21,7 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
         prismaService: PrismaService,
         private readonly socketGateway: SocketGateway
     ) {
-        super(RSSIService.name, prismaService.rSSI);
+        super(RSSIService.name, prismaService.rSSI as unknown as PrismaModelInterface<RSSIModel>);
 
         this.prismaService = prismaService;
     }
@@ -56,7 +57,7 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
             }
 
             this.loggerService.error(`Add: ${error.message}`);
-            
+
             throw new InternalServerErrorException("Internal Server Error");
         }
     }

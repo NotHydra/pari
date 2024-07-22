@@ -38,7 +38,7 @@ export class BaseController<
     public async find(
         @Query("page") page: string = "0",
         @Query("count") count: string = "0"
-    ): Promise<ResponseFormatInterface<ModelType[]>> {
+    ): Promise<ResponseFormatInterface<ModelType[] | null>> {
         try {
             const response: ResponseFormatInterface<ModelType[]> = formatResponse<ModelType[]>(
                 true,
@@ -58,7 +58,7 @@ export class BaseController<
     }
 
     @Get("id/:id")
-    public async findId(@Param("id", ParseIntPipe) id: number): Promise<ResponseFormatInterface<ModelType>> {
+    public async findId(@Param("id", ParseIntPipe) id: number): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
             const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
                 true,
@@ -84,7 +84,7 @@ export class BaseController<
     }
 
     @Post()
-    public async add(@Body() payload: ModelCreateDTO): Promise<ResponseFormatInterface<ModelType>> {
+    public async add(@Body() payload: ModelCreateDTO): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
             this.loggerService.debug(`Add: ${JSON.stringify(payload)}`);
 
@@ -115,7 +115,7 @@ export class BaseController<
     public async change(
         @Param("id", ParseIntPipe) id: number,
         @Body() payload: ModelUpdateDTO
-    ): Promise<ResponseFormatInterface<ModelType>> {
+    ): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
             const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
                 true,
@@ -147,7 +147,7 @@ export class BaseController<
     }
 
     @Delete("id/:id")
-    public async remove(@Param("id", ParseIntPipe) id: number): Promise<ResponseFormatInterface<ModelType>> {
+    public async remove(@Param("id", ParseIntPipe) id: number): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
             const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
                 true,

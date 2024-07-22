@@ -10,7 +10,7 @@ import { TagModel, TagCreateDTO, TagUpdateDTO, TagDetailedModel } from "./tag";
 import { TagService } from "./tag.service";
 
 interface TagControllerInterface {
-    findLatest(): Promise<ResponseFormatInterface<TagModel>>;
+    findLatest(): Promise<ResponseFormatInterface<TagModel | null>>;
 }
 
 @Controller("tag")
@@ -24,7 +24,7 @@ export class TagController
     }
 
     @Get("latest")
-    public async findLatest(): Promise<ResponseFormatInterface<TagModel>> {
+    public async findLatest(): Promise<ResponseFormatInterface<TagModel | null>> {
         try {
             const response: ResponseFormatInterface<TagModel> = formatResponse<TagModel>(
                 true,

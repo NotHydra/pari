@@ -21,7 +21,7 @@ export class DetailedController<
     public async findDetailed(
         @Query("page") page: string = "0",
         @Query("count") count: string = "0"
-    ): Promise<ResponseFormatInterface<ModelDetailedType[]>> {
+    ): Promise<ResponseFormatInterface<ModelDetailedType[] | null>> {
         try {
             const response: ResponseFormatInterface<ModelDetailedType[]> = formatResponse<ModelDetailedType[]>(
                 true,
@@ -43,7 +43,7 @@ export class DetailedController<
     @Get("id/:id/detailed")
     public async findIdDetailed(
         @Param("id", ParseIntPipe) id: number
-    ): Promise<ResponseFormatInterface<ModelDetailedType>> {
+    ): Promise<ResponseFormatInterface<ModelDetailedType | null>> {
         try {
             const response: ResponseFormatInterface<ModelDetailedType> = formatResponse<ModelDetailedType>(
                 true,

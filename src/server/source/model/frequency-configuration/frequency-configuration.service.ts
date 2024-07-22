@@ -9,6 +9,7 @@ import {
     FrequencyConfigurationCreateDTO,
     FrequencyConfigurationUpdateDTO,
 } from "./frequency-configuration";
+import { PrismaModelInterface } from "source/common/interface/prisma-model.interface";
 
 interface FrequencyConfigurationServiceInterface {}
 
@@ -18,6 +19,9 @@ export class FrequencyConfigurationService
     implements FrequencyConfigurationServiceInterface
 {
     constructor(prismaService: PrismaService) {
-        super(FrequencyConfigurationService.name, prismaService.frequencyConfiguration);
+        super(
+            FrequencyConfigurationService.name,
+            prismaService.frequencyConfiguration as unknown as PrismaModelInterface<FrequencyConfigurationModel>
+        );
     }
 }

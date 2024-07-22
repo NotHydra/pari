@@ -6,14 +6,32 @@ export class ConfigService {
     constructor(private readonly nestConfigService: NestConfigService) {}
 
     public getLogLevel(): LogLevel[] {
-        return this.nestConfigService.get<LogLevel[]>("logLevel");
+        const logLevel: LogLevel[] | undefined = this.nestConfigService.get<LogLevel[]>("logLevel");
+
+        if (logLevel === undefined) {
+            throw new Error("LOG_LEVEL is not defined");
+        }
+
+        return logLevel;
     }
 
     public getPort(): number {
-        return this.nestConfigService.get<number>("port");
+        const port: number | undefined = this.nestConfigService.get<number>("port");
+
+        if (port === undefined) {
+            throw new Error("PORT is not defined");
+        }
+
+        return port;
     }
 
     public getDatabaseURL(): string {
-        return this.nestConfigService.get<string>("databaseURL");
+        const databaseURL: string | undefined = this.nestConfigService.get<string>("databaseURL");
+
+        if (databaseURL === undefined) {
+            throw new Error("DATABASE_URL is not defined");
+        }
+
+        return databaseURL;
     }
 }
