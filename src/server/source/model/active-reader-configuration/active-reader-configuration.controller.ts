@@ -34,7 +34,7 @@ export class ActiveReaderConfigurationController
     }
 
     @Get("configuration")
-    public async findConfiguration() {
+    public async findConfiguration(): Promise<ResponseFormatInterface<ActiveReaderConfigurationRawModel | null>> {
         try {
             const response: ResponseFormatInterface<ActiveReaderConfigurationRawModel> =
                 formatResponse<ActiveReaderConfigurationRawModel>(
@@ -60,18 +60,6 @@ export class ActiveReaderConfigurationController
         @Body() payload: ActiveReaderConfigurationCreateDTO
     ): Promise<ResponseFormatInterface<ActiveReaderConfigurationModel>> {
         this.loggerService.error(`Create: Method Is Disabled`);
-
-        throw new ForbiddenException("Method Is Disabled");
-    }
-
-    @Override
-    public async change(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        @Param("id", ParseIntPipe) id: number,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        @Body() payload: ActiveReaderConfigurationUpdateDTO
-    ): Promise<ResponseFormatInterface<ActiveReaderConfigurationModel>> {
-        this.loggerService.error(`Change: Method Is Disabled`);
 
         throw new ForbiddenException("Method Is Disabled");
     }

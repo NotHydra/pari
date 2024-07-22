@@ -31,4 +31,6 @@ export class ActiveReaderConfigurationRawModel {
 
 export class ActiveReaderConfigurationCreateDTO {}
 
-export class ActiveReaderConfigurationUpdateDTO {}
+export class ActiveReaderConfigurationUpdateDTO {
+    readerConfigurationId: number
+}

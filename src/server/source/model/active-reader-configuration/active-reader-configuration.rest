@@ -28,3 +28,12 @@ GET {{url}}/id/1/detailed
 GET {{url}}/configuration
 
 ###
+
+PUT {{url}}/id/1
+Content-Type: application/json
+
+{
+    "readerConfigurationId": 3
+}
+
+###
