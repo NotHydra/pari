@@ -17,11 +17,12 @@ model ActiveReaderConfiguration {
 }
 
 model ReaderConfiguration {
-  id            Int      @id @default(autoincrement())
-  name          String
-  rssiScanCount Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  name             String
+  rssiScanCount    Int
+  rssiScanInterval Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   activeReaderConfiguration ActiveReaderConfiguration?
   frequencyConfiguration    FrequencyConfiguration[]
