@@ -9,11 +9,11 @@ export class RSSIModel implements Prisma.RSSICreateInput {
     @IsNumber()
     frequencyId: number;
 
-    @IsOptional()
-    frequency?: Prisma.FrequencyCreateNestedOneWithoutRssiInput | undefined;
-
     @IsNumber()
     rssi: number;
+
+    @IsOptional()
+    frequency?: Prisma.FrequencyCreateNestedOneWithoutRssiInput | undefined;
 }
 
 export class RSSICreateDTO {
