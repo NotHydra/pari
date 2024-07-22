@@ -13,7 +13,7 @@ model ActiveReaderConfiguration {
   createdAt             DateTime @default(now()) @map("created_at")
   updatedAt             DateTime @updatedAt @map("updated_at")
 
-  readerConfiguration ReaderConfiguration @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)
+  readerConfiguration ReaderConfiguration? @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)
 
   @@map("active_reader_configuration")
 }
