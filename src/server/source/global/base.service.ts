@@ -19,7 +19,13 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
         try {
             const models: ModelType[] =
                 page !== 0 && count !== 0
-                    ? await this.prismaModel.findMany({ skip: (page - 1) * count, take: count })
+                    ? await this.prismaModel.findMany({
+                          skip: (page - 1) * count,
+                          take: count,
+                          orderBy: {
+                              createdAt: "asc",
+                          },
+                      })
                     : await this.prismaModel.findMany();
 
             this.loggerService.log(`Find: ${JSON.stringify(models)}`);

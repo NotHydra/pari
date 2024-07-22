@@ -32,6 +32,9 @@ export class DetailedService<ModelType, ModelCreateDTO, ModelUpdateDTO> extends 
                     ? await this.prismaModel.findMany({
                           skip: (page - 1) * count,
                           take: count,
+                          orderBy: {
+                              createdAt: "asc",
+                          },
                           include: this.detailed,
                       })
                     : await this.prismaModel.findMany({ include: this.detailed });
