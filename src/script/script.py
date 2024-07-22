@@ -124,6 +124,7 @@ try:
 
             log(f"GET Response: {response_configuration.json()}")
             configuration_id: int = response_configuration.json()["data"]["id"]
+            configuration_name: str = response_configuration.json()["data"]["name"]
             configuration_rssi_scan_count: int = response_configuration.json()["data"][
                 "rssiScanCount"
             ]
@@ -138,6 +139,11 @@ try:
             log(f"ID: {configuration_id}")
             LCD.text("Config ID:", 1)
             LCD.text(str(configuration_id), 2)
+            time.sleep(1)
+
+            log(f"Name: {configuration_id}")
+            LCD.text("Config Name:", 1)
+            LCD.text(configuration_name, 2)
             time.sleep(1)
 
             log(f"Scan Count: {configuration_rssi_scan_count}")

@@ -24,6 +24,7 @@ export class ActiveReaderConfigurationDetailedModel extends ActiveReaderConfigur
 
 export class ActiveReaderConfigurationRawModel {
     id: number;
+    name: string;
     rssiScanCount: number;
     rssiScanInterval: number;
     frequencyConfiguration: string[];
@@ -32,5 +33,5 @@ export class ActiveReaderConfigurationRawModel {
 export class ActiveReaderConfigurationCreateDTO {}
 
 export class ActiveReaderConfigurationUpdateDTO {
-    readerConfigurationId: number
+    readerConfigurationId: number;
 }

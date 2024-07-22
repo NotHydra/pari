@@ -49,6 +49,7 @@ export class ActiveReaderConfigurationService
 
             const rawModel: ActiveReaderConfigurationRawModel = {
                 id: model.readerConfiguration.id,
+                name: model.readerConfiguration.name,
                 rssiScanCount: model.readerConfiguration.rssiScanCount,
                 rssiScanInterval: model.readerConfiguration.rssiScanInterval,
                 frequencyConfiguration: model.readerConfiguration.frequencyConfiguration.map(
