@@ -2,7 +2,7 @@ import { PrismaClient, ActiveReaderConfiguration, ReaderConfiguration, Frequency
 
 const prisma: PrismaClient = new PrismaClient();
 async function main(): Promise<void> {
-    const readerConfiguration: ReaderConfiguration & { frequencyConfiguration: FrequencyConfiguration[] } =
+    const defaultReaderConfiguration: ReaderConfiguration & { frequencyConfiguration: FrequencyConfiguration[] } =
         await prisma.readerConfiguration.create({
             data: {
                 name: "Default",
@@ -25,13 +25,64 @@ async function main(): Promise<void> {
             },
         });
 
+    const quickScanReaderConfiguration: ReaderConfiguration & { frequencyConfiguration: FrequencyConfiguration[] } =
+        await prisma.readerConfiguration.create({
+            data: {
+                name: "Quick Scan",
+                rssiScanCount: 1,
+                rssiScanInterval: 50,
+                frequencyConfiguration: {
+                    create: [
+                        { frequency: "919.5" },
+                        { frequency: "920" },
+                        { frequency: "920.5" },
+                        { frequency: "921" },
+                        { frequency: "921.5" },
+                        { frequency: "922" },
+                        { frequency: "922.5" },
+                    ],
+                },
+            },
+            include: {
+                frequencyConfiguration: true,
+            },
+        });
+
+    const singleScanReaderConfiguration: ReaderConfiguration & { frequencyConfiguration: FrequencyConfiguration[] } =
+        await prisma.readerConfiguration.create({
+            data: {
+                name: "Single Scan",
+                rssiScanCount: 1,
+                rssiScanInterval: 50,
+                frequencyConfiguration: {
+                    create: [{ frequency: "919.5" }],
+                },
+            },
+            include: {
+                frequencyConfiguration: true,
+            },
+        });
+
     const activeReaderConfiguration: ActiveReaderConfiguration = await prisma.activeReaderConfiguration.create({
         data: {
-            readerConfigurationId: readerConfiguration.id,
+            readerConfigurationId: defaultReaderConfiguration.id,
         },
     });
 
-    console.log(JSON.stringify({ readerConfiguration, activeReaderConfiguration }, null, 4));
+    console.log(
+        JSON.stringify(
+            {
+                readerConfiguration: [
+                    defaultReaderConfiguration,
+                    quickScanReaderConfiguration,
+                    singleScanReaderConfiguration,
+                ],
+                activeReaderConfiguration,
+            },
+            null,
+            4
+        )
+    );
 }
 
 main()
