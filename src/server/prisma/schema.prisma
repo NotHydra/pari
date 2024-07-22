@@ -40,7 +40,7 @@ model FrequencyConfiguration {
   createdAt             DateTime @default(now()) @map("created_at")
   updatedAt             DateTime @updatedAt @map("updated_at")
 
-  readerConfiguration ReaderConfiguration @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)
+  readerConfiguration ReaderConfiguration? @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)
   tag                 Tag[]
 
   @@map("frequency_configuration")
@@ -52,7 +52,7 @@ model Tag {
   tag                   Bytes
   createdAt             DateTime @default(now()) @map("created_at")
 
-  readerConfiguration    ReaderConfiguration      @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)
+  readerConfiguration    ReaderConfiguration?     @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)
   frequencyConfiguration FrequencyConfiguration[]
   frequency              Frequency[]
 
