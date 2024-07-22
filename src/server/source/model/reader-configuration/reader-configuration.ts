@@ -1,7 +1,8 @@
 import { Prisma } from "@prisma/client";
 
 import { IsNumber, IsString, IsDate, IsOptional, IsArray } from "class-validator";
-import { FrequencyDetailedModel } from "../frequency/frequency";
+
+import { FrequencyConfigurationModel } from "../frequency-configuration/frequency-configuration";
 
 export class ReaderConfigurationModel implements Prisma.ReaderConfigurationCreateInput {
     @IsNumber()
@@ -37,7 +38,7 @@ export class ReaderConfigurationModel implements Prisma.ReaderConfigurationCreat
 }
 
 export class ReaderConfigurationDetailedModel extends ReaderConfigurationModel {
-    frequencyConfiguration: FrequencyDetailedModel[];
+    frequencyConfiguration: FrequencyConfigurationModel[];
 }
 
 export class ReaderConfigurationCreateDTO {
