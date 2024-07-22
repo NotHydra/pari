@@ -12,8 +12,8 @@ export class RSSIModel implements Prisma.RSSICreateInput {
     @IsNumber()
     rssi: number;
 
-    @IsOptional()
-    frequency?: Prisma.FrequencyCreateNestedOneWithoutRssiInput | undefined;
+    // @IsOptional()
+    // frequency?: Prisma.FrequencyCreateNestedOneWithoutRssiInput | undefined;
 }
 
 export class RSSICreateDTO {

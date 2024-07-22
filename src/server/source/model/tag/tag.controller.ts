@@ -6,7 +6,7 @@ import { ResponseFormatInterface } from "./../../common/interface/response-forma
 
 import { DetailedController } from "./../../global/detailed.controller";
 
-import { TagModel, TagCreateDTO, TagUpdateDTO } from "./tag";
+import { TagModel, TagCreateDTO, TagUpdateDTO, TagDetailedModel } from "./tag";
 import { TagService } from "./tag.service";
 
 interface TagControllerInterface {
@@ -16,7 +16,7 @@ interface TagControllerInterface {
 @Controller("tag")
 @UseInterceptors(ResponseFormatInterceptor)
 export class TagController
-    extends DetailedController<TagModel, TagCreateDTO, TagUpdateDTO, TagService>
+    extends DetailedController<TagModel, TagDetailedModel, TagCreateDTO, TagUpdateDTO, TagService>
     implements TagControllerInterface
 {
     constructor(modelService: TagService) {
@@ -61,7 +61,7 @@ export class TagController
         @Param("id", ParseIntPipe) id: number
     ): Promise<ResponseFormatInterface<TagModel>> {
         this.loggerService.error(`Remove: Method Is Disabled`);
-        
+
         throw new ForbiddenException("Method Is Disabled");
     }
 }

@@ -18,12 +18,12 @@ export class FrequencyConfigurationModel implements Prisma.FrequencyConfiguratio
     @IsDate()
     updatedAt: Date;
 
-    @IsOptional()
-    readerConfiguration?: Prisma.ReaderConfigurationCreateNestedOneWithoutFrequencyConfigurationInput | undefined;
+    // @IsOptional()
+    // readerConfiguration?: Prisma.ReaderConfigurationCreateNestedOneWithoutFrequencyConfigurationInput | undefined;
 
-    @IsOptional()
-    @IsArray()
-    tag?: Prisma.TagCreateNestedManyWithoutFrequencyConfigurationInput | undefined;
+    // @IsOptional()
+    // @IsArray()
+    // tag?: Prisma.TagCreateNestedManyWithoutFrequencyConfigurationInput | undefined;
 }
 
 export class FrequencyConfigurationCreateDTO {

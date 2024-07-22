@@ -13,10 +13,6 @@ GET {{url}}/id/1
 
 ###
 
-GET {{url}}/detailed
-
-###
-
 POST {{url}}
 Content-Type: application/json
 

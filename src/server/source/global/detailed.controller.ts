@@ -8,9 +8,10 @@ import { DetailedService } from "./detailed.service";
 
 export class DetailedController<
     ModelType,
+    ModelDetailedType extends ModelType,
     ModelCreateDTO,
     ModelUpdateDTO,
-    ModelService extends DetailedService<ModelType, ModelCreateDTO, ModelUpdateDTO>,
+    ModelService extends DetailedService<ModelType, ModelDetailedType, ModelCreateDTO, ModelUpdateDTO>,
 > extends BaseController<ModelType, ModelCreateDTO, ModelUpdateDTO, ModelService> {
     constructor(controllerName: string, modelService: ModelService) {
         super(controllerName, modelService);
@@ -20,9 +21,9 @@ export class DetailedController<
     public async findDetailed(
         @Query("page") page: string = "0",
         @Query("count") count: string = "0"
-    ): Promise<ResponseFormatInterface<ModelType[]>> {
+    ): Promise<ResponseFormatInterface<ModelDetailedType[]>> {
         try {
-            const response: ResponseFormatInterface<ModelType[]> = formatResponse<ModelType[]>(
+            const response: ResponseFormatInterface<ModelDetailedType[]> = formatResponse<ModelDetailedType[]>(
                 true,
                 200,
                 "Detailed Found",
@@ -40,9 +41,11 @@ export class DetailedController<
     }
 
     @Get("id/:id/detailed")
-    public async findIdDetailed(@Param("id", ParseIntPipe) id: number) {
+    public async findIdDetailed(
+        @Param("id", ParseIntPipe) id: number
+    ): Promise<ResponseFormatInterface<ModelDetailedType>> {
         try {
-            const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
+            const response: ResponseFormatInterface<ModelDetailedType> = formatResponse<ModelDetailedType>(
                 true,
                 200,
                 `Detailed Id ${id} Found`,

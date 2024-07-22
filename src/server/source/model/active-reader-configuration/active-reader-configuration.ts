@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 import { IsNumber, IsDate, IsOptional } from "class-validator";
+import { ReaderConfigurationDetailedModel } from "../reader-configuration/reader-configuration";
 
 export class ActiveReaderConfigurationModel implements Prisma.ActiveReaderConfigurationCreateInput {
     @IsNumber()
@@ -15,8 +16,12 @@ export class ActiveReaderConfigurationModel implements Prisma.ActiveReaderConfig
     @IsDate()
     updatedAt: Date;
 
-    @IsOptional()
-    readerConfiguration?: Prisma.ReaderConfigurationCreateNestedOneWithoutActiveReaderConfigurationInput;
+    // @IsOptional()
+    // readerConfiguration?: Prisma.ReaderConfigurationCreateNestedOneWithoutActiveReaderConfigurationInput;
+}
+
+export class ActiveReaderConfigurationDetailedModel extends ActiveReaderConfigurationModel {
+    readerConfiguration: ReaderConfigurationDetailedModel;
 }
 
 export class ActiveReaderConfigurationCreateDTO {}

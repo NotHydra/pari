@@ -8,6 +8,7 @@ import {
     ReaderConfigurationModel,
     ReaderConfigurationCreateDTO,
     ReaderConfigurationUpdateDTO,
+    ReaderConfigurationDetailedModel,
 } from "./reader-configuration";
 import { ReaderConfigurationService } from "./reader-configuration.service";
 
@@ -18,6 +19,7 @@ interface ReaderConfigurationControllerInterface {}
 export class ReaderConfigurationController
     extends DetailedController<
         ReaderConfigurationModel,
+        ReaderConfigurationDetailedModel,
         ReaderConfigurationCreateDTO,
         ReaderConfigurationUpdateDTO,
         ReaderConfigurationService

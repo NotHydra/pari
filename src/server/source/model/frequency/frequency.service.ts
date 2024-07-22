@@ -4,18 +4,23 @@ import { PrismaService } from "./../../provider/prisma.service";
 
 import { DetailedService } from "./../../global/detailed.service";
 
-import { FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO } from "./frequency";
+import { FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO, FrequencyDetailedModel } from "./frequency";
+import { PrismaDetailedModelInterface } from "source/common/interface/prisma-model.interface";
 
 interface FrequencyServiceInterface {}
 
 @Injectable()
 export class FrequencyService
-    extends DetailedService<FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO>
+    extends DetailedService<FrequencyModel, FrequencyDetailedModel, FrequencyCreateDTO, FrequencyUpdateDTO>
     implements FrequencyServiceInterface
 {
     constructor(prismaService: PrismaService) {
-        super(FrequencyService.name, prismaService.frequency, {
-            rssi: true,
-        });
+        super(
+            FrequencyService.name,
+            prismaService.frequency as unknown as PrismaDetailedModelInterface<FrequencyModel, FrequencyDetailedModel>,
+            {
+                rssi: true,
+            }
+        );
     }
 }

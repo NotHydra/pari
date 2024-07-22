@@ -10,6 +10,7 @@ import {
     ActiveReaderConfigurationModel,
     ActiveReaderConfigurationCreateDTO,
     ActiveReaderConfigurationUpdateDTO,
+    ActiveReaderConfigurationDetailedModel,
 } from "./active-reader-configuration";
 import { ActiveReaderConfigurationService } from "./active-reader-configuration.service";
 
@@ -20,6 +21,7 @@ interface ActiveReaderConfigurationControllerInterface {}
 export class ActiveReaderConfigurationController
     extends DetailedController<
         ActiveReaderConfigurationModel,
+        ActiveReaderConfigurationDetailedModel,
         ActiveReaderConfigurationCreateDTO,
         ActiveReaderConfigurationUpdateDTO,
         ActiveReaderConfigurationService

@@ -8,7 +8,9 @@ import {
     ActiveReaderConfigurationModel,
     ActiveReaderConfigurationCreateDTO,
     ActiveReaderConfigurationUpdateDTO,
+    ActiveReaderConfigurationDetailedModel,
 } from "./active-reader-configuration";
+import { PrismaDetailedModelInterface } from "source/common/interface/prisma-model.interface";
 
 interface ActiveReaderConfigurationServiceInterface {}
 
@@ -16,14 +18,22 @@ interface ActiveReaderConfigurationServiceInterface {}
 export class ActiveReaderConfigurationService
     extends DetailedService<
         ActiveReaderConfigurationModel,
+        ActiveReaderConfigurationDetailedModel,
         ActiveReaderConfigurationCreateDTO,
         ActiveReaderConfigurationUpdateDTO
     >
     implements ActiveReaderConfigurationServiceInterface
 {
     constructor(prismaService: PrismaService) {
-        super(ActiveReaderConfigurationService.name, prismaService.activeReaderConfiguration, {
-            readerConfiguration: { include: { frequencyConfiguration: true } },
-        });
+        super(
+            ActiveReaderConfigurationService.name,
+            prismaService.activeReaderConfiguration as unknown as PrismaDetailedModelInterface<
+                ActiveReaderConfigurationModel,
+                ActiveReaderConfigurationDetailedModel
+            >,
+            {
+                readerConfiguration: { include: { frequencyConfiguration: true } },
+            }
+        );
     }
 }

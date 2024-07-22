@@ -6,7 +6,7 @@ import { ResponseFormatInterface } from "./../../common/interface/response-forma
 
 import { DetailedController } from "./../../global/detailed.controller";
 
-import { FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO } from "./frequency";
+import { FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO, FrequencyDetailedModel } from "./frequency";
 import { FrequencyService } from "./frequency.service";
 
 interface FrequencyControllerInterface {}
@@ -14,7 +14,13 @@ interface FrequencyControllerInterface {}
 @Controller("frequency")
 @UseInterceptors(ResponseFormatInterceptor)
 export class FrequencyController
-    extends DetailedController<FrequencyModel, FrequencyCreateDTO, FrequencyUpdateDTO, FrequencyService>
+    extends DetailedController<
+        FrequencyModel,
+        FrequencyDetailedModel,
+        FrequencyCreateDTO,
+        FrequencyUpdateDTO,
+        FrequencyService
+    >
     implements FrequencyControllerInterface
 {
     constructor(modelService: FrequencyService) {
@@ -39,7 +45,7 @@ export class FrequencyController
         @Param("id", ParseIntPipe) id: number
     ): Promise<ResponseFormatInterface<FrequencyModel>> {
         this.loggerService.error(`Remove: Method Is Disabled`);
-        
+
         throw new ForbiddenException("Method Is Disabled");
     }
 }

@@ -6,3 +6,10 @@ export interface PrismaModelInterface<ModelType> {
     update(options?: any): Promise<ModelType>;
     delete(options?: any): Promise<ModelType>;
 }
+
+export interface PrismaDetailedModelInterface<ModelType, ModelDetailedtype extends ModelType>
+    extends PrismaModelInterface<ModelType> {
+    findMany(options?: any): Promise<ModelDetailedtype[]>;
+    findUnique(options?: any): Promise<ModelDetailedtype>;
+    findFirst(options?: any): Promise<ModelDetailedtype>;
+}
