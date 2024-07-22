@@ -9,11 +9,11 @@ export class FrequencyModel implements Prisma.FrequencyCreateInput {
     @IsNumber()
     tagId: number;
 
-    @IsOptional()
-    tag?: Prisma.TagCreateNestedOneWithoutFrequencyInput | undefined;
-
     @IsString()
     frequency: string;
+
+    @IsOptional()
+    tag?: Prisma.TagCreateNestedOneWithoutFrequencyInput | undefined;
 
     @IsOptional()
     @IsArray()
