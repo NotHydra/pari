@@ -23,7 +23,7 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
                           skip: (page - 1) * count,
                           take: count,
                           orderBy: {
-                              createdAt: "asc",
+                              id: "asc",
                           },
                       })
                     : await this.prismaModel.findMany();

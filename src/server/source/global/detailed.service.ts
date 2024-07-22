@@ -34,7 +34,7 @@ export class DetailedService<
                           skip: (page - 1) * count,
                           take: count,
                           orderBy: {
-                              createdAt: "asc",
+                              id: "asc",
                           },
                           include: this.detailed,
                       })
