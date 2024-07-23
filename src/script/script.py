@@ -27,7 +27,7 @@ from rfid.reader_settings import (
 )
 from rfid.status import InventoryStatus
 from rfid.transport import SerialTransport
-from rfid.utils import calculate_rssi
+from rfid.utils import calculate_rssi, hex_readable
 from rpi_lcd import LCD as LCDRPi
 from typing import Iterator
 
@@ -201,6 +201,7 @@ try:
             LCD.text(f"New ID {tag_id}", 2)
 
             stop: bool = False
+            tag_data_list: list[bytes] = []
             average_rssi_list: list[float] = []
             for frequency_index, frequency_value in enumerate(
                 configuration_frequency_configuration_list, start=1
@@ -310,6 +311,8 @@ try:
                             continue
 
                         if res.status == InventoryStatus.SUCCESS and res.tag:
+                            tag_data_list.append(res.tag.data)
+
                             rssi_value: int = int(
                                 str(calculate_rssi(res.tag.rssi))[0:3]
                             )
@@ -389,6 +392,30 @@ try:
                     print()
 
             if not stop:
+                response_tag: Response | None = None
+                try:
+                    response_tag = requests.put(
+                        f"{SERVER_URL}/api/tag/id/{tag_id}",
+                        json={"tag": hex_readable(list(set(tag_data_list))[0])},
+                        timeout=5,
+                    )
+
+                except Exception as e:
+                    log(f"PUT Response: {e}")
+                    LCD.text("RSSI Mode:", 1)
+                    LCD.text("PUT Fail", 2)
+                    time.sleep(1)
+                    break
+
+                if (response_tag is None) or (response_tag.json()["data"] is None):
+                    log(f"PUT Response: Invalid")
+                    LCD.text("RSSI Mode:", 1)
+                    LCD.text("PUT Invalid", 2)
+                    time.sleep(1)
+                    break
+
+                log(f"PUT Response: {response_tag.json()}")
+
                 log("RSSI Summary Of All Frequencies")
                 for average_rssi_index, average_rssi_value in enumerate(
                     average_rssi_list, start=1
@@ -417,6 +444,9 @@ try:
 
 except KeyboardInterrupt:
     pass
+
+except Exception as e:
+    print(e)
 
 finally:
     LCD.clear()
