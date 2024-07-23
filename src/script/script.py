@@ -153,9 +153,16 @@ try:
                 ),
             )
 
+            fail: bool = False
+            count: int = 1
             rssi_value: float | None = None
             for res in response:
                 if res is None:
+                    count += 1
+                    if count > 5:
+                        fail = True
+                        break
+
                     continue
 
                 if res.status == InventoryStatus.SUCCESS and res.tag:
@@ -196,10 +203,17 @@ try:
                 ):
                     break
 
-            log(f"RSSI Value: {rssi_value}")
-            LCD.text("RSSI Value:", 1)
-            LCD.text(f"{rssi_value}dBm", 2)
-            print()
+            if fail:
+                log(f"ID Mode Fail")
+                LCD.text("ID Mode:", 1)
+                LCD.text("Fail", 2)
+                print()
+
+            else:
+                log(f"RSSI Value: {rssi_value}")
+                LCD.text("RSSI Value:", 1)
+                LCD.text(f"{rssi_value}dBm", 2)
+                print()
 
             log("Finished")
             print()
