@@ -33,7 +33,7 @@ PUT {{url}}/id/1
 Content-Type: application/json
 
 {
-    "readerConfigurationId": 3
+    "readerConfigurationId": 1
 }
 
 ###

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "tag" ALTER COLUMN "tag" SET DATA TYPE TEXT;

@@ -49,7 +49,7 @@ model FrequencyConfiguration {
 model Tag {
   id                    Int      @id @default(autoincrement())
   readerConfigurationId Int      @map("reader_configuration_id")
-  tag                   Bytes?
+  tag                   String?
   createdAt             DateTime @default(now()) @map("created_at")
 
   readerConfiguration    ReaderConfiguration?     @relation(fields: [readerConfigurationId], references: [id], onDelete: Cascade)

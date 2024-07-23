@@ -44,18 +44,6 @@ export class TagController
     }
 
     @Override
-    public async change(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        @Param("id", ParseIntPipe) id: number,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        @Body() payload: TagUpdateDTO
-    ): Promise<ResponseFormatInterface<TagModel>> {
-        this.loggerService.error(`Change: Method Is Disabled`);
-
-        throw new ForbiddenException("Method Is Disabled");
-    }
-
-    @Override
     public async remove(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         @Param("id", ParseIntPipe) id: number

@@ -28,3 +28,12 @@ GET {{url}}/id/1/detailed
 POST {{url}}
 
 ###
+
+PUT {{url}}/id/1
+Content-Type: application/json
+
+{
+    "tag": "A0 B1 C2 D3 E4 F5"
+}
+
+###

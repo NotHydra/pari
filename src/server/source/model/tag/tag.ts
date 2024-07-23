@@ -12,7 +12,7 @@ export class TagModel implements Prisma.TagCreateInput {
     readerConfigurationId: number;
 
     @IsOptional()
-    tag?: Buffer;
+    tag?: string;
 
     @IsDate()
     createdAt: Date;
@@ -24,4 +24,6 @@ export class TagDetailedModel extends TagModel {
 
 export class TagCreateDTO {}
 
-export class TagUpdateDTO {}
+export class TagUpdateDTO {
+    tag: string;
+}
