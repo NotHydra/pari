@@ -93,7 +93,122 @@ try:
         GPIO.output(TRAFFIC_LIGHT_RED_PIN, GPIO.HIGH)
 
         if GPIO.input(BUTTON_YELLOW_PIN) == GPIO.LOW:
-            log("ID Scan")
+            log("ID Mode Starting")
+
+            GPIO.output(TRAFFIC_LIGHT_GREEN_PIN, GPIO.LOW)
+            GPIO.output(TRAFFIC_LIGHT_YELLOW_PIN, GPIO.HIGH)
+            GPIO.output(TRAFFIC_LIGHT_RED_PIN, GPIO.LOW)
+
+            LCD.text("ID Mode:", 1)
+            LCD.text("Starting", 2)
+            time.sleep(1)
+
+            READER.set_reader_settings(
+                ReaderSettings(
+                    address=0,
+                    rfid_protocol=RfidProtocol.ISO_18000_6C,
+                    work_mode=WorkMode.ACTIVE_MODE,
+                    output_interface=OutputInterface.USB,
+                    baud_rate=BaudRate.BPS_115200,
+                    wiegand=Wiegand(
+                        is_open=False,
+                        byte_first_type=WiegandByteFirstType.LOW_BYTE_FIRST,
+                        protocol=WiegandProtocol.WG_26,
+                    ),
+                    antenna=Antenna(
+                        ant_1=True,
+                        ant_2=False,
+                        ant_3=False,
+                        ant_4=False,
+                        ant_5=False,
+                        ant_6=False,
+                        ant_7=False,
+                        ant_8=False,
+                    ),
+                    frequency=Frequency(
+                        region=REGION_MALAYSIA,
+                        min_frequency=919.5,
+                        max_frequency=922.5,
+                    ),
+                    power=30,
+                    output_memory_bank=MemoryBank.EPC,
+                    q_value=4,
+                    session=Session.SESSION_0,
+                    output_start_address=0,
+                    output_length=12,
+                    filter_time=0,
+                    trigger_time=3,
+                    buzzer_time=True,
+                    inventory_interval=100,
+                )
+            )
+
+            response: Iterator[ResponseInventory] | None = READER.start_inventory(
+                work_mode=WorkMode.ANSWER_MODE,
+                answer_mode_inventory_parameter=(
+                    AnswerModeInventoryParameter(
+                        stop_after=StopAfter.NUMBER,
+                        value=10,
+                    )
+                ),
+            )
+
+            rssi_value: float | None = None
+            for res in response:
+                if res is None:
+                    continue
+
+                if res.status == InventoryStatus.SUCCESS and res.tag:
+                    LCD.text("ID Mode:", 1)
+                    LCD.text("Obtained", 2)
+                    time.sleep(1)
+
+                    response_tag: Response | None = None
+                    try:
+                        response_tag = requests.get(
+                            f"{SERVER_URL}/api/tag/rssi-by-tag/{hex_readable(res.tag.data).replace(' ', '-')}",
+                            timeout=5,
+                        )
+
+                    except Exception as e:
+                        log(f"Response: {e}")
+                        LCD.text(f"ID Mode:", 1)
+                        LCD.text("GET Fail", 2)
+                        time.sleep(1)
+                        break
+
+                    if (response_tag is None) or (response_tag.json()["data"] is None):
+                        log(f"Invalid Response")
+                        LCD.text(f"ID Mode:", 1)
+                        LCD.text("GET Invalid", 2)
+                        time.sleep(1)
+                        break
+
+                    log(f"GET Response: {response_tag.json()}")
+
+                    rssi_value = response_tag.json()["data"]
+                    if rssi_value is not None:
+                        break
+
+                if (
+                    res.status == InventoryStatus.NO_COUNT_LABEL
+                    and READER.work_mode == WorkMode.ANSWER_MODE
+                ):
+                    break
+
+            log(f"RSSI Value: {rssi_value}")
+            LCD.text("RSSI Value:", 1)
+            LCD.text(f"{rssi_value}dBm", 2)
+            print()
+
+            log("Finished")
+            print()
+
+            while True:
+                if GPIO.input(BUTTON_RED_PIN) == GPIO.LOW:
+                    break
+
+                time.sleep(0.5)
 
         elif GPIO.input(BUTTON_GREEN_PIN) == GPIO.LOW:
             log("RSSI Mode Starting")
@@ -343,16 +458,16 @@ try:
 
                             if (
                                 (response_rssi is None)
-                                or (response_frequency.json()["data"] is None)
-                                or (response_frequency.json()["data"]["id"] is None)
+                                or (response_rssi.json()["data"] is None)
+                                or (response_rssi.json()["data"]["id"] is None)
                             ):
                                 log(f"Invalid Response")
                                 LCD.text(f"RSSI {count}:", 1)
-                                LCD.text("Invalid Response", 2)
+                                LCD.text("POST Invalid", 2)
                                 time.sleep(1)
                                 break
 
-                            log(f"Response: {response_rssi.json()}")
+                            log(f"POST Response: {response_rssi.json()}")
 
                             rssi_list.append(rssi_value)
 
