@@ -148,7 +148,7 @@ try:
             LCD.text(str(configuration_id), 2)
             time.sleep(1)
 
-            log(f"Name: {configuration_id}")
+            log(f"Name: {configuration_name}")
             LCD.text("Config Name:", 1)
             LCD.text(configuration_name, 2)
             time.sleep(1)
