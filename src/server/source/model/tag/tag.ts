@@ -19,7 +19,7 @@ export class TagModel implements Prisma.TagCreateInput {
 }
 
 export class TagDetailedModel extends TagModel {
-    frquency: FrequencyDetailedModel[];
+    frequency: FrequencyDetailedModel[];
 }
 
 export class TagCreateDTO {}
