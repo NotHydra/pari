@@ -147,7 +147,7 @@ export default function Home(): JSX.Element {
     }, []);
 
     return (
-        <>
+        <div className="landing-page">
             <section className="hero home has-background-main is-fullheight">
                 <div className="hero-body">
                     <div>
@@ -290,6 +290,6 @@ export default function Home(): JSX.Element {
                     </p>
                 </div>
             </footer>
-        </>
+        </div>
     );
 }

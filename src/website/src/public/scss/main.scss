@@ -1,12 +1,14 @@
-html {
-    scroll-behavior: smooth !important;
-}
-
 :root {
     --main: #ff9933;
     --secondary: #7f4c19;
     --dark: #2e333d;
     --light: #f5f5f5;
+    --white: #ffffff;
+}
+
+html {
+    scroll-behavior: smooth;
+    background-color: var(--light);
 }
 
 .landing-page {
@@ -48,5 +50,25 @@ html {
 
     .footer-link {
         color: #ffffff !important;
+    }
+}
+
+.dashboard {
+    .sidebar {
+        height: 100vh;
+
+        .sidebar-item {
+            &:hover {
+                background-color: var(--main);
+            }
+        }
+    }
+
+    .is-fullwidth {
+        width: 100%;
+    }
+
+    .line-bottom {
+        border-bottom: 1px solid var(--dark);
     }
 }
