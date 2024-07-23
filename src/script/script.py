@@ -396,7 +396,11 @@ try:
                 try:
                     response_tag = requests.put(
                         f"{SERVER_URL}/api/tag/id/{tag_id}",
-                        json={"tag": hex_readable(list(set(tag_data_list))[0])},
+                        json={
+                            "tag": hex_readable(list(set(tag_data_list))[0]).replace(
+                                " ", "-"
+                            )
+                        },
                         timeout=5,
                     )
 
