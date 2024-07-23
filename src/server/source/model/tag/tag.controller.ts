@@ -11,6 +11,7 @@ import { TagService } from "./tag.service";
 
 interface TagControllerInterface {
     findLatest(): Promise<ResponseFormatInterface<TagModel | null>>;
+    findRSSIByTag(tag: string): Promise<ResponseFormatInterface<number | null>>;
 }
 
 @Controller("tag")
@@ -38,6 +39,26 @@ export class TagController
             return response;
         } catch (error) {
             this.loggerService.error(`Find Latest: ${error.message}`);
+
+            return formatResponse<null>(false, 500, error.message, null);
+        }
+    }
+
+    @Get("rssi-by-tag/:tag")
+    public async findRSSIByTag(@Param("tag") tag: string): Promise<ResponseFormatInterface<number | null>> {
+        try {
+            const response: ResponseFormatInterface<number> = formatResponse<number>(
+                true,
+                200,
+                `RSSI By Tag ${tag} Found`,
+                await this.modelService.findRSSIByTag(tag)
+            );
+
+            this.loggerService.log(`Find RSSI By Tag: ${JSON.stringify(response)}`);
+
+            return response;
+        } catch (error) {
+            this.loggerService.error(`Find RSSI By Tag: ${error.message}`);
 
             return formatResponse<null>(false, 500, error.message, null);
         }
