@@ -406,6 +406,12 @@ try:
                 log("Finished")
                 print()
 
+                while True:
+                    if GPIO.input(BUTTON_RED_PIN) == GPIO.LOW:
+                        break
+
+                    time.sleep(0.5)
+
         time.sleep(0.5)
 
 
