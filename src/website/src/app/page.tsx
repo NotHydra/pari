@@ -94,9 +94,8 @@ export default function Home(): JSX.Element {
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
             try {
-                const response: AxiosResponse<ResponseFormatInterface<AttemptInterface>> = await axios.get<ResponseFormatInterface<AttemptInterface>>(
-                    "http://localhost:3001/api/attempt/latest"
-                );
+                const response: AxiosResponse<ResponseFormatInterface<AttemptInterface>> =
+                    await axios.get<ResponseFormatInterface<AttemptInterface>>("http://localhost:3001/api/tag/latest");
 
                 console.log("Attempt:");
                 console.log(response.data.data);

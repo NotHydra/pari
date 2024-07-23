@@ -6,44 +6,47 @@ html {
     --main: #ff9933;
     --secondary: #7f4c19;
     --dark: #2e333d;
+    --light: #f5f5f5;
 }
 
-.home {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./../images/home-background.png") !important;
-    background-size: contain !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
+.landing-page {
+    .home {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./../images/home-background.png") !important;
+        background-size: contain !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
 
-    .subtitle {
-        width: 40% !important;
-        text-align: justify !important;
+        .subtitle {
+            width: 40% !important;
+            text-align: justify !important;
+        }
     }
-}
 
-.is-main {
-    color: var(--main) !important;
-}
+    .is-main {
+        color: var(--main) !important;
+    }
 
-.has-text-main {
-    color: var(--main) !important;
-}
+    .has-text-main {
+        color: var(--main) !important;
+    }
 
-.has-background-main {
-    background-color: var(--main) !important;
-}
+    .has-background-main {
+        background-color: var(--main) !important;
+    }
 
-.has-background-secondary {
-    background-color: var(--secondary) !important;
-}
+    .has-background-secondary {
+        background-color: var(--secondary) !important;
+    }
 
-.has-border-dark {
-    border: 3px solid var(--dark) !important;
-}
+    .has-border-dark {
+        border: 3px solid var(--dark) !important;
+    }
 
-.card {
-    height: 100% !important;
-}
+    .card {
+        height: 100% !important;
+    }
 
-.footer-link {
-    color: #ffffff !important;
+    .footer-link {
+        color: #ffffff !important;
+    }
 }
