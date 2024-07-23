@@ -85,6 +85,13 @@ try:
     time.sleep(1)
 
     while True:
+        LCD.text("Reader:", 1)
+        LCD.text("Select A Mode", 2)
+
+        GPIO.output(TRAFFIC_LIGHT_GREEN_PIN, GPIO.LOW)
+        GPIO.output(TRAFFIC_LIGHT_YELLOW_PIN, GPIO.LOW)
+        GPIO.output(TRAFFIC_LIGHT_RED_PIN, GPIO.HIGH)
+
         if GPIO.input(BUTTON_YELLOW_PIN) == GPIO.LOW:
             log("ID Scan")
 
@@ -193,10 +200,18 @@ try:
             LCD.text("RSSI Mode:", 1)
             LCD.text(f"New ID {tag_id}", 2)
 
+            stop: bool = False
             average_rssi_list: list[float] = []
             for frequency_index, frequency_value in enumerate(
                 configuration_frequency_configuration_list, start=1
             ):
+                if GPIO.input(BUTTON_RED_PIN) == GPIO.LOW:
+                    stop = True
+                    break
+
+                elif stop:
+                    break
+
                 log(f"Frequency {frequency_index}: {frequency_value}MHz")
                 LCD.text(f"Frequency {frequency_index}:", 1)
                 LCD.text(f"{frequency_value}MHz", 2)
@@ -285,6 +300,10 @@ try:
                 rssi_list: list[int] = []
                 try:
                     for res in response:
+                        if GPIO.input(BUTTON_RED_PIN) == GPIO.LOW:
+                            stop = True
+                            break
+
                         print()
 
                         if res is None:
@@ -353,41 +372,39 @@ try:
 
                 READER.stop_inventory()
 
+                if not stop:
+                    print()
+                    log(f"Frequency {frequency_index}: {frequency_value}MHz")
+                    for rssi_index, rssi_value in enumerate(rssi_list, start=1):
+                        log(f"RSSI {rssi_index}: {rssi_value}dBm")
+
+                    average_rssi: float = sum(rssi_list) / len(rssi_list)
+                    average_rssi_list.append(average_rssi)
+
+                    time.sleep(0.5)
+                    log(f"Average RSSI: {average_rssi}dBm")
+                    LCD.text("Average RSSI:", 1)
+                    LCD.text(f"{average_rssi}dBm", 2)
+                    time.sleep(1)
+                    print()
+
+            if not stop:
+                log("RSSI Summary Of All Frequencies")
+                for average_rssi_index, average_rssi_value in enumerate(
+                    average_rssi_list, start=1
+                ):
+                    log(
+                        f"Frequency {average_rssi_index} ({configuration_frequency_configuration_list[average_rssi_index-1]}MHz) Average RSSI: {average_rssi_value}dBm"
+                    )
+
+                final_rssi: float = sum(average_rssi_list) / len(average_rssi_list)
+                log(f"Final RSSI: {final_rssi}dBm")
+                LCD.text("Final RSSI:", 1)
+                LCD.text(f"{final_rssi}dBm", 2)
                 print()
-                log(f"Frequency {frequency_index}: {frequency_value}MHz")
-                for rssi_index, rssi_value in enumerate(rssi_list, start=1):
-                    log(f"RSSI {rssi_index}: {rssi_value}dBm")
 
-                average_rssi: float = sum(rssi_list) / len(rssi_list)
-                average_rssi_list.append(average_rssi)
-
-                time.sleep(0.5)
-                log(f"Average RSSI: {average_rssi}dBm")
-                LCD.text("Average RSSI:", 1)
-                LCD.text(f"{average_rssi}dBm", 2)
-                time.sleep(1)
+                log("Finished")
                 print()
-
-            log("RSSI Summary Of All Frequencies")
-            for average_rssi_index, average_rssi_value in enumerate(
-                average_rssi_list, start=1
-            ):
-                log(
-                    f"Frequency {average_rssi_index} ({configuration_frequency_configuration_list[average_rssi_index-1]}MHz) Average RSSI: {average_rssi_value}dBm"
-                )
-
-            final_rssi: float = sum(average_rssi_list) / len(average_rssi_list)
-            log(f"Final RSSI: {final_rssi}dBm")
-            LCD.text("Final RSSI:", 1)
-            LCD.text(f"{final_rssi}dBm", 2)
-            print()
-
-            log("Finished")
-            print()
-
-        GPIO.output(TRAFFIC_LIGHT_GREEN_PIN, GPIO.LOW)
-        GPIO.output(TRAFFIC_LIGHT_YELLOW_PIN, GPIO.LOW)
-        GPIO.output(TRAFFIC_LIGHT_RED_PIN, GPIO.HIGH)
 
         time.sleep(0.5)
 
