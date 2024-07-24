@@ -5,18 +5,31 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
+import { ActiveReaderConfigurationModel } from "@/common/interface/active-reader-configuration";
 import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
+
 import { timestampToString } from "@/utility/timestamp-to-string";
 
 export default function ReaderConfigurationPage(): JSX.Element {
+    const [activeReaderConfiguration, setActiveReaderConfiguration] = useState<ActiveReaderConfigurationModel | null>(null);
     const [tableData, setTableData] = useState<ReaderConfigurationModel[]>([]);
 
     useEffect((): void => {
         const fetchData = async (): Promise<void> => {
             try {
                 await axios
+                    .get<ResponseFormatInterface<ActiveReaderConfigurationModel[]>>("http://localhost:3001/api/active-reader-configuration")
+                    .then((response: AxiosResponse<ResponseFormatInterface<ActiveReaderConfigurationModel[]>>) => {
+                        console.log(response.data.data);
+
+                        setActiveReaderConfiguration(response.data.data[0]);
+                    });
+
+                await axios
                     .get<ResponseFormatInterface<ReaderConfigurationModel[]>>("http://localhost:3001/api/reader-configuration")
                     .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel[]>, any>): void => {
+                        console.log(response.data.data);
+
                         setTableData(response.data.data);
                     });
             } catch (error) {}
@@ -118,6 +131,21 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
                                                 <td>
                                                     <div className="buttons has-addons is-centered">
+                                                        <button
+                                                            className="button is-success has-text-white"
+                                                            title="Use Action"
+                                                            disabled={
+                                                                activeReaderConfiguration !== null &&
+                                                                activeReaderConfiguration.readerConfigurationId === data.id
+                                                                    ? true
+                                                                    : false
+                                                            }
+                                                        >
+                                                            <span className="icon">
+                                                                <i className="fas fa-check"></i>
+                                                            </span>
+                                                        </button>
+
                                                         <button className="button is-info has-text-white" title="Frequency Configuration Action">
                                                             <span className="icon">
                                                                 <i className="fas fa-sliders"></i>
