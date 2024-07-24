@@ -22,7 +22,7 @@ export default function NavigationBar(): JSX.Element {
     };
 
     return (
-        <div className="column pl-0">
+        <div className="column pl-0 pb-0">
             <nav className="navbar is-white line-bottom py-2" role="navigation" aria-label="main navigation">
                 <div className="navbar-menu">
                     <div className="navbar-start pl-2">

@@ -18,7 +18,15 @@ export default function Layout({
     return (
         <div className="columns dashboard">
             <SideBar />
-            <NavigationBar />
+            <div className="fixed-grid has-1-cols is-fullwidth">
+                <div className="grid">
+                    <div className="cell">
+                        <NavigationBar />
+                    </div>
+
+                    <div className="cell ml-4 mr-5">{children}</div>
+                </div>
+            </div>
         </div>
     );
 }
