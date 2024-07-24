@@ -6,18 +6,18 @@ import React from "react";
 
 export default function NavigationBar(): JSX.Element {
     const pathName: string = usePathname();
-    const navigationPath: { [key: string]: { display: string; icon: string; link: string }[] } = {
+    const navigationPath: { [key: string]: { display: string; link: string }[] } = {
         "/dashboard": [
-            { display: "Dashboard", icon: "gauge", link: "/dashboard" },
-            { display: "Home", icon: "home", link: "/dashboard" },
+            { display: "Dashboard", link: "/dashboard" },
+            { display: "Home", link: "/dashboard" },
         ],
         "/dashboard/tag": [
-            { display: "Dashboard", icon: "gauge", link: "/dashboard" },
-            { display: "Tag", icon: "tag", link: "/dashboard/tag" },
+            { display: "Dashboard", link: "/dashboard" },
+            { display: "Tag", link: "/dashboard/tag" },
         ],
         "/dashboard/reader-configuration": [
-            { display: "Dashboard", icon: "gauge", link: "/dashboard" },
-            { display: "Reader Configuration", icon: "tower-broadcast", link: "/dashboard/reader-configuration" },
+            { display: "Dashboard", link: "/dashboard" },
+            { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
         ],
     };
 
@@ -30,18 +30,13 @@ export default function NavigationBar(): JSX.Element {
                             (
                                 item: {
                                     display: string;
-                                    icon: string;
                                     link: string;
                                 },
                                 index: number
                             ) => (
                                 <React.Fragment key={index}>
                                     <Link href={item.link} className="navbar-item has-text-main-hover has-text-weight-medium">
-                                        <span className="icon is-left">
-                                            <i className={`fas fa-${item.icon}`}></i>
-                                        </span>
-
-                                        <span>{item.display}</span>
+                                        {item.display}
                                     </Link>
 
                                     {index < navigationPath[pathName].length - 1 ? (
