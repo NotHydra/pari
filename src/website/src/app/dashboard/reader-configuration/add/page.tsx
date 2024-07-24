@@ -17,7 +17,7 @@ export default function ReaderConfigurationAddPage(): JSX.Element {
         e.preventDefault();
 
         Swal.fire<void>({
-            icon: "warning",
+            icon: "question",
             title: "Are you sure?",
             confirmButtonText: "Yes",
             confirmButtonColor: "#3ABB81",
