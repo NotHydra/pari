@@ -60,6 +60,10 @@ html {
         .sidebar-item {
             border-radius: 0.375rem 0 0 0.375rem;
 
+            &.is-active {
+                background-color: var(--light);
+            }
+
             &:hover {
                 background-color: var(--light);
             }

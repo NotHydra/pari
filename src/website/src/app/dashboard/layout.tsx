@@ -1,25 +1,20 @@
+"use client";
+
 import "@fortawesome/fontawesome-free/css/all.css";
 import "bulma/css/bulma.css";
 
-import type { Metadata } from "next";
-import { NextFont } from "next/dist/compiled/@next/font";
-import { Inter } from "next/font/google";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import "./../../public/css/main.css";
-
-const inter: NextFont = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-    title: "PARI | Dashboard",
-    description: "SISTEM KLASIFIKASI KEMATANGAN PEPAYA (Carica papaya) SECARA NON-INVASIF BERBASIS GELOMBANG ELEKTROMAGNETIK FREKUENSI ULTRA TINGGI",
-};
 
 export default function Layout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>): JSX.Element {
+    const pathName: string = usePathname();
+
     return (
         <div className="columns dashboard">
             <aside className="column is-2 sidebar has-text-dark has-background-white pb-0 pr-0">
@@ -31,17 +26,26 @@ export default function Layout({
 
                 <ul className="ml-3 mt-3">
                     <li>
-                        <Link href="/dashboard/home" className="button is-fullwidth is-white sidebar-item mr-0 mb-1 pl-4 pr-0 py-2">
+                        <Link
+                            href="/dashboard/home"
+                            className={`button is-fullwidth is-white sidebar-item mr-0 mb-3 pl-4 pr-0 py-2${pathName == "/dashboard/home" ? " is-active" : ""}`}
+                        >
                             <p className="is-fullwidth has-text-dark has-text-left">Home</p>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/dashboard/tag" className="button is-fullwidth is-white sidebar-item mr-0 mb-1 pl-4 pr-0 py-2">
+                        <Link
+                            href="/dashboard/tag"
+                            className={`button is-fullwidth is-white sidebar-item mr-0 mb-3 pl-4 pr-0 py-2${pathName == "/dashboard/tag" ? " is-active" : ""}`}
+                        >
                             <p className="is-fullwidth has-text-dark has-text-left">Tag</p>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/dashboard/reader-configuration" className="button is-fullwidth is-white sidebar-item mr-0 mb-1 pl-4 pr-0 py-2">
+                        <Link
+                            href="/dashboard/reader-configuration"
+                            className={`button is-fullwidth is-white sidebar-item mr-0 mb-3 pl-4 pr-0 py-2${pathName == "/dashboard/reader-configuration" ? " is-active" : ""}`}
+                        >
                             <p className="is-fullwidth has-text-dark has-text-left">Reader Configuration</p>
                         </Link>
                     </li>
