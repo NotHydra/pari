@@ -5,10 +5,10 @@ import "bulma/css/bulma.css";
 
 import React from "react";
 
-import "./../../public/css/main.css";
+import "@/public/css/main.css";
 
-import SideBar from "./../../components/side-bar";
-import NavigationBar from "./../../components/navigation-bar";
+import SideBar from "@/components/side-bar";
+import NavigationBar from "@/components/navigation-bar";
 
 export default function Layout({
     children,

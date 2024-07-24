@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 
-import { ResponseFormatInterface } from "./../../../common/interface/response-format.interface";
-import { ReaderConfigurationModel } from "./../../../common/interface/reader-configuration";
+import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
+import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
+import { timestampToString } from "@/utility/timestamp-to-string";
 
 export default function Page(): JSX.Element {
     const [tableData, setTableData] = useState<ReaderConfigurationModel[]>([]);
@@ -106,9 +107,9 @@ export default function Page(): JSX.Element {
 
                                                 <td>{data.rssiScanInterval}</td>
 
-                                                <td className="timestamp">{data.createdAt.toString()}</td>
+                                                <td className="timestamp">{timestampToString(data.createdAt)}</td>
 
-                                                <td className="timestamp">{data.updatedAt.toString()}</td>
+                                                <td className="timestamp">{timestampToString(data.updatedAt)}</td>
 
                                                 <td>
                                                     <div className="buttons has-addons is-centered">
