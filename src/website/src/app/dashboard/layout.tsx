@@ -10,7 +10,7 @@ import "@/public/css/main.css";
 import SideBar from "@/components/side-bar";
 import NavigationBar from "@/components/navigation-bar";
 
-export default function Layout({
+export default function DashboardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
