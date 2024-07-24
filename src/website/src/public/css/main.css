@@ -66,6 +66,9 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-right: 1px solid var(--light);
 }
+.dashboard .navbar .navbar-item {
+  background-color: var(--white);
+}
 .dashboard .table-container {
   height: 32.5rem !important;
   overflow-y: auto;

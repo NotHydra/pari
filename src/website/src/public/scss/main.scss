@@ -87,6 +87,12 @@ html {
         }
     }
 
+    .navbar {
+        .navbar-item {
+            background-color: var(--white);
+        }
+    }
+
     .table-container {
         height: 32.5rem !important;
 
