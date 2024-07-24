@@ -11,7 +11,7 @@ export default function SideBar(): JSX.Element {
         <aside className="column is-2 sidebar has-text-dark has-background-white line-right pb-0 pr-0">
             <div className="line-bottom">
                 <Link href="/dashboard" className="navbar-item p-0">
-                    <h2 className="title is-3 brand is-fullwidth has-text-dark has-text-main-hover has-text-centered py-4">PARI</h2>
+                    <h2 className="title is-3 brand is-fullwidth has-text-dark has-text-main-hover has-text-centered">PARI</h2>
                 </Link>
             </div>
 
