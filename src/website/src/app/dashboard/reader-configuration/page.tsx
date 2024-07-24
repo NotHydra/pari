@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 
-import { ResponseFormatInterface } from "../common/interface/response-format.interface";
-import { ReaderConfigurationModel } from "../common/interface/reader-configuration";
+import { ResponseFormatInterface } from "./../../../common/interface/response-format.interface";
+import { ReaderConfigurationModel } from "./../../../common/interface/reader-configuration";
 
 export default function Page(): JSX.Element {
     const [tableData, setTableData] = useState<ReaderConfigurationModel[]>([]);
