@@ -26,6 +26,18 @@ export default function ReaderConfigurationAddPage(): JSX.Element {
         }).then(async (result: SweetAlertResult<void>): Promise<void> => {
             if (result.isConfirmed) {
                 try {
+                    if (name === "") {
+                        throw new Error("Name Must Not Be Empty");
+                    }
+
+                    if (rssiScanCount <= 0) {
+                        throw new Error("RSSI Scan Count Must Be Greater Than 0");
+                    }
+
+                    if (rssiScanInterval <= 0) {
+                        throw new Error("RSSI Scan Interval Must Be Greater Than 0");
+                    }
+
                     await axios
                         .post<
                             ResponseFormatInterface<ReaderConfigurationModel>
@@ -50,10 +62,12 @@ export default function ReaderConfigurationAddPage(): JSX.Element {
                             }
                         );
                 } catch (error) {
+                    console.log(error);
+
                     Swal.fire({
                         icon: "error",
                         title: "Error",
-                        text: "Internal Server Error",
+                        text: error instanceof Error ? error.message : "Internal Server Error",
                         confirmButtonText: "Close",
                         confirmButtonColor: "#FF6685",
                     });
