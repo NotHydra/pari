@@ -64,12 +64,23 @@ html {
         .sidebar-item {
             border-radius: 0.375rem 0 0 0.375rem;
 
+            border: 1px solid var(--white);
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+
+            left: 1px;
+
             &.is-active {
                 background-color: var(--light);
+
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                border-right: 1px solid var(--light);
             }
 
             &:hover {
                 background-color: var(--light);
+
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                border-right: 1px solid var(--light);
             }
         }
     }

@@ -24,6 +24,7 @@ export default function SideBar(): JSX.Element {
                         <p className="is-fullwidth has-text-dark has-text-left">Home</p>
                     </Link>
                 </li>
+
                 <li>
                     <Link
                         href="/dashboard/tag"
@@ -32,6 +33,7 @@ export default function SideBar(): JSX.Element {
                         <p className="is-fullwidth has-text-dark has-text-left">Tag</p>
                     </Link>
                 </li>
+
                 <li>
                     <Link
                         href="/dashboard/reader-configuration"
