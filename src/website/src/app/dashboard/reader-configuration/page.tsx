@@ -1,4 +1,28 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
+
+import { ResponseFormatInterface } from "../common/interface/response-format.interface";
+import { ReaderConfigurationModel } from "../common/interface/reader-configuration";
+
 export default function Page(): JSX.Element {
+    const [tableData, setTableData] = useState<ReaderConfigurationModel[]>([]);
+
+    useEffect(() => {
+        const fetchData = async (): Promise<void> => {
+            try {
+                await axios
+                    .get<ResponseFormatInterface<ReaderConfigurationModel[]>>("http://localhost:3001/api/reader-configuration")
+                    .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel[]>, any>): void => {
+                        setTableData(response.data.data);
+                    });
+            } catch (error) {}
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <div className="card has-background-white">
             <div className="card-content">
@@ -45,46 +69,46 @@ export default function Page(): JSX.Element {
                                 </div>
                             </div>
 
-                            <div className="cell">
-                                <div className="table-container line has-background-light">
-                                    <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
-                                        <thead>
-                                            <tr>
-                                                <th>No.</th>
+                            <div className="cell table-container line has-background-light">
+                                <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
 
-                                                <th>
-                                                    <abbr title="The name of the reader configuration">Name</abbr>
-                                                </th>
+                                            <th>
+                                                <abbr title="The name of the reader configuration">Name</abbr>
+                                            </th>
 
-                                                <th>
-                                                    <abbr title="The amount of RSSI scan for each frequency">RSSI Scan Count</abbr>
-                                                </th>
+                                            <th>
+                                                <abbr title="The amount of RSSI scan for each frequency">RSSI Scan Count</abbr>
+                                            </th>
 
-                                                <th>
-                                                    <abbr title="The amount of delay after each RSSI scan">RSSI Scan Interval {"(ms)"}</abbr>
-                                                </th>
+                                            <th>
+                                                <abbr title="The amount of delay after each RSSI scan">RSSI Scan Interval {"(ms)"}</abbr>
+                                            </th>
 
-                                                <th>Created At</th>
+                                            <th>Created At</th>
 
-                                                <th>Updated At</th>
+                                            <th>Updated At</th>
 
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
 
-                                        <tbody>
-                                            <tr>
-                                                <td>1.</td>
+                                    <tbody>
+                                        {tableData.map((data: ReaderConfigurationModel, index: number) => (
+                                            <tr key={index}>
+                                                <td>{index + 1}.</td>
 
-                                                <td>Default</td>
+                                                <td>{data.name}</td>
 
-                                                <td>10</td>
+                                                <td>{data.rssiScanCount}</td>
 
-                                                <td>10</td>
+                                                <td>{data.rssiScanInterval}</td>
 
-                                                <td className="timestamp">1212-12-12 12:12:12</td>
+                                                <td className="timestamp">{data.createdAt.toString()}</td>
 
-                                                <td className="timestamp">1212-12-12 12:12:12</td>
+                                                <td className="timestamp">{data.updatedAt.toString()}</td>
 
                                                 <td>
                                                     <div className="buttons has-addons is-centered">
@@ -108,9 +132,9 @@ export default function Page(): JSX.Element {
                                                     </div>
                                                 </td>
                                             </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
