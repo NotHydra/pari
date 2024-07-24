@@ -46,6 +46,9 @@ html {
 .dashboard .sidebar {
   height: 100vh;
 }
+.dashboard .sidebar .brand {
+  transition: all 0.2s ease-in-out;
+}
 .dashboard .sidebar .sidebar-item {
   border-radius: 0.375rem 0 0 0.375rem;
 }
@@ -61,6 +64,9 @@ html {
 .dashboard .is-fullwidth {
   width: 100%;
 }
+.dashboard .line-right {
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
 .dashboard .line-bottom {
-  border-bottom: 1px solid var(--dark);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }/*# sourceMappingURL=main.css.map */
