@@ -24,24 +24,24 @@ export default function Layout({
         <div className="columns dashboard">
             <aside className="column is-2 sidebar has-text-dark has-background-white pb-0 pr-0">
                 <div className="line-bottom">
-                    <Link href="/dashboard/home" className="navbar-item py-5">
-                        <h2 className="title is-3 is-fullwidth has-text-dark has-text-centered">PARI</h2>
+                    <Link href="/dashboard/home" className="navbar-item p-0">
+                        <h2 className="title is-3 is-fullwidth has-text-dark has-text-main-hover has-text-centered py-5">PARI</h2>
                     </Link>
                 </div>
 
-                <ul className="mx-3 mt-3">
+                <ul className="ml-3 mt-3">
                     <li>
-                        <Link href="/dashboard/home" className="button is-fullwidth is-white sidebar-item px-3 py-1 mb-3">
+                        <Link href="/dashboard/home" className="button is-fullwidth is-white sidebar-item mr-0 mb-1 pl-4 pr-0 py-2">
                             <p className="is-fullwidth has-text-dark has-text-left">Home</p>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/dashboard/tag" className="button is-fullwidth is-white sidebar-item px-3 py-1 mb-3">
+                        <Link href="/dashboard/tag" className="button is-fullwidth is-white sidebar-item mr-0 mb-1 pl-4 pr-0 py-2">
                             <p className="is-fullwidth has-text-dark has-text-left">Tag</p>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/dashboard/reader-configuration" className="button is-fullwidth is-white sidebar-item px-3 py-1 mb-3">
+                        <Link href="/dashboard/reader-configuration" className="button is-fullwidth is-white sidebar-item mr-0 mb-1 pl-4 pr-0 py-2">
                             <p className="is-fullwidth has-text-dark has-text-left">Reader Configuration</p>
                         </Link>
                     </li>

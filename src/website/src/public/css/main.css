@@ -46,8 +46,14 @@ html {
 .dashboard .sidebar {
   height: 100vh;
 }
+.dashboard .sidebar .sidebar-item {
+  border-radius: 0.375rem 0 0 0.375rem;
+}
 .dashboard .sidebar .sidebar-item:hover {
-  background-color: var(--main);
+  background-color: var(--light);
+}
+.dashboard .has-text-main-hover:hover {
+  color: var(--main) !important;
 }
 .dashboard .is-fullwidth {
   width: 100%;
