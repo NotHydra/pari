@@ -7,16 +7,16 @@ import React from "react";
 export default function NavigationBar(): JSX.Element {
     const pathName: string = usePathname();
     const navigationPath: { [key: string]: { display: string; link: string }[] } = {
-        "/dashboard/home": [
-            { display: "Dashboard", link: "/dashboard/home" },
-            { display: "Home", link: "/dashboard/home" },
+        "/dashboard": [
+            { display: "Dashboard", link: "/dashboard" },
+            { display: "Home", link: "/dashboard" },
         ],
         "/dashboard/tag": [
-            { display: "Dashboard", link: "/dashboard/home" },
+            { display: "Dashboard", link: "/dashboard" },
             { display: "Tag", link: "/dashboard/tag" },
         ],
         "/dashboard/reader-configuration": [
-            { display: "Dashboard", link: "/dashboard/home" },
+            { display: "Dashboard", link: "/dashboard" },
             { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
         ],
     };
