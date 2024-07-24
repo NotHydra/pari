@@ -19,6 +19,11 @@ export default function NavigationBar(): JSX.Element {
             { display: "Dashboard", link: "/dashboard" },
             { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
         ],
+        "/dashboard/reader-configuration/add": [
+            { display: "Dashboard", link: "/dashboard" },
+            { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
+            { display: "Add", link: "/dashboard/reader-configuration/add" },
+        ],
     };
 
     return (

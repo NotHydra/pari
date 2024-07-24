@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
 import { timestampToString } from "@/utility/timestamp-to-string";
 
-export default function Page(): JSX.Element {
+export default function ReaderConfigurationPage(): JSX.Element {
     const [tableData, setTableData] = useState<ReaderConfigurationModel[]>([]);
 
-    useEffect(() => {
+    useEffect((): void => {
         const fetchData = async (): Promise<void> => {
             try {
                 await axios
@@ -33,11 +34,15 @@ export default function Page(): JSX.Element {
                             <div className="cell">
                                 <div className="columns action">
                                     <div className="column is-1 m-0 p-0">
-                                        <div className="button is-normal is-fullwidth is-success has-text-weight-bold" title="Add Action">
+                                        <Link
+                                            href="/dashboard/reader-configuration/add"
+                                            className="button is-normal is-fullwidth is-success has-text-weight-bold"
+                                            title="Add Action"
+                                        >
                                             <span className="icon">
                                                 <i className="fab fa-plus"></i>
                                             </span>
-                                        </div>
+                                        </Link>
                                     </div>
 
                                     <div className="column m-0 mx-2 p-0">
