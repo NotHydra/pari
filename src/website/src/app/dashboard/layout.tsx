@@ -25,7 +25,7 @@ export default function Layout({
                         <NavigationBar />
                     </div>
 
-                    <div className="cell ml-4 mr-5">{children}</div>
+                    <div className="cell ml-3 mr-5">{children}</div>
                 </div>
             </div>
         </div>
