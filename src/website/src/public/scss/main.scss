@@ -87,6 +87,36 @@ html {
         }
     }
 
+    .table-container {
+        height: 32.5rem !important;
+
+        overflow-y: auto;
+
+        th {
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        td {
+            text-align: center !important;
+            vertical-align: middle !important;
+
+            &.timestamp {
+                font-size: 0.875rem;
+            }
+        }
+    }
+
+    .action {
+        margin: 0.1rem 0.1rem 0 0.1rem;
+    }
+
+    .button {
+        &.is-success {
+            color: var(--white);
+        }
+    }
+
     .has-text-main-hover {
         &:hover {
             color: var(--main) !important;
@@ -97,8 +127,16 @@ html {
         width: 100%;
     }
 
+    .line {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
     .line-right {
         border-right: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .line-top {
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
     }
 
     .line-bottom {

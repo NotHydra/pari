@@ -66,14 +66,41 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-right: 1px solid var(--light);
 }
+.dashboard .table-container {
+  height: 32.5rem !important;
+  overflow-y: auto;
+}
+.dashboard .table-container th {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+.dashboard .table-container td {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+.dashboard .table-container td.timestamp {
+  font-size: 0.875rem;
+}
+.dashboard .action {
+  margin: 0.1rem 0.1rem 0 0.1rem;
+}
+.dashboard .button.is-success {
+  color: var(--white);
+}
 .dashboard .has-text-main-hover:hover {
   color: var(--main) !important;
 }
 .dashboard .is-fullwidth {
   width: 100%;
 }
+.dashboard .line {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
 .dashboard .line-right {
   border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+.dashboard .line-top {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 .dashboard .line-bottom {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
