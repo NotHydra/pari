@@ -93,7 +93,7 @@ export default function ReaderConfigurationAddPage(): JSX.Element {
                                     name="name"
                                     value={name}
                                     placeholder="Insert name here"
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>): void => setName(e.target.value)}
                                 />
                             </div>
                         </div>
@@ -111,7 +111,7 @@ export default function ReaderConfigurationAddPage(): JSX.Element {
                                     value={rssiScanCount === 0 ? "" : rssiScanCount}
                                     min="0"
                                     placeholder="Insert RSSI scan count here"
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setRssiScanCount(Number(e.target.value))}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>): void => setRssiScanCount(Number(e.target.value))}
                                 />
                             </div>
                         </div>
@@ -129,7 +129,7 @@ export default function ReaderConfigurationAddPage(): JSX.Element {
                                     value={rssiScanInterval == 0 ? "" : rssiScanInterval}
                                     min="0"
                                     placeholder="Insert RSSI scan interval here"
-                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setRssiScanInterval(Number(e.target.value))}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>): void => setRssiScanInterval(Number(e.target.value))}
                                 />
                             </div>
                         </div>
