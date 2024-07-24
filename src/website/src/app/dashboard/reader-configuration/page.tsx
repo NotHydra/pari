@@ -118,19 +118,19 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
                                                 <td>
                                                     <div className="buttons has-addons is-centered">
-                                                        <button className="button is-info is-normal" title="Frequency Configuration Action">
+                                                        <button className="button is-info has-text-white" title="Frequency Configuration Action">
                                                             <span className="icon">
                                                                 <i className="fas fa-sliders"></i>
                                                             </span>
                                                         </button>
 
-                                                        <button className="button is-warning is-normal" title="Change Action">
+                                                        <button className="button is-warning has-text-white" title="Change Action">
                                                             <span className="icon">
                                                                 <i className="fas fa-pen-to-square"></i>
                                                             </span>
                                                         </button>
 
-                                                        <button className="button is-danger is-normal" title="Remove Action">
+                                                        <button className="button is-danger has-text-white" title="Remove Action">
                                                             <span className="icon">
                                                                 <i className="fas fa-trash"></i>
                                                             </span>
