@@ -21,7 +21,11 @@ export default function SideBar(): JSX.Element {
                         href="/dashboard"
                         className={`button is-fullwidth is-white sidebar-item mr-0 mb-3 pl-4 pr-0 py-2${pathName == "/dashboard" ? " is-active" : ""}`}
                     >
-                        <p className="is-fullwidth has-text-dark has-text-left">Home</p>
+                        <span className="icon is-left">
+                            <i className="fas fa-home"></i>
+                        </span>
+
+                        <span className="is-fullwidth has-text-dark has-text-left">Home</span>
                     </Link>
                 </li>
 
@@ -30,7 +34,11 @@ export default function SideBar(): JSX.Element {
                         href="/dashboard/tag"
                         className={`button is-fullwidth is-white sidebar-item mr-0 mb-3 pl-4 pr-0 py-2${pathName == "/dashboard/tag" ? " is-active" : ""}`}
                     >
-                        <p className="is-fullwidth has-text-dark has-text-left">Tag</p>
+                        <span className="icon is-left">
+                            <i className="fas fa-tag"></i>
+                        </span>
+
+                        <span className="is-fullwidth has-text-dark has-text-left">Tag</span>
                     </Link>
                 </li>
 
@@ -39,7 +47,11 @@ export default function SideBar(): JSX.Element {
                         href="/dashboard/reader-configuration"
                         className={`button is-fullwidth is-white sidebar-item mr-0 mb-3 pl-4 pr-0 py-2${pathName == "/dashboard/reader-configuration" ? " is-active" : ""}`}
                     >
-                        <p className="is-fullwidth has-text-dark has-text-left">Reader Configuration</p>
+                        <span className="icon is-left">
+                            <i className="fas fa-tower-broadcast"></i>
+                        </span>
+
+                        <span className="is-fullwidth has-text-dark has-text-left">Reader Configuration</span>
                     </Link>
                 </li>
             </ul>
