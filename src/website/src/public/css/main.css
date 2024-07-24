@@ -76,6 +76,7 @@ html {
 .dashboard .table-container th {
   text-align: center !important;
   vertical-align: middle !important;
+  text-wrap: nowrap;
 }
 .dashboard .table-container td {
   text-align: center !important;
@@ -83,6 +84,7 @@ html {
 }
 .dashboard .table-container td.timestamp {
   font-size: 0.875rem;
+  text-wrap: nowrap;
 }
 .dashboard .action {
   margin: 0.1rem 0.1rem 0 0.1rem;
