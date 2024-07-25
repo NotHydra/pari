@@ -12,6 +12,7 @@ import { TagService } from "./tag.service";
 interface TagControllerInterface {
     findLatest(): Promise<ResponseFormatInterface<TagModel | null>>;
     findRSSIByTag(tag: string): Promise<ResponseFormatInterface<number | null>>;
+    findTable(): Promise<ResponseFormatInterface<TagTableModel[] | null>>;
 }
 
 @Controller("tag")

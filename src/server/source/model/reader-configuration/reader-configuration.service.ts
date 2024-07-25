@@ -13,7 +13,9 @@ import {
 } from "./reader-configuration";
 import { PrismaDetailedModelInterface } from "source/common/interface/prisma-model.interface";
 
-interface ReaderConfigurationServiceInterface {}
+interface ReaderConfigurationServiceInterface {
+    findTable(): Promise<ReaderConfigurationTableModel[]>;
+}
 
 @Injectable()
 export class ReaderConfigurationService

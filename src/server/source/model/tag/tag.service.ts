@@ -15,6 +15,7 @@ import { RSSIModel } from "./../rssi/rssi";
 interface TagServiceInterface {
     findLatest(): Promise<TagModel>;
     findRSSIByTag(tag: string): Promise<number>;
+    findTable(): Promise<TagTableModel[]>;
 }
 
 @Injectable()

@@ -14,7 +14,9 @@ import {
 } from "./reader-configuration";
 import { ReaderConfigurationService } from "./reader-configuration.service";
 
-interface ReaderConfigurationControllerInterface {}
+interface ReaderConfigurationControllerInterface {
+    findTable(): Promise<ResponseFormatInterface<ReaderConfigurationTableModel[] | null>>;
+}
 
 @Controller("reader-configuration")
 @UseInterceptors(ResponseFormatInterceptor)
