@@ -32,7 +32,7 @@ export default function SideBar(): JSX.Element {
                 <li>
                     <Link
                         href="/dashboard/tag"
-                        className={`button is-fullwidth is-white sidebar-item mr-0 mb-3 pl-4 pr-0 py-2${pathName == "/dashboard/tag" ? " is-active" : ""}`}
+                        className={`button is-fullwidth is-white sidebar-item mr-0 mb-3 pl-4 pr-0 py-2${pathName.includes("/dashboard/tag") ? " is-active" : ""}`}
                     >
                         <span className="icon is-left">
                             <i className="fas fa-tag"></i>
@@ -45,7 +45,7 @@ export default function SideBar(): JSX.Element {
                 <li>
                     <Link
                         href="/dashboard/reader-configuration"
-                        className={`button is-fullwidth is-white sidebar-item mr-0 mb-3 pl-4 pr-0 py-2${pathName == "/dashboard/reader-configuration" ? " is-active" : ""}`}
+                        className={`button is-fullwidth is-white sidebar-item mr-0 mb-3 pl-4 pr-0 py-2${pathName.includes("/dashboard/reader-configuration") ? " is-active" : ""}`}
                     >
                         <span className="icon is-left">
                             <i className="fas fa-tower-broadcast"></i>
