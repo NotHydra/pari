@@ -6,7 +6,10 @@ import React from "react";
 
 export default function NavigationBar(): JSX.Element {
     const pathName: string = usePathname();
-    const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
+    const params: { readerConfigurationId: string; frequencyConfigurationId: string } = useParams<{
+        readerConfigurationId: string;
+        frequencyConfigurationId: string;
+    }>();
 
     const navigationPath: { [key: string]: { display: string; link: string }[] } = {};
 
@@ -54,6 +57,16 @@ export default function NavigationBar(): JSX.Element {
         { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
         { display: "Frequency Configuration", link: `/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration` },
         { display: "Add", link: `/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add` },
+    ];
+
+    navigationPath[`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${params.frequencyConfigurationId}/change`] = [
+        { display: "Dashboard", link: "/dashboard" },
+        { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
+        { display: "Frequency Configuration", link: `/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration` },
+        {
+            display: "Change",
+            link: `/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${params.frequencyConfigurationId}/change`,
+        },
     ];
 
     return (

@@ -117,7 +117,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                                 <td>
                                                     <div className="buttons has-addons is-centered">
                                                         <Link
-                                                            href={`/dashboard/reader-configuration/${data.id}/change`}
+                                                            href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/change`}
                                                             className="button is-warning has-text-white"
                                                             title="Change Action"
                                                         >
@@ -127,7 +127,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                                         </Link>
 
                                                         <Link
-                                                            href={`/dashboard/reader-configuration/${data.id}/remove`}
+                                                            href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/remove`}
                                                             className="button is-danger has-text-white"
                                                             title="Remove Action"
                                                         >

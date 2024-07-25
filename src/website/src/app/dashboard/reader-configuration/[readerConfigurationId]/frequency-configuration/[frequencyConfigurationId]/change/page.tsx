@@ -8,16 +8,17 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
+import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration";
 
-export default function ReaderConfigurationChangePage(): JSX.Element {
+export default function FrequencyConfigurationChangePage(): JSX.Element {
     const router: AppRouterInstance = useRouter();
 
-    const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
+    const params: { readerConfigurationId: string; frequencyConfigurationId: string } = useParams<{
+        readerConfigurationId: string;
+        frequencyConfigurationId: string;
+    }>();
 
-    const [name, setName] = useState<string>("");
-    const [rssiScanCount, setRssiScanCount] = useState<number>(0);
-    const [rssiScanInterval, setRssiScanInterval] = useState<number>(0);
+    const [frequency, setFrequency] = useState<number>(0);
 
     useEffect((): void => {
         const fetchData = async (): Promise<void> => {
@@ -26,17 +27,15 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
 
                 if (params.readerConfigurationId !== undefined) {
                     await axios
-                        .get<ResponseFormatInterface<ReaderConfigurationModel>>(
-                            `http://localhost:3001/api/reader-configuration/id/${params.readerConfigurationId}`
+                        .get<ResponseFormatInterface<FrequencyConfigurationModel>>(
+                            `http://localhost:3001/api/frequency-configuration/id/${params.frequencyConfigurationId}`
                         )
-                        .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
+                        .then((response: AxiosResponse<ResponseFormatInterface<FrequencyConfigurationModel>>): void => {
                             console.log(response.data);
 
-                            setName(response.data.data.name);
-                            setRssiScanCount(response.data.data.rssiScanCount);
-                            setRssiScanInterval(response.data.data.rssiScanInterval);
+                            setFrequency(Number(response.data.data.frequency));
                         })
-                        .catch((error: AxiosError<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
+                        .catch((error: AxiosError<ResponseFormatInterface<FrequencyConfigurationModel>>): void => {
                             console.log(error);
 
                             Swal.fire({
@@ -46,7 +45,7 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
                                 confirmButtonText: "Close",
                                 confirmButtonColor: "#FF6685",
                             }).then((): void => {
-                                router.push("/dashboard/reader-configuration");
+                                router.push(`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`);
                             });
                         })
                         .catch((error): void => {
@@ -59,7 +58,7 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
                                 confirmButtonText: "Close",
                                 confirmButtonColor: "#FF6685",
                             }).then((): void => {
-                                router.push("/dashboard/reader-configuration");
+                                router.push(`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`);
                             });
                         });
                 }
@@ -84,24 +83,16 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
         }).then(async (result: SweetAlertResult<void>): Promise<void> => {
             if (result.isConfirmed) {
                 try {
-                    if (name === "") {
-                        throw new Error("Name Must Not Be Empty");
-                    }
-
-                    if (rssiScanCount <= 0) {
-                        throw new Error("RSSI Scan Count Must Be Greater Than 0");
-                    }
-
-                    if (rssiScanInterval <= 0) {
-                        throw new Error("RSSI Scan Interval Must Be Greater Than 0");
+                    if (frequency <= 0) {
+                        throw new Error("Frequency Must Be Greater Than 0");
                     }
 
                     await axios
                         .put<
-                            ResponseFormatInterface<ReaderConfigurationModel>
-                        >(`http://localhost:3001/api/reader-configuration/id/${params.readerConfigurationId}`, { name, rssiScanCount, rssiScanInterval })
+                            ResponseFormatInterface<FrequencyConfigurationModel>
+                        >(`http://localhost:3001/api/frequency-configuration/id/${params.frequencyConfigurationId}`, { frequency: String(frequency) })
                         .then(
-                            (response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
+                            (response: AxiosResponse<ResponseFormatInterface<FrequencyConfigurationModel>>): void => {
                                 console.log(response.data);
 
                                 Swal.fire({
@@ -111,7 +102,7 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
                                     confirmButtonColor: "#FF6685",
                                 });
                             },
-                            (response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
+                            (response: AxiosResponse<ResponseFormatInterface<FrequencyConfigurationModel>>): void => {
                                 console.log(response.data);
 
                                 Swal.fire({
@@ -144,54 +135,19 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
                 <div className="content">
                     <form onSubmit={handleChange}>
                         <div className="field" title="The name of the reader configuration">
-                            <label className="label" htmlFor="name">
-                                Name
-                            </label>
-
-                            <div className="control">
-                                <input
-                                    className="input"
-                                    type="text"
-                                    name="name"
-                                    value={name}
-                                    placeholder="Insert name here"
-                                    onChange={(e: ChangeEvent<HTMLInputElement>): void => setName(e.target.value)}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="field" title="The amount of RSSI scan for each frequency">
-                            <label className="label" htmlFor="rssiScanCount">
-                                RSSI Scan Count
+                            <label className="label" htmlFor="frequency">
+                                Frequency (Hz)
                             </label>
 
                             <div className="control">
                                 <input
                                     className="input"
                                     type="number"
-                                    name="rssiScanCount"
-                                    value={rssiScanCount === 0 ? "" : rssiScanCount}
+                                    name="frequency"
+                                    value={frequency == 0 ? "" : frequency}
                                     min="0"
-                                    placeholder="Insert RSSI scan count here"
-                                    onChange={(e: ChangeEvent<HTMLInputElement>): void => setRssiScanCount(Number(e.target.value))}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="field" title="The amount of delay after each RSSI scan">
-                            <label className="label" htmlFor="rssiScanInterval">
-                                RSSI Scan Interval {"(ms)"}
-                            </label>
-
-                            <div className="control">
-                                <input
-                                    className="input"
-                                    type="number"
-                                    name="rssiScanInterval"
-                                    value={rssiScanInterval == 0 ? "" : rssiScanInterval}
-                                    min="0"
-                                    placeholder="Insert RSSI scan interval here"
-                                    onChange={(e: ChangeEvent<HTMLInputElement>): void => setRssiScanInterval(Number(e.target.value))}
+                                    placeholder="Insert frequency here"
+                                    onChange={(e: ChangeEvent<HTMLInputElement>): void => setFrequency(Number(e.target.value))}
                                 />
                             </div>
                         </div>
@@ -206,7 +162,7 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
                             </button>
 
                             <Link
-                                href="/dashboard/reader-configuration"
+                                href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`}
                                 className="button is-fullwidth is-danger has-text-white has-text-weight-bold"
                                 title="Back Action"
                             >
