@@ -70,7 +70,7 @@ html {
   background-color: var(--white);
 }
 .dashboard .table-container {
-  height: 32.5rem !important;
+  height: 31.75rem !important;
   overflow-y: auto;
 }
 .dashboard .table-container.has-back-button {
