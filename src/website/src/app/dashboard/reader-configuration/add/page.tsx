@@ -43,7 +43,9 @@ export default function ReaderConfigurationAddPage(): JSX.Element {
                             ResponseFormatInterface<ReaderConfigurationModel>
                         >("http://localhost:3001/api/reader-configuration", { name, rssiScanCount, rssiScanInterval })
                         .then(
-                            (): void => {
+                            (response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
+                                console.log(response.data);
+
                                 Swal.fire({
                                     icon: "success",
                                     title: "Success",
@@ -52,6 +54,8 @@ export default function ReaderConfigurationAddPage(): JSX.Element {
                                 });
                             },
                             (response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
+                                console.log(response.data);
+
                                 Swal.fire({
                                     icon: "error",
                                     title: "Error",
