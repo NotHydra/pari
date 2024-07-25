@@ -19,6 +19,10 @@ export class FrequencyDetailedModel extends FrequencyModel {
     rssi: RSSIModel[];
 }
 
+export class FrequencyTableModel extends FrequencyModel {
+    averageRSSI: number;
+}
+
 export class FrequencyCreateDTO {
     @IsNumber()
     tagId: number;
