@@ -81,7 +81,16 @@ html {
   text-align: center !important;
   vertical-align: middle !important;
 }
+.dashboard .table-container th.no {
+  width: 5%;
+  text-wrap: nowrap;
+}
 .dashboard .table-container th.timestamp {
+  width: 10%;
+  text-wrap: nowrap;
+}
+.dashboard .table-container th.action {
+  width: 5%;
   text-wrap: nowrap;
 }
 .dashboard .table-container td {
@@ -91,8 +100,17 @@ html {
 .dashboard .table-container td .button {
   border-radius: 0;
 }
+.dashboard .table-container td.no {
+  width: 5%;
+  text-wrap: nowrap;
+}
 .dashboard .table-container td.timestamp {
+  width: 10%;
   font-size: 0.8rem;
+  text-wrap: nowrap;
+}
+.dashboard .table-container td.action {
+  width: 5%;
   text-wrap: nowrap;
 }
 .dashboard .action {

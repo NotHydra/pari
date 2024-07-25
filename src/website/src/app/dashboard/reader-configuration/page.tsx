@@ -11,8 +11,6 @@ import { ReaderConfigurationTableModel } from "@/common/interface/reader-configu
 
 import Timestamp from "@/components/timestamp";
 
-import { timestampToString } from "@/utility/timestamp-to-string";
-
 export default function ReaderConfigurationPage(): JSX.Element {
     const [activeReaderConfiguration, setActiveReaderConfiguration] = useState<ActiveReaderConfigurationModel | null>(null);
     const [tableData, setTableData] = useState<ReaderConfigurationTableModel[]>([]);
@@ -172,7 +170,7 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                     <tbody>
                                         {tableData.map((data: ReaderConfigurationTableModel, index: number) => (
                                             <tr key={index}>
-                                                <td>{index + 1}.</td>
+                                                <td className="no">{index + 1}.</td>
 
                                                 <td>{data.name}</td>
 
@@ -190,7 +188,7 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                                     <Timestamp timestamp={data.updatedAt} />
                                                 </td>
 
-                                                <td className="m-0 p-0">
+                                                <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">
                                                         <div className="grid is-row-gap-0">
                                                             <div className="cell">

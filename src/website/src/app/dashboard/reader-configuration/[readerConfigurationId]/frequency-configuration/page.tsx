@@ -8,7 +8,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration";
 
-import { timestampToString } from "@/utility/timestamp-to-string";
+import Timestamp from "@/components/timestamp";
 
 export default function FrequencyConfigurationPage(): JSX.Element {
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
@@ -95,9 +95,9 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                                 <abbr title="The value of the frequency configuration">Frequency (Hz)</abbr>
                                             </th>
 
-                                            <th>Created At</th>
+                                            <th className="timestamp">Created At</th>
 
-                                            <th>Updated At</th>
+                                            <th className="timestamp">Updated At</th>
 
                                             <th>Action</th>
                                         </tr>
@@ -106,35 +106,45 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                     <tbody>
                                         {tableData.map((data: FrequencyConfigurationModel, index: number) => (
                                             <tr key={index}>
-                                                <td>{index + 1}.</td>
+                                                <td className="no">{index + 1}.</td>
 
                                                 <td>{data.frequency}</td>
 
-                                                <td className="timestamp">{timestampToString(data.createdAt)}</td>
+                                                <td className="timestamp">
+                                                    <Timestamp timestamp={data.createdAt} />
+                                                </td>
 
-                                                <td className="timestamp">{timestampToString(data.updatedAt)}</td>
+                                                <td className="timestamp">
+                                                    <Timestamp timestamp={data.updatedAt} />
+                                                </td>
 
-                                                <td>
-                                                    <div className="buttons has-addons is-centered">
-                                                        <Link
-                                                            href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/change`}
-                                                            className="button is-warning has-text-white"
-                                                            title="Change Action"
-                                                        >
-                                                            <span className="icon">
-                                                                <i className="fas fa-pen-to-square"></i>
-                                                            </span>
-                                                        </Link>
+                                                <td className="action m-0 p-0">
+                                                    <div className="fixed-grid has-1-cols">
+                                                        <div className="grid is-row-gap-0">
+                                                            <div className="cell">
+                                                                <Link
+                                                                    href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/change`}
+                                                                    className="button is-small is-fullwidth is-warning has-text-white"
+                                                                    title="Change Action"
+                                                                >
+                                                                    <span className="icon">
+                                                                        <i className="fas fa-pen-to-square"></i>
+                                                                    </span>
+                                                                </Link>
+                                                            </div>
 
-                                                        <Link
-                                                            href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/remove`}
-                                                            className="button is-danger has-text-white"
-                                                            title="Remove Action"
-                                                        >
-                                                            <span className="icon">
-                                                                <i className="fas fa-trash"></i>
-                                                            </span>
-                                                        </Link>
+                                                            <div className="cell">
+                                                                <Link
+                                                                    href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/remove`}
+                                                                    className="button is-small is-fullwidth is-danger has-text-white"
+                                                                    title="Remove Action"
+                                                                >
+                                                                    <span className="icon">
+                                                                        <i className="fas fa-trash"></i>
+                                                                    </span>
+                                                                </Link>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
