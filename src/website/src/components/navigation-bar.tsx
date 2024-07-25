@@ -6,7 +6,8 @@ import React from "react";
 
 export default function NavigationBar(): JSX.Element {
     const pathName: string = usePathname();
-    const params: { readerConfigurationId: string; frequencyConfigurationId: string } = useParams<{
+    const params: { tagId: string; readerConfigurationId: string; frequencyConfigurationId: string } = useParams<{
+        tagId: string;
         readerConfigurationId: string;
         frequencyConfigurationId: string;
     }>();
@@ -21,6 +22,12 @@ export default function NavigationBar(): JSX.Element {
     navigationPath["/dashboard/tag"] = [
         { display: "Dashboard", link: "/dashboard" },
         { display: "Tag", link: "/dashboard/tag" },
+    ];
+
+    navigationPath[`/dashboard/tag/${params.tagId}/frequency`] = [
+        { display: "Dashboard", link: "/dashboard" },
+        { display: "Tag", link: "/dashboard/tag" },
+        { display: "Frequency", link: `/dashboard/tag/${params.tagId}/frequency` },
     ];
 
     navigationPath["/dashboard/reader-configuration"] = [

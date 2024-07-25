@@ -2,23 +2,23 @@
 
 import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { TagTableModel } from "@/common/interface/tag";
+import { FrequencyTableModel } from "@/common/interface/frequency";
 
-import Timestamp from "@/components/timestamp";
+export default function FrequencyConfigurationPage(): JSX.Element {
+    const params: { tagId: string } = useParams<{ tagId: string }>();
 
-export default function TagPage(): JSX.Element {
-    const [tableData, setTableData] = useState<TagTableModel[]>([]);
+    const [tableData, setTableData] = useState<FrequencyTableModel[]>([]);
 
     useEffect((): void => {
         const fetchData = async (): Promise<void> => {
             try {
                 await axios
-                    .get<ResponseFormatInterface<TagTableModel[]>>("http://localhost:3001/api/tag/table")
-                    .then((response: AxiosResponse<ResponseFormatInterface<TagTableModel[]>>): void => {
+                    .get<ResponseFormatInterface<FrequencyTableModel[]>>(`http://localhost:3001/api/frequency/table/tag-id/${params.tagId}`)
+                    .then((response: AxiosResponse<ResponseFormatInterface<FrequencyTableModel[]>>): void => {
                         console.log(response.data);
 
                         setTableData(response.data.data);
@@ -33,9 +33,9 @@ export default function TagPage(): JSX.Element {
 
     const handleSort = (e: ChangeEvent<HTMLSelectElement>): void => {
         if (e.target.value === "ascending") {
-            setTableData([...tableData].sort((a: TagTableModel, b: TagTableModel) => a.id - b.id));
+            setTableData([...tableData].sort((a: FrequencyTableModel, b: FrequencyTableModel) => a.id - b.id));
         } else if (e.target.value === "descending") {
-            setTableData([...tableData].sort((a: TagTableModel, b: TagTableModel) => b.id - a.id));
+            setTableData([...tableData].sort((a: FrequencyTableModel, b: FrequencyTableModel) => b.id - a.id));
         }
     };
 
@@ -69,56 +69,44 @@ export default function TagPage(): JSX.Element {
                                 </div>
                             </div>
 
-                            <div className="cell table-container line has-background-light">
+                            <div className="cell table-container has-back-button line has-background-light">
                                 <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
 
                                             <th>
-                                                <abbr title="The byte id of the tag">Tag</abbr>
+                                                <abbr title="The value of the frequency configuration">Frequency (Hz)</abbr>
                                             </th>
 
                                             <th>
-                                                <abbr title="The name of the reader configuration used">Reader Configuration Name</abbr>
+                                                <abbr title="The average RSSI obtained">Average RSSI (dBm)</abbr>
                                             </th>
-
-                                            <th>
-                                                <abbr title="The average RSSI of each frequency obtained">Average RSSI (dBm)</abbr>
-                                            </th>
-
-                                            <th className="timestamp">Created At</th>
 
                                             <th>Action</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        {tableData.map((data: TagTableModel, index: number) => (
+                                        {tableData.map((data: FrequencyTableModel, index: number) => (
                                             <tr key={index}>
                                                 <td className="no">{index + 1}.</td>
 
-                                                <td>{data.tag}</td>
-
-                                                <td>{data.readerConfigurationName}</td>
+                                                <td>{data.frequency}</td>
 
                                                 <td>{data.averageRSSI}</td>
-
-                                                <td className="timestamp">
-                                                    <Timestamp timestamp={data.createdAt} />
-                                                </td>
 
                                                 <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">
                                                         <div className="grid is-row-gap-0">
                                                             <div className="cell">
                                                                 <Link
-                                                                    href={`/dashboard/tag/${data.id}/frequency`}
+                                                                    href={`/dashboard/tag/${params.tagId}/frequency/${data.id}/rssi`}
                                                                     className="button is-small is-fullwidth is-info has-text-white"
-                                                                    title="Frequency Action"
+                                                                    title="RSSI Action"
                                                                 >
                                                                     <span className="icon">
-                                                                        <i className="fas fa-sliders"></i>
+                                                                        <i className="fas fa-wifi"></i>
                                                                     </span>
                                                                 </Link>
                                                             </div>
@@ -129,6 +117,16 @@ export default function TagPage(): JSX.Element {
                                         ))}
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <div className="cell">
+                                <Link href="/dashboard/tag" className="button is-fullwidth is-danger has-text-white has-text-weight-bold" title="Back Action">
+                                    <span className="icon">
+                                        <i className="fas fa-reply"></i>
+                                    </span>
+
+                                    <span>Back</span>
+                                </Link>
                             </div>
                         </div>
                     </div>
