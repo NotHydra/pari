@@ -22,6 +22,11 @@ export class TagDetailedModel extends TagModel {
     frequency: FrequencyDetailedModel[];
 }
 
+export class TagTableModel extends TagModel {
+    readerConfigurationName: string;
+    averageRSSI: number;
+}
+
 export class TagCreateDTO {}
 
 export class TagUpdateDTO {

@@ -6,7 +6,7 @@ import { ResponseFormatInterface } from "./../../common/interface/response-forma
 
 import { DetailedController } from "./../../global/detailed.controller";
 
-import { TagModel, TagCreateDTO, TagUpdateDTO, TagDetailedModel } from "./tag";
+import { TagModel, TagCreateDTO, TagUpdateDTO, TagDetailedModel, TagTableModel } from "./tag";
 import { TagService } from "./tag.service";
 
 interface TagControllerInterface {
@@ -59,6 +59,26 @@ export class TagController
             return response;
         } catch (error) {
             this.loggerService.error(`Find RSSI By Tag: ${error.message}`);
+
+            return formatResponse<null>(false, 500, error.message, null);
+        }
+    }
+
+    @Get("table")
+    public async findTable(): Promise<ResponseFormatInterface<TagTableModel[] | null>> {
+        try {
+            const response: ResponseFormatInterface<TagTableModel[]> = formatResponse<TagTableModel[]>(
+                true,
+                200,
+                "Table Found",
+                await this.modelService.findTable()
+            );
+
+            this.loggerService.log(`Find Table: ${JSON.stringify(response)}`);
+
+            return response;
+        } catch (error) {
+            this.loggerService.error(`Find Table: ${error.message}`);
 
             return formatResponse<null>(false, 500, error.message, null);
         }

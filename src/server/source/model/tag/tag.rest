@@ -29,6 +29,10 @@ GET {{url}}/rssi-by-tag/E2-80-69-95-00-00-40-17-60-38-80-F7
 
 ###
 
+GET {{url}}/table
+
+###
+
 POST {{url}}
 
 ###
