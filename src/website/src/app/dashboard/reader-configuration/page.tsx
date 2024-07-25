@@ -19,20 +19,22 @@ export default function ReaderConfigurationPage(): JSX.Element {
             try {
                 await axios
                     .get<ResponseFormatInterface<ActiveReaderConfigurationModel[]>>("http://localhost:3001/api/active-reader-configuration")
-                    .then((response: AxiosResponse<ResponseFormatInterface<ActiveReaderConfigurationModel[]>>) => {
-                        console.log(response.data.data);
+                    .then((response: AxiosResponse<ResponseFormatInterface<ActiveReaderConfigurationModel[]>>): void => {
+                        console.log(response.data);
 
                         setActiveReaderConfiguration(response.data.data[0]);
                     });
 
                 await axios
                     .get<ResponseFormatInterface<ReaderConfigurationModel[]>>("http://localhost:3001/api/reader-configuration")
-                    .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel[]>, any>): void => {
-                        console.log(response.data.data);
+                    .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel[]>>): void => {
+                        console.log(response.data);
 
                         setTableData(response.data.data);
                     });
-            } catch (error) {}
+            } catch (error) {
+                console.log(error);
+            }
         };
 
         fetchData();
@@ -152,11 +154,15 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                                             </span>
                                                         </button>
 
-                                                        <button className="button is-warning has-text-white" title="Change Action">
+                                                        <Link
+                                                            href={`/dashboard/reader-configuration/${data.id}/change`}
+                                                            className="button is-warning has-text-white"
+                                                            title="Change Action"
+                                                        >
                                                             <span className="icon">
                                                                 <i className="fas fa-pen-to-square"></i>
                                                             </span>
-                                                        </button>
+                                                        </Link>
 
                                                         <button className="button is-danger has-text-white" title="Remove Action">
                                                             <span className="icon">
