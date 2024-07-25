@@ -2,33 +2,27 @@
 
 import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { ActiveReaderConfigurationModel } from "@/common/interface/active-reader-configuration";
-import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
+import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration";
 
 import { timestampToString } from "@/utility/timestamp-to-string";
 
-export default function ReaderConfigurationPage(): JSX.Element {
-    const [activeReaderConfiguration, setActiveReaderConfiguration] = useState<ActiveReaderConfigurationModel | null>(null);
-    const [tableData, setTableData] = useState<ReaderConfigurationModel[]>([]);
+export default function FrequencyConfigurationPage(): JSX.Element {
+    const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
+
+    const [tableData, setTableData] = useState<FrequencyConfigurationModel[]>([]);
 
     useEffect((): void => {
         const fetchData = async (): Promise<void> => {
             try {
                 await axios
-                    .get<ResponseFormatInterface<ActiveReaderConfigurationModel[]>>("http://localhost:3001/api/active-reader-configuration")
-                    .then((response: AxiosResponse<ResponseFormatInterface<ActiveReaderConfigurationModel[]>>): void => {
-                        console.log(response.data);
-
-                        setActiveReaderConfiguration(response.data.data[0]);
-                    });
-
-                await axios
-                    .get<ResponseFormatInterface<ReaderConfigurationModel[]>>("http://localhost:3001/api/reader-configuration")
-                    .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel[]>>): void => {
+                    .get<
+                        ResponseFormatInterface<FrequencyConfigurationModel[]>
+                    >(`http://localhost:3001/api/frequency-configuration/reader-configuration-id/${params.readerConfigurationId}`)
+                    .then((response: AxiosResponse<ResponseFormatInterface<FrequencyConfigurationModel[]>>): void => {
                         console.log(response.data);
 
                         setTableData(response.data.data);
@@ -40,52 +34,6 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
         fetchData();
     }, []);
-
-    const handleUse = async (id: number): Promise<void> => {
-        Swal.fire<void>({
-            icon: "question",
-            title: "Are you sure?",
-            confirmButtonText: "Yes",
-            confirmButtonColor: "#3ABB81",
-            showCancelButton: true,
-            cancelButtonColor: "#FF6685",
-        }).then(async (result: SweetAlertResult<void>): Promise<void> => {
-            if (result.isConfirmed) {
-                try {
-                    await axios
-                        .put<
-                            ResponseFormatInterface<ActiveReaderConfigurationModel>
-                        >("http://localhost:3001/api/active-reader-configuration/id/1", { readerConfigurationId: id })
-                        .then(
-                            (response: AxiosResponse<ResponseFormatInterface<ActiveReaderConfigurationModel>>): void => {
-                                console.log(response.data);
-
-                                setActiveReaderConfiguration(response.data.data);
-
-                                Swal.fire({
-                                    icon: "success",
-                                    title: "Success",
-                                    confirmButtonText: "Close",
-                                    confirmButtonColor: "#FF6685",
-                                });
-                            },
-                            (response: AxiosResponse<ResponseFormatInterface<ActiveReaderConfigurationModel>>): void => {
-                                console.log(response.data);
-
-                                Swal.fire({
-                                    icon: "error",
-                                    title: response.data.message,
-                                    confirmButtonText: "Close",
-                                    confirmButtonColor: "#FF6685",
-                                });
-                            }
-                        );
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        });
-    };
 
     return (
         <div className="card has-background-white">
@@ -144,15 +92,7 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                             <th>No.</th>
 
                                             <th>
-                                                <abbr title="The name of the reader configuration">Name</abbr>
-                                            </th>
-
-                                            <th>
-                                                <abbr title="The amount of RSSI scan for each frequency">RSSI Scan Count</abbr>
-                                            </th>
-
-                                            <th>
-                                                <abbr title="The amount of delay after each RSSI scan">RSSI Scan Interval {"(ms)"}</abbr>
+                                                <abbr title="The value of the frequency configuration">Frequency (Hz)</abbr>
                                             </th>
 
                                             <th>Created At</th>
@@ -164,15 +104,11 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                     </thead>
 
                                     <tbody>
-                                        {tableData.map((data: ReaderConfigurationModel, index: number) => (
+                                        {tableData.map((data: FrequencyConfigurationModel, index: number) => (
                                             <tr key={index}>
                                                 <td>{index + 1}.</td>
 
-                                                <td>{data.name}</td>
-
-                                                <td>{data.rssiScanCount}</td>
-
-                                                <td>{data.rssiScanInterval}</td>
+                                                <td>{data.frequency}</td>
 
                                                 <td className="timestamp">{timestampToString(data.createdAt)}</td>
 
@@ -180,34 +116,6 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
                                                 <td>
                                                     <div className="buttons has-addons is-centered">
-                                                        <button
-                                                            className="button is-success has-text-white"
-                                                            title="Use Action"
-                                                            onClick={() => {
-                                                                handleUse(data.id);
-                                                            }}
-                                                            disabled={
-                                                                activeReaderConfiguration !== null &&
-                                                                activeReaderConfiguration.readerConfigurationId === data.id
-                                                                    ? true
-                                                                    : false
-                                                            }
-                                                        >
-                                                            <span className="icon">
-                                                                <i className="fas fa-check"></i>
-                                                            </span>
-                                                        </button>
-
-                                                        <Link
-                                                            href={`/dashboard/reader-configuration/${data.id}/frequency-configuration`}
-                                                            className="button is-info has-text-white"
-                                                            title="Frequency Configuration Action"
-                                                        >
-                                                            <span className="icon">
-                                                                <i className="fas fa-sliders"></i>
-                                                            </span>
-                                                        </Link>
-
                                                         <Link
                                                             href={`/dashboard/reader-configuration/${data.id}/change`}
                                                             className="button is-warning has-text-white"
