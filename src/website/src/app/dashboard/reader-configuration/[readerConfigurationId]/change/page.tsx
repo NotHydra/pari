@@ -1,8 +1,9 @@
 "use client";
 
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
 
@@ -10,6 +11,8 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
 
 export default function ReaderConfigurationChangePage(): JSX.Element {
+    const router: AppRouterInstance = useRouter();
+
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
 
     const [name, setName] = useState<string>("");
@@ -23,15 +26,39 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
 
                 if (params.readerConfigurationId !== undefined) {
                     await axios
-                        .get<
-                            ResponseFormatInterface<ReaderConfigurationModel>
-                        >(`http://localhost:3001/api/reader-configuration/id/${params.readerConfigurationId}`)
+                        .get<ResponseFormatInterface<ReaderConfigurationModel>>(
+                            `http://localhost:3001/api/reader-configuration/id/${params.readerConfigurationId}`
+                        )
                         .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
                             console.log(response.data);
 
                             setName(response.data.data.name);
                             setRssiScanCount(response.data.data.rssiScanCount);
                             setRssiScanInterval(response.data.data.rssiScanInterval);
+                        })
+                        .catch((error: AxiosError<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: error.response !== undefined && error.response.data.status === 404 ? "Data Not Found" : "Internal Server Error",
+                                confirmButtonText: "Close",
+                                confirmButtonColor: "#FF6685",
+                            }).then((): void => {
+                                router.push("/dashboard/reader-configuration");
+                            });
+                        })
+                        .catch((error): void => {
+                            console.log(error);
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: "Internal Server Error",
+                                confirmButtonText: "Close",
+                                confirmButtonColor: "#FF6685",
+                            }).then((): void => {
+                                router.push("/dashboard/reader-configuration");
+                            });
                         });
                 }
             } catch (error) {
