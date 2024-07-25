@@ -11,7 +11,9 @@ import { BaseService } from "./../../global/base.service";
 import { RSSIModel, RSSICreateDTO, RSSIUpdateDTO } from "./rssi";
 import { PrismaModelInterface } from "source/common/interface/prisma-model.interface";
 
-interface RSSIServiceInterface {}
+interface RSSIServiceInterface {
+    findTable(frequencyId: number): Promise<RSSIModel[]>;
+}
 
 @Injectable()
 export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdateDTO> implements RSSIServiceInterface {
@@ -24,6 +26,25 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
         super(RSSIService.name, prismaService.rSSI as unknown as PrismaModelInterface<RSSIModel>);
 
         this.prismaService = prismaService;
+    }
+
+    public async findTable(frequencyId: number): Promise<RSSIModel[]> {
+        try {
+            const models: RSSIModel[] = await this.prismaModel.findMany({
+                where: { frequencyId },
+                orderBy: {
+                    id: "asc",
+                },
+            });
+
+            this.loggerService.log(`Find Table: ${JSON.stringify(models)}`);
+
+            return models;
+        } catch (error) {
+            this.loggerService.error(`Find Table: ${error.message}`);
+
+            throw new InternalServerErrorException("Internal Server Error");
+        }
     }
 
     @Override

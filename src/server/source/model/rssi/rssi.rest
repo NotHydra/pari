@@ -13,6 +13,10 @@ GET {{url}}/id/1
 
 ###
 
+GET {{url}}/table/frequency-id/1
+
+###
+
 POST {{url}}
 Content-Type: application/json
 
