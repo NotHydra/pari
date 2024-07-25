@@ -85,7 +85,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                 </div>
                             </div>
 
-                            <div className="cell table-container line has-background-light">
+                            <div className="cell table-container has-back-button line has-background-light">
                                 <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
                                     <thead>
                                         <tr>
@@ -141,6 +141,20 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                         ))}
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <div className="cell">
+                                <Link
+                                    href="/dashboard/reader-configuration"
+                                    className="button is-fullwidth is-danger has-text-white has-text-weight-bold"
+                                    title="Back Action"
+                                >
+                                    <span className="icon">
+                                        <i className="fas fa-reply"></i>
+                                    </span>
+
+                                    <span>Back</span>
+                                </Link>
                             </div>
                         </div>
                     </div>

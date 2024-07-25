@@ -98,6 +98,12 @@ html {
 
         overflow-y: auto;
 
+        &.has-back-button {
+            margin-bottom: 0;
+
+            height: 28.5rem !important;
+        }
+
         th {
             text-align: center !important;
             vertical-align: middle !important;

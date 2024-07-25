@@ -73,6 +73,10 @@ html {
   height: 32.5rem !important;
   overflow-y: auto;
 }
+.dashboard .table-container.has-back-button {
+  margin-bottom: 0;
+  height: 28.5rem !important;
+}
 .dashboard .table-container th {
   text-align: center !important;
   vertical-align: middle !important;
