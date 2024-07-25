@@ -9,6 +9,8 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { ActiveReaderConfigurationModel } from "@/common/interface/active-reader-configuration";
 import { ReaderConfigurationTableModel } from "@/common/interface/reader-configuration.interface";
 
+import Timestamp from "@/components/timestamp";
+
 import { timestampToString } from "@/utility/timestamp-to-string";
 
 export default function ReaderConfigurationPage(): JSX.Element {
@@ -180,9 +182,13 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
                                                 <td>{data.rssiScanInterval}</td>
 
-                                                <td className="timestamp">{timestampToString(data.createdAt)}</td>
+                                                <td className="timestamp">
+                                                    <Timestamp timestamp={data.createdAt} />
+                                                </td>
 
-                                                <td className="timestamp">{timestampToString(data.updatedAt)}</td>
+                                                <td className="timestamp">
+                                                    <Timestamp timestamp={data.updatedAt} />
+                                                </td>
 
                                                 <td className="m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">
