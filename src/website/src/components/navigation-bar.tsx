@@ -69,6 +69,16 @@ export default function NavigationBar(): JSX.Element {
         },
     ];
 
+    navigationPath[`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${params.frequencyConfigurationId}/remove`] = [
+        { display: "Dashboard", link: "/dashboard" },
+        { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
+        { display: "Frequency Configuration", link: `/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration` },
+        {
+            display: "Remove",
+            link: `/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${params.frequencyConfigurationId}/remove`,
+        },
+    ];
+
     return (
         <div className="column pl-0 pb-0">
             <nav className="navbar is-white line-bottom py-2">

@@ -4,20 +4,21 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
+import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration";
 
-export default function ReaderConfigurationRemovePage(): JSX.Element {
+export default function FrequencyConfigurationChangePage(): JSX.Element {
     const router: AppRouterInstance = useRouter();
 
-    const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
+    const params: { readerConfigurationId: string; frequencyConfigurationId: string } = useParams<{
+        readerConfigurationId: string;
+        frequencyConfigurationId: string;
+    }>();
 
-    const [name, setName] = useState<string>("");
-    const [rssiScanCount, setRssiScanCount] = useState<number>(0);
-    const [rssiScanInterval, setRssiScanInterval] = useState<number>(0);
+    const [frequency, setFrequency] = useState<number>(0);
 
     useEffect((): void => {
         const fetchData = async (): Promise<void> => {
@@ -26,17 +27,15 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
 
                 if (params.readerConfigurationId !== undefined) {
                     await axios
-                        .get<ResponseFormatInterface<ReaderConfigurationModel>>(
-                            `http://localhost:3001/api/reader-configuration/id/${params.readerConfigurationId}`
+                        .get<ResponseFormatInterface<FrequencyConfigurationModel>>(
+                            `http://localhost:3001/api/frequency-configuration/id/${params.frequencyConfigurationId}`
                         )
-                        .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
+                        .then((response: AxiosResponse<ResponseFormatInterface<FrequencyConfigurationModel>>): void => {
                             console.log(response.data);
 
-                            setName(response.data.data.name);
-                            setRssiScanCount(response.data.data.rssiScanCount);
-                            setRssiScanInterval(response.data.data.rssiScanInterval);
+                            setFrequency(Number(response.data.data.frequency));
                         })
-                        .catch((error: AxiosError<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
+                        .catch((error: AxiosError<ResponseFormatInterface<FrequencyConfigurationModel>>): void => {
                             console.log(error);
 
                             Swal.fire({
@@ -46,7 +45,7 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
                                 confirmButtonText: "Close",
                                 confirmButtonColor: "#FF6685",
                             }).then((): void => {
-                                router.push("/dashboard/reader-configuration");
+                                router.push(`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`);
                             });
                         })
                         .catch((error): void => {
@@ -59,7 +58,7 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
                                 confirmButtonText: "Close",
                                 confirmButtonColor: "#FF6685",
                             }).then((): void => {
-                                router.push("/dashboard/reader-configuration");
+                                router.push(`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`);
                             });
                         });
                 }
@@ -86,10 +85,10 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
                 try {
                     await axios
                         .delete<
-                            ResponseFormatInterface<ReaderConfigurationModel>
-                        >(`http://localhost:3001/api/reader-configuration/id/${params.readerConfigurationId}`)
+                            ResponseFormatInterface<FrequencyConfigurationModel>
+                        >(`http://localhost:3001/api/frequency-configuration/id/${params.frequencyConfigurationId}`)
                         .then(
-                            (response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
+                            (response: AxiosResponse<ResponseFormatInterface<FrequencyConfigurationModel>>): void => {
                                 console.log(response.data);
 
                                 Swal.fire({
@@ -99,9 +98,9 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
                                     confirmButtonColor: "#FF6685",
                                 });
 
-                                router.push("/dashboard/reader-configuration");
+                                router.push(`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`);
                             },
-                            (response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel>>): void => {
+                            (response: AxiosResponse<ResponseFormatInterface<FrequencyConfigurationModel>>): void => {
                                 console.log(response.data);
 
                                 Swal.fire({
@@ -134,46 +133,18 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
                 <div className="content">
                     <form onSubmit={handleRemove}>
                         <div className="field" title="The name of the reader configuration">
-                            <label className="label" htmlFor="name">
-                                Name
-                            </label>
-
-                            <div className="control">
-                                <input className="input" type="text" name="name" value={name} placeholder="Insert name here" disabled />
-                            </div>
-                        </div>
-
-                        <div className="field" title="The amount of RSSI scan for each frequency">
-                            <label className="label" htmlFor="rssiScanCount">
-                                RSSI Scan Count
+                            <label className="label" htmlFor="frequency">
+                                Frequency (Hz)
                             </label>
 
                             <div className="control">
                                 <input
                                     className="input"
                                     type="number"
-                                    name="rssiScanCount"
-                                    value={rssiScanCount === 0 ? "" : rssiScanCount}
+                                    name="frequency"
+                                    value={frequency == 0 ? "" : frequency}
                                     min="0"
-                                    placeholder="Insert RSSI scan count here"
-                                    disabled
-                                />
-                            </div>
-                        </div>
-
-                        <div className="field" title="The amount of delay after each RSSI scan">
-                            <label className="label" htmlFor="rssiScanInterval">
-                                RSSI Scan Interval {"(ms)"}
-                            </label>
-
-                            <div className="control">
-                                <input
-                                    className="input"
-                                    type="number"
-                                    name="rssiScanInterval"
-                                    value={rssiScanInterval == 0 ? "" : rssiScanInterval}
-                                    min="0"
-                                    placeholder="Insert RSSI scan interval here"
+                                    placeholder="Insert frequency here"
                                     disabled
                                 />
                             </div>
@@ -189,7 +160,7 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
                             </button>
 
                             <Link
-                                href="/dashboard/reader-configuration"
+                                href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`}
                                 className="button is-fullwidth is-danger has-text-white has-text-weight-bold"
                                 title="Back Action"
                             >
