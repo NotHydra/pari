@@ -125,6 +125,14 @@ html {
         &.is-success {
             color: var(--white);
         }
+
+        &.is-warning {
+            color: var(--white);
+        }
+
+        &.is-danger {
+            color: var(--white);
+        }
     }
 
     .has-text-main-hover {

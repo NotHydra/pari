@@ -92,6 +92,12 @@ html {
 .dashboard .button.is-success {
   color: var(--white);
 }
+.dashboard .button.is-warning {
+  color: var(--white);
+}
+.dashboard .button.is-danger {
+  color: var(--white);
+}
 .dashboard .has-text-main-hover:hover {
   color: var(--main) !important;
 }
