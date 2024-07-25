@@ -27,7 +27,7 @@ export default function ReaderConfigurationPage(): JSX.Element {
                     });
 
                 await axios
-                    .get<ResponseFormatInterface<ReaderConfigurationModel[]>>("http://localhost:3001/api/reader-configuration")
+                    .get<ResponseFormatInterface<ReaderConfigurationModel[]>>("http://localhost:3001/api/reader-configuration/table")
                     .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel[]>>): void => {
                         console.log(response.data);
 

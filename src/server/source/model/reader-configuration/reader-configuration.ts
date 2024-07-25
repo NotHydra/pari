@@ -28,6 +28,10 @@ export class ReaderConfigurationDetailedModel extends ReaderConfigurationModel {
     frequencyConfiguration: FrequencyConfigurationModel[];
 }
 
+export class ReaderConfigurationTableModel extends ReaderConfigurationModel {
+    frequencyConfigurationCount: number;
+}
+
 export class ReaderConfigurationCreateDTO {
     @IsString()
     name: string;
