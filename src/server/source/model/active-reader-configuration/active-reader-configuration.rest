@@ -1,0 +1,39 @@
+@base_url = {{$dotenv REST_CLIENT_URL}}/api
+@url={{base_url}}/active-reader-configuration
+
+GET {{url}}
+
+###
+
+GET {{url}}?page=1&count=5
+
+###
+
+GET {{url}}/id/1
+
+###
+
+GET {{url}}/detailed
+
+###
+
+GET {{url}}/detailed?page=1&count=5
+
+###
+
+GET {{url}}/id/1/detailed
+
+###
+
+GET {{url}}/configuration
+
+###
+
+PUT {{url}}/id/1
+Content-Type: application/json
+
+{
+    "readerConfigurationId": 1
+}
+
+###

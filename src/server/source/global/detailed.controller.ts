@@ -1,16 +1,17 @@
 import { Get, NotFoundException, Param, ParseIntPipe, Query } from "@nestjs/common";
 
-import { ResponseFormatInterface } from "../common/interface/response-format";
-import { formatResponse } from "../common/interceptor/response-format.interceptor";
+import { ResponseFormatInterface } from "./../common/interface/response-format.interface";
+import { formatResponse } from "./../common/interceptor/response-format.interceptor";
 
 import { BaseController } from "./base.controller";
 import { DetailedService } from "./detailed.service";
 
 export class DetailedController<
     ModelType,
+    ModelDetailedType extends ModelType,
     ModelCreateDTO,
     ModelUpdateDTO,
-    ModelService extends DetailedService<ModelType, ModelCreateDTO, ModelUpdateDTO>,
+    ModelService extends DetailedService<ModelType, ModelDetailedType, ModelCreateDTO, ModelUpdateDTO>,
 > extends BaseController<ModelType, ModelCreateDTO, ModelUpdateDTO, ModelService> {
     constructor(controllerName: string, modelService: ModelService) {
         super(controllerName, modelService);
@@ -20,9 +21,9 @@ export class DetailedController<
     public async findDetailed(
         @Query("page") page: string = "0",
         @Query("count") count: string = "0"
-    ): Promise<ResponseFormatInterface<ModelType[]>> {
+    ): Promise<ResponseFormatInterface<ModelDetailedType[] | null>> {
         try {
-            const response: ResponseFormatInterface<ModelType[]> = formatResponse<ModelType[]>(
+            const response: ResponseFormatInterface<ModelDetailedType[]> = formatResponse<ModelDetailedType[]>(
                 true,
                 200,
                 "Detailed Found",
@@ -34,17 +35,20 @@ export class DetailedController<
             return response;
         } catch (error) {
             this.loggerService.error(`Find Detailed: ${error.message}`);
+
             return formatResponse<null>(false, 500, error.message, null);
         }
     }
 
     @Get("id/:id/detailed")
-    public async findIdDetailed(@Param("id", ParseIntPipe) id: number) {
+    public async findIdDetailed(
+        @Param("id", ParseIntPipe) id: number
+    ): Promise<ResponseFormatInterface<ModelDetailedType | null>> {
         try {
-            const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
+            const response: ResponseFormatInterface<ModelDetailedType> = formatResponse<ModelDetailedType>(
                 true,
                 200,
-                "Detailed Id Found",
+                `Detailed Id ${id} Found`,
                 await this.modelService.findIdDetailed(id)
             );
 
@@ -54,10 +58,12 @@ export class DetailedController<
         } catch (error) {
             if (error instanceof NotFoundException) {
                 this.loggerService.error(`Find Id Detailed: ${error.message}`);
+
                 return formatResponse<null>(false, 404, error.message, null);
             }
 
             this.loggerService.error(`Find Id Detailed: ${error.message}`);
+
             return formatResponse<null>(false, 500, error.message, null);
         }
     }

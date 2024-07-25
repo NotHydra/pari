@@ -1,0 +1,47 @@
+@base_url = {{$dotenv REST_CLIENT_URL}}/api
+@url={{base_url}}/tag
+
+GET {{url}}
+
+###
+
+GET {{url}}?page=1&count=5
+
+###
+
+GET {{url}}/id/1
+
+###
+
+GET {{url}}/detailed
+
+###
+
+GET {{url}}/detailed?page=1&count=5
+
+###
+
+GET {{url}}/id/1/detailed
+
+###
+
+GET {{url}}/rssi-by-tag/E2-80-69-95-00-00-40-17-60-38-80-F7
+
+###
+
+GET {{url}}/table
+
+###
+
+POST {{url}}
+
+###
+
+PUT {{url}}/id/1
+Content-Type: application/json
+
+{
+    "tag": "A0-B1-C2-D3-E4-F5"
+}
+
+###

@@ -240,6 +240,3 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
-# Test
-test/

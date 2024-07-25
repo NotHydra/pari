@@ -20,7 +20,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>): JSX.Element {
     return (
-        <html lang="en">
+        <html lang="en" data-theme="light">
             <body className={inter.className}>{children}</body>
         </html>
     );

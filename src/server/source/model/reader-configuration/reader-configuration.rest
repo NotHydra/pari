@@ -1,0 +1,56 @@
+@base_url = {{$dotenv REST_CLIENT_URL}}/api
+@url={{base_url}}/reader-configuration
+
+GET {{url}}
+
+###
+
+GET {{url}}?page=1&count=5
+
+###
+
+GET {{url}}/id/1
+
+###
+
+GET {{url}}/detailed
+
+###
+
+GET {{url}}/detailed?page=1&count=5
+
+###
+
+GET {{url}}/id/1/detailed
+
+###
+
+GET {{url}}/table
+
+###
+
+POST {{url}}
+Content-Type: application/json
+
+{
+    "name": "Reader Configuration 1",
+    "rssiScanCount": 5,
+    "rssiScanInterval": 1000
+}
+
+###
+
+PUT {{url}}/id/1
+Content-Type: application/json
+
+{
+    "name": "Reader Configuration 1",
+    "rssiScanCount": 5,
+    "rssiScanInterval": 1000
+}
+
+###
+
+DELETE {{url}}/id/1
+
+###

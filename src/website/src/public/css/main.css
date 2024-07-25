@@ -1,48 +1,145 @@
-html {
-    scroll-behavior: smooth !important;
-}
-
 :root {
-    --main: #ff9933;
-    --secondary: #7f4c19;
-    --dark: #2e333d;
+  --main: #ff9933;
+  --secondary: #7f4c19;
+  --dark: #2e333d;
+  --light: #f5f5f5;
+  --white: #ffffff;
 }
 
-.home {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./../images/home-background.png") !important;
-    background-size: contain !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-}
-.home .subtitle {
-    width: 40% !important;
-    text-align: justify !important;
+html {
+  scroll-behavior: smooth;
+  background-color: var(--light);
 }
 
-.is-main {
-    color: var(--main) !important;
+.landing-page .home {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./../images/home-background.png") !important;
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+.landing-page .home .subtitle {
+  width: 40% !important;
+  text-align: justify !important;
+}
+.landing-page .is-main {
+  color: var(--main) !important;
+}
+.landing-page .has-text-main {
+  color: var(--main) !important;
+}
+.landing-page .has-background-main {
+  background-color: var(--main) !important;
+}
+.landing-page .has-background-secondary {
+  background-color: var(--secondary) !important;
+}
+.landing-page .has-border-dark {
+  border: 3px solid var(--dark) !important;
+}
+.landing-page .card {
+  height: 100% !important;
+}
+.landing-page .footer-link {
+  color: #ffffff !important;
 }
 
-.has-text-main {
-    color: var(--main) !important;
+.dashboard .sidebar {
+  height: 100vh;
 }
-
-.has-background-main {
-    background-color: var(--main) !important;
+.dashboard .sidebar .brand {
+  padding: 0.625rem;
+  transition: all 0.2s ease-in-out;
 }
-
-.has-background-secondary {
-    background-color: var(--secondary) !important;
+.dashboard .sidebar .sidebar-item {
+  border-radius: 0.375rem 0 0 0.375rem;
+  border: 1px solid var(--white);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  left: 1px;
 }
-
-.has-border-dark {
-    border: 3px solid var(--dark) !important;
+.dashboard .sidebar .sidebar-item.is-active {
+  background-color: var(--light);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid var(--light);
 }
-
-.card {
-    height: 100% !important;
+.dashboard .sidebar .sidebar-item:hover {
+  background-color: var(--light);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid var(--light);
 }
-
-.footer-link {
-    color: #ffffff !important;
-} /*# sourceMappingURL=main.css.map */
+.dashboard .navbar .navbar-item {
+  background-color: var(--white);
+}
+.dashboard .table-container {
+  height: 31.75rem !important;
+  overflow-y: auto;
+}
+.dashboard .table-container.has-back-button {
+  margin-bottom: 0;
+  height: 28.5rem !important;
+}
+.dashboard .table-container th {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+.dashboard .table-container th.no {
+  width: 5%;
+  text-wrap: nowrap;
+}
+.dashboard .table-container th.timestamp {
+  width: 10%;
+  text-wrap: nowrap;
+}
+.dashboard .table-container th.action {
+  width: 5%;
+  text-wrap: nowrap;
+}
+.dashboard .table-container td {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+.dashboard .table-container td .button {
+  border-radius: 0;
+}
+.dashboard .table-container td.no {
+  width: 5%;
+  text-wrap: nowrap;
+}
+.dashboard .table-container td.timestamp {
+  width: 10%;
+  font-size: 0.8rem;
+  text-wrap: nowrap;
+}
+.dashboard .table-container td.action {
+  width: 5%;
+  text-wrap: nowrap;
+}
+.dashboard .action {
+  margin: 0.1rem 0.1rem 0 0.1rem;
+}
+.dashboard .button.is-success {
+  color: var(--white);
+}
+.dashboard .button.is-warning {
+  color: var(--white);
+}
+.dashboard .button.is-danger {
+  color: var(--white);
+}
+.dashboard .has-text-main-hover:hover {
+  color: var(--main) !important;
+}
+.dashboard .is-fullwidth {
+  width: 100%;
+}
+.dashboard .line {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.dashboard .line-right {
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+.dashboard .line-top {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.dashboard .line-bottom {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}/*# sourceMappingURL=main.css.map */

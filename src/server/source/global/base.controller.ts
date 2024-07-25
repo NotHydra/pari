@@ -12,10 +12,11 @@ import {
 } from "@nestjs/common";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-import { ResponseFormatInterface } from "../common/interface/response-format";
-import { formatResponse } from "../common/interceptor/response-format.interceptor";
+import { ResponseFormatInterface } from "./../common/interface/response-format.interface";
+import { formatResponse } from "./../common/interceptor/response-format.interceptor";
 
-import { LoggerService } from "../provider/logger.service";
+import { LoggerService } from "./../provider/logger.service";
+
 import { BaseService } from "./base.service";
 
 export class BaseController<
@@ -37,7 +38,7 @@ export class BaseController<
     public async find(
         @Query("page") page: string = "0",
         @Query("count") count: string = "0"
-    ): Promise<ResponseFormatInterface<ModelType[]>> {
+    ): Promise<ResponseFormatInterface<ModelType[] | null>> {
         try {
             const response: ResponseFormatInterface<ModelType[]> = formatResponse<ModelType[]>(
                 true,
@@ -51,17 +52,18 @@ export class BaseController<
             return response;
         } catch (error) {
             this.loggerService.error(`Find: ${error.message}`);
+
             return formatResponse<null>(false, 500, error.message, null);
         }
     }
 
     @Get("id/:id")
-    public async findId(@Param("id", ParseIntPipe) id: number): Promise<ResponseFormatInterface<ModelType>> {
+    public async findId(@Param("id", ParseIntPipe) id: number): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
             const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
                 true,
                 200,
-                "Id Found",
+                `Id ${id} Found`,
                 await this.modelService.findId(id)
             );
 
@@ -71,16 +73,18 @@ export class BaseController<
         } catch (error) {
             if (error instanceof NotFoundException) {
                 this.loggerService.error(`Find Id: ${error.message}`);
+
                 return formatResponse<null>(false, 404, error.message, null);
             }
 
             this.loggerService.error(`Find Id: ${error.message}`);
+
             return formatResponse<null>(false, 500, error.message, null);
         }
     }
 
     @Post()
-    public async add(@Body() payload: ModelCreateDTO): Promise<ResponseFormatInterface<ModelType>> {
+    public async add(@Body() payload: ModelCreateDTO): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
             this.loggerService.debug(`Add: ${JSON.stringify(payload)}`);
 
@@ -97,24 +101,26 @@ export class BaseController<
         } catch (error) {
             if (error instanceof BadRequestException) {
                 this.loggerService.error(`Add: ${error.message}`);
+
                 return formatResponse<null>(false, 400, error.message, null);
             }
 
             this.loggerService.error(`Add: ${error.message}`);
+
             return formatResponse<null>(false, 500, error.message, null);
         }
     }
 
-    @Put(":id")
+    @Put("id/:id")
     public async change(
         @Param("id", ParseIntPipe) id: number,
         @Body() payload: ModelUpdateDTO
-    ): Promise<ResponseFormatInterface<ModelType>> {
+    ): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
             const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
                 true,
                 200,
-                "Changed",
+                `Id ${id} Changed`,
                 await this.modelService.change(id, payload)
             );
 
@@ -124,26 +130,29 @@ export class BaseController<
         } catch (error) {
             if (error instanceof BadRequestException) {
                 this.loggerService.error(`Change: ${error.message}`);
+
                 return formatResponse<null>(false, 400, error.message, null);
             }
 
             if (error instanceof NotFoundException || error instanceof PrismaClientKnownRequestError) {
                 this.loggerService.error(`Change: ${error.message}`);
+
                 return formatResponse<null>(false, 404, error.message, null);
             }
 
             this.loggerService.error(`Change: ${error.message}`);
+
             return formatResponse<null>(false, 500, error.message, null);
         }
     }
 
-    @Delete(":id")
-    public async remove(@Param("id", ParseIntPipe) id: number): Promise<ResponseFormatInterface<ModelType>> {
+    @Delete("id/:id")
+    public async remove(@Param("id", ParseIntPipe) id: number): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
             const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
                 true,
                 200,
-                "Removed",
+                `Id ${id} Removed`,
                 await this.modelService.remove(id)
             );
 
@@ -153,10 +162,12 @@ export class BaseController<
         } catch (error) {
             if (error instanceof NotFoundException || error instanceof PrismaClientKnownRequestError) {
                 this.loggerService.error(`Remove: ${error.message}`);
+
                 return formatResponse<null>(false, 404, error.message, null);
             }
 
             this.loggerService.error(`Remove: ${error.message}`);
+
             return formatResponse<null>(false, 500, error.message, null);
         }
     }

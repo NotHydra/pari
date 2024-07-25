@@ -1,6 +1,6 @@
 import { InternalServerErrorException, NotFoundException } from "@nestjs/common";
 
-import { PrismaModel } from "../common/interface/prisma-model";
+import { PrismaDetailedModelInterface } from "./../common/interface/prisma-model.interface";
 
 import { BaseService } from "./base.service";
 
@@ -8,16 +8,17 @@ interface DetailedInterface {
     [key: string]: { include: DetailedInterface } | boolean;
 }
 
-export class DetailedService<ModelType, ModelCreateDTO, ModelUpdateDTO> extends BaseService<
+export class DetailedService<
     ModelType,
+    ModelDetailedType extends ModelType,
     ModelCreateDTO,
-    ModelUpdateDTO
-> {
+    ModelUpdateDTO,
+> extends BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
     protected readonly detailed: DetailedInterface;
 
     constructor(
         serviceName: string,
-        protected readonly prismaModel: PrismaModel<ModelType>,
+        protected readonly prismaModel: PrismaDetailedModelInterface<ModelType, ModelDetailedType>,
         detailed: DetailedInterface
     ) {
         super(serviceName, prismaModel);
@@ -25,32 +26,38 @@ export class DetailedService<ModelType, ModelCreateDTO, ModelUpdateDTO> extends 
         this.detailed = detailed;
     }
 
-    public async findDetailed(page: number = 0, count: number = 0): Promise<ModelType[]> {
+    public async findDetailed(page: number = 0, count: number = 0): Promise<ModelDetailedType[]> {
         try {
-            let models: ModelType[];
-
-            if (page !== 0 && count !== 0) {
-                models = await this.prismaModel.findMany({
-                    skip: (page - 1) * count,
-                    take: count,
-                    include: this.detailed,
-                });
-            } else {
-                models = await this.prismaModel.findMany({ include: this.detailed });
-            }
+            const models: ModelDetailedType[] =
+                page !== 0 && count !== 0
+                    ? await this.prismaModel.findMany({
+                          skip: (page - 1) * count,
+                          take: count,
+                          orderBy: {
+                              id: "asc",
+                          },
+                          include: this.detailed,
+                      })
+                    : await this.prismaModel.findMany({
+                          orderBy: {
+                              id: "asc",
+                          },
+                          include: this.detailed,
+                      });
 
             this.loggerService.log(`Find Detailed: ${JSON.stringify(models)}`);
 
             return models;
         } catch (error) {
             this.loggerService.error(`Find Detailed: ${error.message}`);
+
             throw new InternalServerErrorException("Internal Server Error");
         }
     }
 
-    public async findIdDetailed(id: number): Promise<ModelType> {
+    public async findIdDetailed(id: number): Promise<ModelDetailedType> {
         try {
-            const model: ModelType = await this.prismaModel.findUnique({
+            const model: ModelDetailedType = await this.prismaModel.findUnique({
                 where: { id },
                 include: this.detailed,
             });
@@ -69,6 +76,7 @@ export class DetailedService<ModelType, ModelCreateDTO, ModelUpdateDTO> extends 
             }
 
             this.loggerService.error(`Find Id Detailed: ${error.message}`);
+
             throw new InternalServerErrorException("Internal Server Error");
         }
     }

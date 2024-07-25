@@ -1,35 +1,43 @@
 import { BadRequestException, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-import { PrismaModel } from "../common/interface/prisma-model";
+import { PrismaModelInterface } from "./../common/interface/prisma-model.interface";
 
-import { LoggerService } from "../provider/logger.service";
+import { LoggerService } from "./../provider/logger.service";
 
 export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
     protected readonly loggerService: LoggerService;
 
     constructor(
         serviceName: string,
-        protected readonly prismaModel: PrismaModel<ModelType>
+        protected readonly prismaModel: PrismaModelInterface<ModelType>
     ) {
         this.loggerService = new LoggerService(serviceName);
     }
 
     public async find(page: number = 0, count: number = 0): Promise<ModelType[]> {
         try {
-            let models: ModelType[];
-
-            if (page !== 0 && count !== 0) {
-                models = await this.prismaModel.findMany({ skip: (page - 1) * count, take: count });
-            } else {
-                models = await this.prismaModel.findMany();
-            }
+            const models: ModelType[] =
+                page !== 0 && count !== 0
+                    ? await this.prismaModel.findMany({
+                          skip: (page - 1) * count,
+                          take: count,
+                          orderBy: {
+                              id: "asc",
+                          },
+                      })
+                    : await this.prismaModel.findMany({
+                          orderBy: {
+                              id: "asc",
+                          },
+                      });
 
             this.loggerService.log(`Find: ${JSON.stringify(models)}`);
 
             return models;
         } catch (error) {
             this.loggerService.error(`Find: ${error.message}`);
+
             throw new InternalServerErrorException("Internal Server Error");
         }
     }
@@ -48,10 +56,12 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
         } catch (error) {
             if (error instanceof NotFoundException) {
                 this.loggerService.error(`Find Id: ${error.message}`);
+
                 throw error;
             }
 
             this.loggerService.error(`Find Id: ${error.message}`);
+
             throw new InternalServerErrorException("Internal Server Error");
         }
     }
@@ -66,15 +76,18 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
         } catch (error) {
             if (error instanceof BadRequestException) {
                 this.loggerService.error(`Add: ${error.message}`);
+
                 throw error;
             }
 
             if (error instanceof PrismaClientKnownRequestError) {
                 this.loggerService.error("Add: Invalid Payload");
+
                 throw new BadRequestException("Invalid Payload");
             }
 
             this.loggerService.error(`Add: ${error.message}`);
+
             throw new InternalServerErrorException("Internal Server Error");
         }
     }
@@ -96,15 +109,18 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
         } catch (error) {
             if (error instanceof PrismaClientKnownRequestError) {
                 this.loggerService.error(`Change: Id ${id} Not Found`);
+
                 throw new NotFoundException(`Id ${id} Not Found`);
             }
 
             if (error instanceof NotFoundException) {
                 this.loggerService.error(`Change: ${error.message}`);
+
                 throw error;
             }
 
             this.loggerService.error(`Change: ${error.message}`);
+
             throw new InternalServerErrorException("Internal Server Error");
         }
     }
@@ -123,15 +139,18 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
         } catch (error) {
             if (error instanceof PrismaClientKnownRequestError) {
                 this.loggerService.error(`Remove: Id ${id} Not Found`);
+
                 throw new NotFoundException(`Id ${id} Not Found`);
             }
 
             if (error instanceof NotFoundException) {
                 this.loggerService.error(`Remove: ${error.message}`);
+
                 throw error;
             }
 
             this.loggerService.error(`Remove: ${error.message}`);
+
             throw new InternalServerErrorException("Internal Server Error");
         }
     }

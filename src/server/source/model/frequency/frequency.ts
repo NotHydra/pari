@@ -1,28 +1,31 @@
 import { Prisma } from "@prisma/client";
 
-import { IsArray, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
+
+import { RSSIModel } from "./../rssi/rssi";
 
 export class FrequencyModel implements Prisma.FrequencyCreateInput {
     @IsNumber()
     id: number;
 
     @IsNumber()
-    attemptId: number;
-
-    @IsOptional()
-    attempt?: Prisma.AttemptCreateNestedOneWithoutFrequencyInput | undefined;
+    tagId: number;
 
     @IsString()
     frequency: string;
+}
 
-    @IsOptional()
-    @IsArray()
-    rssi?: Prisma.RSSICreateNestedManyWithoutFrequencyInput | undefined;
+export class FrequencyDetailedModel extends FrequencyModel {
+    rssi: RSSIModel[];
+}
+
+export class FrequencyTableModel extends FrequencyModel {
+    averageRSSI: number;
 }
 
 export class FrequencyCreateDTO {
     @IsNumber()
-    attemptId: number;
+    tagId: number;
 
     @IsString()
     frequency: string;
