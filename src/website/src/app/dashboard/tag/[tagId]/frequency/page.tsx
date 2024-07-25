@@ -8,7 +8,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { FrequencyTableModel } from "@/common/interface/frequency";
 
-export default function FrequencyConfigurationPage(): JSX.Element {
+export default function FrequencyPage(): JSX.Element {
     const params: { tagId: string } = useParams<{ tagId: string }>();
 
     const [tableData, setTableData] = useState<FrequencyTableModel[]>([]);
@@ -76,7 +76,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                             <th>No.</th>
 
                                             <th>
-                                                <abbr title="The value of the frequency configuration">Frequency (Hz)</abbr>
+                                                <abbr title="The value of the frequency">Frequency (Hz)</abbr>
                                             </th>
 
                                             <th>
