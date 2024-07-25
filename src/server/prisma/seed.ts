@@ -5,7 +5,7 @@ async function main(): Promise<void> {
     const defaultReaderConfiguration: ReaderConfiguration & { frequencyConfiguration: FrequencyConfiguration[] } =
         await prisma.readerConfiguration.create({
             data: {
-                name: "Default",
+                name: "Default Scan",
                 rssiScanCount: 10,
                 rssiScanInterval: 100,
                 frequencyConfiguration: {
