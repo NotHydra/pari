@@ -15,7 +15,9 @@ import {
 } from "./active-reader-configuration";
 import { ActiveReaderConfigurationService } from "./active-reader-configuration.service";
 
-interface ActiveReaderConfigurationControllerInterface {}
+interface ActiveReaderConfigurationControllerInterface {
+    findConfiguration(): Promise<ResponseFormatInterface<ActiveReaderConfigurationRawModel | null>>;
+}
 
 @Controller("active-reader-configuration")
 @UseInterceptors(ResponseFormatInterceptor)

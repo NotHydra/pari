@@ -38,7 +38,12 @@ export class DetailedService<
                           },
                           include: this.detailed,
                       })
-                    : await this.prismaModel.findMany({ include: this.detailed });
+                    : await this.prismaModel.findMany({
+                          orderBy: {
+                              id: "asc",
+                          },
+                          include: this.detailed,
+                      });
 
             this.loggerService.log(`Find Detailed: ${JSON.stringify(models)}`);
 

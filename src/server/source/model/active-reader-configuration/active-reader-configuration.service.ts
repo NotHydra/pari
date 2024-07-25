@@ -16,7 +16,9 @@ import {
 
 import { FrequencyConfigurationModel } from "./../frequency-configuration/frequency-configuration";
 
-interface ActiveReaderConfigurationServiceInterface {}
+interface ActiveReaderConfigurationServiceInterface {
+    findConfiguration(): Promise<ActiveReaderConfigurationRawModel>;
+}
 
 @Injectable()
 export class ActiveReaderConfigurationService

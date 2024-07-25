@@ -45,6 +45,7 @@ export class TagService
     public async findRSSIByTag(tag: string): Promise<number> {
         try {
             this.loggerService.debug(`Find RSSI By Tag: ${tag}`);
+
             const model: TagDetailedModel = await this.prismaModel.findFirst({
                 where: { tag },
                 orderBy: { id: "desc" },
@@ -56,6 +57,7 @@ export class TagService
             }
 
             this.loggerService.debug(JSON.stringify(model));
+
             const averageRSSI: number = average(
                 model.frequency.map((frequency: FrequencyDetailedModel) => {
                     return average(
@@ -72,6 +74,7 @@ export class TagService
         } catch (error) {
             if (error instanceof NotFoundException) {
                 this.loggerService.error(`Find RSSI By Tag: ${error.message}`);
+                
                 throw error;
             }
 

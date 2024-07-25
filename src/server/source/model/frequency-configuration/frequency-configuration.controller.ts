@@ -12,7 +12,13 @@ import {
 import { FrequencyConfigurationService } from "./frequency-configuration.service";
 import { ResponseFormatInterface } from "source/common/interface/response-format.interface";
 
-interface FrequencyConfigurationControllerInterface {}
+interface FrequencyConfigurationControllerInterface {
+    findReaderConfigurationId(
+        readerConfigurationId: number,
+        page: string,
+        count: string
+    ): Promise<ResponseFormatInterface<FrequencyConfigurationModel[] | null>>;
+}
 
 @Controller("frequency-configuration")
 @UseInterceptors(ResponseFormatInterceptor)

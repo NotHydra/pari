@@ -26,7 +26,11 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
                               id: "asc",
                           },
                       })
-                    : await this.prismaModel.findMany();
+                    : await this.prismaModel.findMany({
+                          orderBy: {
+                              id: "asc",
+                          },
+                      });
 
             this.loggerService.log(`Find: ${JSON.stringify(models)}`);
 

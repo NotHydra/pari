@@ -11,7 +11,13 @@ import {
 } from "./frequency-configuration";
 import { PrismaModelInterface } from "source/common/interface/prisma-model.interface";
 
-interface FrequencyConfigurationServiceInterface {}
+interface FrequencyConfigurationServiceInterface {
+    findReaderConfigurationId(
+        readerConfigurationId: number,
+        page: number,
+        count: number
+    ): Promise<FrequencyConfigurationModel[]>;
+}
 
 @Injectable()
 export class FrequencyConfigurationService
@@ -41,7 +47,12 @@ export class FrequencyConfigurationService
                               id: "asc",
                           },
                       })
-                    : await this.prismaModel.findMany({ where: { readerConfigurationId } });
+                    : await this.prismaModel.findMany({
+                          where: { readerConfigurationId },
+                          orderBy: {
+                              id: "asc",
+                          },
+                      });
 
             this.loggerService.log(`Find Reader Configuration Id: ${JSON.stringify(models)}`);
 
