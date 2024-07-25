@@ -51,7 +51,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                         <div className="grid">
                             <div className="cell">
                                 <div className="columns action">
-                                    <div className="column is-1 m-0 p-0">
+                                    <div className="column is-1 m-0 mr-1 p-0">
                                         <Link
                                             href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add`}
                                             className="button is-normal is-fullwidth is-success has-text-weight-bold"
@@ -63,19 +63,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                         </Link>
                                     </div>
 
-                                    <div className="column m-0 mx-2 p-0">
-                                        <div className="field" title="Search Action">
-                                            <p className="control has-icons-left">
-                                                <span className="icon is-left">
-                                                    <i className="fas fa-search"></i>
-                                                </span>
-
-                                                <input className="input" type="text" placeholder="Search" />
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="column is-2 m-0 p-0">
+                                    <div className="column m-0 ml-1 p-0">
                                         <div className="control has-icons-left" title="Sort Action">
                                             <div className="select is-fullwidth">
                                                 <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSort(e)}>
