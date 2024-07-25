@@ -3,7 +3,7 @@
 import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration";
@@ -34,6 +34,14 @@ export default function FrequencyConfigurationPage(): JSX.Element {
 
         fetchData();
     }, []);
+
+    const handleSort = (e: ChangeEvent<HTMLSelectElement>): void => {
+        if (e.target.value === "ascending") {
+            setTableData([...tableData].sort((a: FrequencyConfigurationModel, b: FrequencyConfigurationModel) => a.id - b.id));
+        } else if (e.target.value === "descending") {
+            setTableData([...tableData].sort((a: FrequencyConfigurationModel, b: FrequencyConfigurationModel) => b.id - a.id));
+        }
+    };
 
     return (
         <div className="card has-background-white">
@@ -70,10 +78,14 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                     <div className="column is-2 m-0 p-0">
                                         <div className="control has-icons-left" title="Sort Action">
                                             <div className="select is-fullwidth">
-                                                <select>
+                                                <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSort(e)}>
                                                     <option disabled>Sort</option>
-                                                    <option selected>Ascending</option>
-                                                    <option>Descending</option>
+
+                                                    <option value={"ascending"} selected>
+                                                        Ascending
+                                                    </option>
+
+                                                    <option value={"descending"}>Descending</option>
                                                 </select>
                                             </div>
 
