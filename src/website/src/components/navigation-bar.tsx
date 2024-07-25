@@ -37,6 +37,12 @@ export default function NavigationBar(): JSX.Element {
         { display: "Change", link: `/dashboard/reader-configuration/${params.readerConfigurationId}/change` },
     ];
 
+    navigationPath[`/dashboard/reader-configuration/${params.readerConfigurationId}/remove`] = [
+        { display: "Dashboard", link: "/dashboard" },
+        { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
+        { display: "Remove", link: `/dashboard/reader-configuration/${params.readerConfigurationId}/remove` },
+    ];
+
     return (
         <div className="column pl-0 pb-0">
             <nav className="navbar is-white line-bottom py-2">

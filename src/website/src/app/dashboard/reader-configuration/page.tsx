@@ -164,11 +164,15 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                                             </span>
                                                         </Link>
 
-                                                        <button className="button is-danger has-text-white" title="Remove Action">
+                                                        <Link
+                                                            href={`/dashboard/reader-configuration/${data.id}/remove`}
+                                                            className="button is-danger has-text-white"
+                                                            title="Remove Action"
+                                                        >
                                                             <span className="icon">
                                                                 <i className="fas fa-trash"></i>
                                                             </span>
-                                                        </button>
+                                                        </Link>
                                                     </div>
                                                 </td>
                                             </tr>
