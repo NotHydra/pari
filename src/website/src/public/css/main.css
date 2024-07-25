@@ -80,14 +80,19 @@ html {
 .dashboard .table-container th {
   text-align: center !important;
   vertical-align: middle !important;
+}
+.dashboard .table-container th.timestamp {
   text-wrap: nowrap;
 }
 .dashboard .table-container td {
   text-align: center !important;
   vertical-align: middle !important;
 }
+.dashboard .table-container td .button {
+  border-radius: 0;
+}
 .dashboard .table-container td.timestamp {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   text-wrap: nowrap;
 }
 .dashboard .action {

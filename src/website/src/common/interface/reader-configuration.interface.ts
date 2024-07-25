@@ -6,3 +6,7 @@ export interface ReaderConfigurationModel {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface ReaderConfigurationTableModel extends ReaderConfigurationModel {
+    frequencyConfigurationCount: number;
+}

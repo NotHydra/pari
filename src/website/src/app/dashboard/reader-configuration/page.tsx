@@ -7,13 +7,13 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { ActiveReaderConfigurationModel } from "@/common/interface/active-reader-configuration";
-import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
+import { ReaderConfigurationTableModel } from "@/common/interface/reader-configuration.interface";
 
 import { timestampToString } from "@/utility/timestamp-to-string";
 
 export default function ReaderConfigurationPage(): JSX.Element {
     const [activeReaderConfiguration, setActiveReaderConfiguration] = useState<ActiveReaderConfigurationModel | null>(null);
-    const [tableData, setTableData] = useState<ReaderConfigurationModel[]>([]);
+    const [tableData, setTableData] = useState<ReaderConfigurationTableModel[]>([]);
 
     useEffect((): void => {
         const fetchData = async (): Promise<void> => {
@@ -27,8 +27,8 @@ export default function ReaderConfigurationPage(): JSX.Element {
                     });
 
                 await axios
-                    .get<ResponseFormatInterface<ReaderConfigurationModel[]>>("http://localhost:3001/api/reader-configuration/table")
-                    .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationModel[]>>): void => {
+                    .get<ResponseFormatInterface<ReaderConfigurationTableModel[]>>("http://localhost:3001/api/reader-configuration/table")
+                    .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationTableModel[]>>): void => {
                         console.log(response.data);
 
                         setTableData(response.data.data);
@@ -89,9 +89,9 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
     const handleSort = (e: ChangeEvent<HTMLSelectElement>): void => {
         if (e.target.value === "ascending") {
-            setTableData([...tableData].sort((a: ReaderConfigurationModel, b: ReaderConfigurationModel) => a.id - b.id));
+            setTableData([...tableData].sort((a: ReaderConfigurationTableModel, b: ReaderConfigurationTableModel) => a.id - b.id));
         } else if (e.target.value === "descending") {
-            setTableData([...tableData].sort((a: ReaderConfigurationModel, b: ReaderConfigurationModel) => b.id - a.id));
+            setTableData([...tableData].sort((a: ReaderConfigurationTableModel, b: ReaderConfigurationTableModel) => b.id - a.id));
         }
     };
 
@@ -148,6 +148,10 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                             </th>
 
                                             <th>
+                                                <abbr title="The amount of frequency configuration">Frequency Configuration Count</abbr>
+                                            </th>
+
+                                            <th>
                                                 <abbr title="The amount of RSSI scan for each frequency">RSSI Scan Count</abbr>
                                             </th>
 
@@ -155,20 +159,22 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                                 <abbr title="The amount of delay after each RSSI scan">RSSI Scan Interval {"(ms)"}</abbr>
                                             </th>
 
-                                            <th>Created At</th>
+                                            <th className="timestamp">Created At</th>
 
-                                            <th>Updated At</th>
+                                            <th className="timestamp">Updated At</th>
 
                                             <th>Action</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        {tableData.map((data: ReaderConfigurationModel, index: number) => (
+                                        {tableData.map((data: ReaderConfigurationTableModel, index: number) => (
                                             <tr key={index}>
                                                 <td>{index + 1}.</td>
 
                                                 <td>{data.name}</td>
+
+                                                <td>{data.frequencyConfigurationCount}</td>
 
                                                 <td>{data.rssiScanCount}</td>
 
@@ -178,55 +184,65 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
                                                 <td className="timestamp">{timestampToString(data.updatedAt)}</td>
 
-                                                <td>
-                                                    <div className="buttons has-addons is-centered">
-                                                        <button
-                                                            className="button is-success has-text-white"
-                                                            title="Use Action"
-                                                            onClick={(): void => {
-                                                                handleUse(data.id);
-                                                            }}
-                                                            disabled={
-                                                                activeReaderConfiguration !== null &&
-                                                                activeReaderConfiguration.readerConfigurationId === data.id
-                                                                    ? true
-                                                                    : false
-                                                            }
-                                                        >
-                                                            <span className="icon">
-                                                                <i className="fas fa-check"></i>
-                                                            </span>
-                                                        </button>
+                                                <td className="m-0 p-0">
+                                                    <div className="fixed-grid has-1-cols">
+                                                        <div className="grid is-row-gap-0">
+                                                            <div className="cell">
+                                                                <button
+                                                                    className="button is-small is-fullwidth is-success has-text-white"
+                                                                    title="Use Action"
+                                                                    onClick={(): void => {
+                                                                        handleUse(data.id);
+                                                                    }}
+                                                                    disabled={
+                                                                        activeReaderConfiguration !== null &&
+                                                                        activeReaderConfiguration.readerConfigurationId === data.id
+                                                                            ? true
+                                                                            : false
+                                                                    }
+                                                                >
+                                                                    <span className="icon">
+                                                                        <i className="fas fa-check"></i>
+                                                                    </span>
+                                                                </button>
+                                                            </div>
 
-                                                        <Link
-                                                            href={`/dashboard/reader-configuration/${data.id}/frequency-configuration`}
-                                                            className="button is-info has-text-white"
-                                                            title="Frequency Configuration Action"
-                                                        >
-                                                            <span className="icon">
-                                                                <i className="fas fa-sliders"></i>
-                                                            </span>
-                                                        </Link>
+                                                            <div className="cell">
+                                                                <Link
+                                                                    href={`/dashboard/reader-configuration/${data.id}/frequency-configuration`}
+                                                                    className="button is-small is-fullwidth is-info has-text-white"
+                                                                    title="Frequency Configuration Action"
+                                                                >
+                                                                    <span className="icon">
+                                                                        <i className="fas fa-sliders"></i>
+                                                                    </span>
+                                                                </Link>
+                                                            </div>
 
-                                                        <Link
-                                                            href={`/dashboard/reader-configuration/${data.id}/change`}
-                                                            className="button is-warning has-text-white"
-                                                            title="Change Action"
-                                                        >
-                                                            <span className="icon">
-                                                                <i className="fas fa-pen-to-square"></i>
-                                                            </span>
-                                                        </Link>
+                                                            <div className="cell">
+                                                                <Link
+                                                                    href={`/dashboard/reader-configuration/${data.id}/change`}
+                                                                    className="button is-small is-fullwidth is-warning has-text-white"
+                                                                    title="Change Action"
+                                                                >
+                                                                    <span className="icon">
+                                                                        <i className="fas fa-pen-to-square"></i>
+                                                                    </span>
+                                                                </Link>
+                                                            </div>
 
-                                                        <Link
-                                                            href={`/dashboard/reader-configuration/${data.id}/remove`}
-                                                            className="button is-danger has-text-white"
-                                                            title="Remove Action"
-                                                        >
-                                                            <span className="icon">
-                                                                <i className="fas fa-trash"></i>
-                                                            </span>
-                                                        </Link>
+                                                            <div className="cell">
+                                                                <Link
+                                                                    href={`/dashboard/reader-configuration/${data.id}/remove`}
+                                                                    className="button is-small is-fullwidth is-danger has-text-white"
+                                                                    title="Remove Action"
+                                                                >
+                                                                    <span className="icon">
+                                                                        <i className="fas fa-trash"></i>
+                                                                    </span>
+                                                                </Link>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
