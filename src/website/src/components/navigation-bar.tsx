@@ -31,12 +31,6 @@ export default function NavigationBar(): JSX.Element {
         { display: "Add", link: "/dashboard/reader-configuration/add" },
     ];
 
-    navigationPath[`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`] = [
-        { display: "Dashboard", link: "/dashboard" },
-        { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
-        { display: "Frequency Configuration", link: `/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration` },
-    ];
-
     navigationPath[`/dashboard/reader-configuration/${params.readerConfigurationId}/change`] = [
         { display: "Dashboard", link: "/dashboard" },
         { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
@@ -47,6 +41,19 @@ export default function NavigationBar(): JSX.Element {
         { display: "Dashboard", link: "/dashboard" },
         { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
         { display: "Remove", link: `/dashboard/reader-configuration/${params.readerConfigurationId}/remove` },
+    ];
+
+    navigationPath[`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`] = [
+        { display: "Dashboard", link: "/dashboard" },
+        { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
+        { display: "Frequency Configuration", link: `/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration` },
+    ];
+
+    navigationPath[`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add`] = [
+        { display: "Dashboard", link: "/dashboard" },
+        { display: "Reader Configuration", link: "/dashboard/reader-configuration" },
+        { display: "Frequency Configuration", link: `/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration` },
+        { display: "Add", link: `/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add` },
     ];
 
     return (

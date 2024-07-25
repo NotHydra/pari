@@ -45,7 +45,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                 <div className="columns action">
                                     <div className="column is-1 m-0 p-0">
                                         <Link
-                                            href="/dashboard/reader-configuration/add"
+                                            href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add`}
                                             className="button is-normal is-fullwidth is-success has-text-weight-bold"
                                             title="Add Action"
                                         >
