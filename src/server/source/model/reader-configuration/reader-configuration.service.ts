@@ -56,6 +56,9 @@ export class ReaderConfigurationService
                 
                 GROUP BY
                     reader_configuration.id
+                
+                ORDER BY
+                    reader_configuration.id ASC
             `;
 
             this.loggerService.log(`Find Table: ${JSON.stringify(models)}`);
