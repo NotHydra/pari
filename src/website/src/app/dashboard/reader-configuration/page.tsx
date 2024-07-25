@@ -3,6 +3,7 @@
 import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { ActiveReaderConfigurationModel } from "@/common/interface/active-reader-configuration";
@@ -39,6 +40,52 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
         fetchData();
     }, []);
+
+    const handleUse = async (id: number): Promise<void> => {
+        Swal.fire<void>({
+            icon: "question",
+            title: "Are you sure?",
+            confirmButtonText: "Yes",
+            confirmButtonColor: "#3ABB81",
+            showCancelButton: true,
+            cancelButtonColor: "#FF6685",
+        }).then(async (result: SweetAlertResult<void>): Promise<void> => {
+            if (result.isConfirmed) {
+                try {
+                    await axios
+                        .put<
+                            ResponseFormatInterface<ActiveReaderConfigurationModel>
+                        >("http://localhost:3001/api/active-reader-configuration/id/1", { readerConfigurationId: id })
+                        .then(
+                            (response: AxiosResponse<ResponseFormatInterface<ActiveReaderConfigurationModel>>): void => {
+                                console.log(response.data);
+
+                                setActiveReaderConfiguration(response.data.data);
+
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success",
+                                    confirmButtonText: "Close",
+                                    confirmButtonColor: "#FF6685",
+                                });
+                            },
+                            (response: AxiosResponse<ResponseFormatInterface<ActiveReaderConfigurationModel>>): void => {
+                                console.log(response.data);
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: response.data.message,
+                                    confirmButtonText: "Close",
+                                    confirmButtonColor: "#FF6685",
+                                });
+                            }
+                        );
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        });
+    };
 
     return (
         <div className="card has-background-white">
@@ -136,6 +183,9 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                                         <button
                                                             className="button is-success has-text-white"
                                                             title="Use Action"
+                                                            onClick={() => {
+                                                                handleUse(data.id);
+                                                            }}
                                                             disabled={
                                                                 activeReaderConfiguration !== null &&
                                                                 activeReaderConfiguration.readerConfigurationId === data.id
