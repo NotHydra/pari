@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
 
 import { PrismaService } from "./../../provider/prisma.service";
 
@@ -23,5 +23,33 @@ export class FrequencyConfigurationService
             FrequencyConfigurationService.name,
             prismaService.frequencyConfiguration as unknown as PrismaModelInterface<FrequencyConfigurationModel>
         );
+    }
+
+    public async findReaderConfigurationId(
+        readerConfigurationId: number,
+        page: number = 0,
+        count: number = 0
+    ): Promise<FrequencyConfigurationModel[]> {
+        try {
+            const models: FrequencyConfigurationModel[] =
+                page !== 0 && count !== 0
+                    ? await this.prismaModel.findMany({
+                          where: { readerConfigurationId },
+                          skip: (page - 1) * count,
+                          take: count,
+                          orderBy: {
+                              id: "asc",
+                          },
+                      })
+                    : await this.prismaModel.findMany({ where: { readerConfigurationId } });
+
+            this.loggerService.log(`Find Reader Configuration Id: ${JSON.stringify(models)}`);
+
+            return models;
+        } catch (error) {
+            this.loggerService.error(`Find Reader Configuration Id: ${error.message}`);
+
+            throw new InternalServerErrorException("Internal Server Error");
+        }
     }
 }

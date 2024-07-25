@@ -9,6 +9,14 @@ GET {{url}}?page=1&count=5
 
 ###
 
+GET {{url}}/reader-configuration-id/1
+
+###
+
+GET {{url}}/reader-configuration-id/1?page=1&count=5
+
+###
+
 GET {{url}}/id/1
 
 ###

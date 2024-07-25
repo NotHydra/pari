@@ -1,6 +1,6 @@
-import { Controller, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Param, ParseIntPipe, Query, UseInterceptors } from "@nestjs/common";
 
-import { ResponseFormatInterceptor } from "./../../common/interceptor/response-format.interceptor";
+import { formatResponse, ResponseFormatInterceptor } from "./../../common/interceptor/response-format.interceptor";
 
 import { BaseController } from "./../../global/base.controller";
 
@@ -10,6 +10,7 @@ import {
     FrequencyConfigurationUpdateDTO,
 } from "./frequency-configuration";
 import { FrequencyConfigurationService } from "./frequency-configuration.service";
+import { ResponseFormatInterface } from "source/common/interface/response-format.interface";
 
 interface FrequencyConfigurationControllerInterface {}
 
@@ -26,5 +27,35 @@ export class FrequencyConfigurationController
 {
     constructor(modelService: FrequencyConfigurationService) {
         super(FrequencyConfigurationController.name, modelService);
+    }
+
+    @Get("reader-configuration-id/:readerConfigurationId")
+    public async findReaderConfigurationId(
+        @Param("readerConfigurationId", ParseIntPipe) readerConfigurationId: number,
+        @Query("page") page: string = "0",
+        @Query("count") count: string = "0"
+    ): Promise<ResponseFormatInterface<FrequencyConfigurationModel[] | null>> {
+        try {
+            const response: ResponseFormatInterface<FrequencyConfigurationModel[]> = formatResponse<
+                FrequencyConfigurationModel[]
+            >(
+                true,
+                200,
+                "Found",
+                await this.modelService.findReaderConfigurationId(
+                    readerConfigurationId,
+                    parseInt(page),
+                    parseInt(count)
+                )
+            );
+
+            this.loggerService.log(`Find Reader Configuration Id: ${JSON.stringify(response)}`);
+
+            return response;
+        } catch (error) {
+            this.loggerService.error(`Find Reader Configuration Id: ${error.message}`);
+
+            return formatResponse<null>(false, 500, error.message, null);
+        }
     }
 }
