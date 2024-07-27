@@ -6,9 +6,9 @@ import { useParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration";
+import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration.interface";
 
-import Timestamp from "@/components/timestamp";
+import Timestamp from "@/components/timestamp.component";
 
 export default function FrequencyConfigurationPage(): JSX.Element {
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();

@@ -6,10 +6,10 @@ import { ChangeEvent, useEffect, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { ActiveReaderConfigurationModel } from "@/common/interface/active-reader-configuration";
+import { ActiveReaderConfigurationModel } from "@/common/interface/active-reader-configuration.interface";
 import { ReaderConfigurationTableModel } from "@/common/interface/reader-configuration.interface";
 
-import Timestamp from "@/components/timestamp";
+import Timestamp from "@/components/timestamp.component";
 
 export default function ReaderConfigurationPage(): JSX.Element {
     const [activeReaderConfiguration, setActiveReaderConfiguration] = useState<ActiveReaderConfigurationModel | null>(null);

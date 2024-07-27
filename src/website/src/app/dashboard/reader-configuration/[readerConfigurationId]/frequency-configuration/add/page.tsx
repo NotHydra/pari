@@ -7,7 +7,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration";
+import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration.interface";
 
 export default function FrequencyConfigurationAddPage(): JSX.Element {
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();

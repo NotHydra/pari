@@ -5,9 +5,9 @@ import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { TagTableModel } from "@/common/interface/tag";
+import { TagTableModel } from "@/common/interface/tag.interface";
 
-import Timestamp from "@/components/timestamp";
+import Timestamp from "@/components/timestamp.component";
 
 export default function TagPage(): JSX.Element {
     const [tableData, setTableData] = useState<TagTableModel[]>([]);

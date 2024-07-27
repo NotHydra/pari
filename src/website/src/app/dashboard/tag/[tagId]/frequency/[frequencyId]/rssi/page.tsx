@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { RSSIModel } from "@/common/interface/rssi";
+import { RSSIModel } from "@/common/interface/rssi.interface";
 
 export default function RSSIPage(): JSX.Element {
     const params: { tagId: string; frequencyId: string } = useParams<{ tagId: string; frequencyId: string }>();
