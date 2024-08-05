@@ -122,6 +122,7 @@ export default function RSSIPage(): JSX.Element {
                         <div className="grid">
                             <div className="cell chart has-back-button" style={{ display: "flex", justifyContent: "center" }}>
                                 <Line
+                                    width={"325%"}
                                     data={{
                                         labels: chartData
                                             ? Array.from({ length: lengthRSSI(chartData) }, (_, x) => x).map((value: number): string => `RSSI ${value + 1}`)
