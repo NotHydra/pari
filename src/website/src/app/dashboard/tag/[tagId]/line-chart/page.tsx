@@ -15,6 +15,26 @@ import { RSSIModel } from "@/common/interface/rssi.interface";
 defaults.font.size = 10;
 
 export default function RSSIPage(): JSX.Element {
+    const frequencyColor: string[] = ["#3E26A8", "#9EACFD", "#23A0E5", "#2EC4A4", "#B6C532", "#F4BA3A", "#F9D82C"];
+    const getFrequencyColor = (index: number): string => {
+        const hexColorCode: string = frequencyColor[index % frequencyColor.length];
+        const darkenPercentage: number = 1 - ((Math.floor(index / frequencyColor.length) * 25) % 100) / 100;
+
+        let r = parseInt(hexColorCode.slice(1, 3), 16);
+        let g = parseInt(hexColorCode.slice(3, 5), 16);
+        let b = parseInt(hexColorCode.slice(5, 7), 16);
+
+        r = Math.floor(r * darkenPercentage);
+        g = Math.floor(g * darkenPercentage);
+        b = Math.floor(b * darkenPercentage);
+
+        r = Math.max(0, Math.min(255, r));
+        g = Math.max(0, Math.min(255, g));
+        b = Math.max(0, Math.min(255, b));
+
+        return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+    };
+
     const minMaxRSSI = (tag: TagDetailedModel): { min: number; max: number } | null => {
         let min: number | null = null;
         let max: number | null = null;
@@ -56,8 +76,6 @@ export default function RSSIPage(): JSX.Element {
     };
 
     const params: { tagId: string } = useParams<{ tagId: string }>();
-
-    const frequencyColor: string[] = ["#3E26A8", "#9EACFD", "#23A0E5", "#2EC4A4", "#B6C532", "#F4BA3A", "#F9D82C"];
 
     const [chartData, setChartData] = useState<TagDetailedModel>();
     const [minRSSIValue, setMinRSSIValue] = useState<number | null>(null);
@@ -106,7 +124,7 @@ export default function RSSIPage(): JSX.Element {
                                                           label: `${frequencyModel.frequency}Hz`,
                                                           data: frequencyModel.rssi.map((rssiModel: RSSIModel): number => rssiModel.rssi),
                                                           fill: false,
-                                                          borderColor: frequencyColor[frequencyIndex],
+                                                          borderColor: getFrequencyColor(frequencyIndex),
                                                           tension: 0.1,
                                                       };
                                                   })
