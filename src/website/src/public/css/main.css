@@ -113,6 +113,10 @@ html {
   width: 5%;
   text-wrap: nowrap;
 }
+.dashboard .cell.chart.has-back-button {
+  margin-bottom: 0;
+  height: 31.85rem !important;
+}
 .dashboard .action {
   margin: 0.1rem 0.1rem 0 0.1rem;
 }

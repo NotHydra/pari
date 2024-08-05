@@ -25,6 +25,12 @@ export default function NavigationBar(): JSX.Element {
         { display: "Tag", link: "/dashboard/tag" },
     ];
 
+    navigationPath[`/dashboard/tag/${params.tagId}/line-chart`] = [
+        { display: "Dashboard", link: "/dashboard" },
+        { display: "Tag", link: "/dashboard/tag" },
+        { display: "Line Chart", link: `/dashboard/tag/${params.tagId}/line-chart` },
+    ];
+
     navigationPath[`/dashboard/tag/${params.tagId}/frequency`] = [
         { display: "Dashboard", link: "/dashboard" },
         { display: "Tag", link: "/dashboard/tag" },

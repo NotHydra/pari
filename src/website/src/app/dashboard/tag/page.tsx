@@ -112,6 +112,18 @@ export default function TagPage(): JSX.Element {
                                                         <div className="grid is-row-gap-0">
                                                             <div className="cell">
                                                                 <Link
+                                                                    href={`/dashboard/tag/${data.id}/line-chart`}
+                                                                    className="button is-small is-fullwidth is-info has-text-white"
+                                                                    title="Line Chart Action"
+                                                                >
+                                                                    <span className="icon">
+                                                                        <i className="fas fa-chart-line"></i>
+                                                                    </span>
+                                                                </Link>
+                                                            </div>
+
+                                                            <div className="cell">
+                                                                <Link
                                                                     href={`/dashboard/tag/${data.id}/frequency`}
                                                                     className="button is-small is-fullwidth is-info has-text-white"
                                                                     title="Frequency Action"
