@@ -1,7 +1,7 @@
-import { timestampToString } from "@/utility/timestamp-to-string";
+import moment from "moment";
 
 export default function Timestamp({ timestamp }: { timestamp: Date }): JSX.Element {
-    const value: string[] = timestampToString(timestamp).split(" ");
+    const value: string[] = moment(timestamp).format(`HH:mm:ss DD-MMMM-YYYY`).split(" ");
 
     return (
         <>
