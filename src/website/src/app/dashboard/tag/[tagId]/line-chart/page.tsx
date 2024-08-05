@@ -38,6 +38,23 @@ export default function RSSIPage(): JSX.Element {
         return { min, max };
     };
 
+    const lengthRSSI = (tag: TagDetailedModel): number => {
+        let length: number = 0;
+
+        let rssiCount: number = 0;
+        tag.frequency.forEach((frequencyModel: FrequencyDetailedModel): void => {
+            rssiCount += frequencyModel.rssi.length;
+
+            if (rssiCount > length) {
+                length = rssiCount;
+            }
+
+            rssiCount = 0;
+        });
+
+        return length;
+    };
+
     const params: { tagId: string } = useParams<{ tagId: string }>();
 
     const [chartData, setChartData] = useState<TagDetailedModel>();
@@ -51,12 +68,10 @@ export default function RSSIPage(): JSX.Element {
                     .get<ResponseFormatInterface<TagDetailedModel>>(`http://localhost:3001/api/tag/id/${params.tagId}/detailed`)
                     .then((response: AxiosResponse<ResponseFormatInterface<TagDetailedModel>>): void => {
                         setChartData(response.data.data);
-
                         const minMaxValue: {
                             min: number;
                             max: number;
                         } | null = minMaxRSSI(response.data.data);
-
                         if (minMaxValue !== null) {
                             setMinRSSIValue(minMaxValue.min);
                             setMaxRSSIValue(minMaxValue.max);
@@ -79,7 +94,9 @@ export default function RSSIPage(): JSX.Element {
                             <div className="cell chart has-back-button">
                                 <Line
                                     data={{
-                                        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value: number): string => `RSSI ${value}`),
+                                        labels: chartData
+                                            ? Array.from({ length: lengthRSSI(chartData) }, (_, x) => x).map((value: number): string => `RSSI ${value + 1}`)
+                                            : ["Loading..."],
                                         datasets: chartData
                                             ? chartData.frequency
                                                   .map((frequencyModel: FrequencyDetailedModel) => {
@@ -91,7 +108,7 @@ export default function RSSIPage(): JSX.Element {
                                                       };
                                                   })
                                                   .reverse()
-                                            : [],
+                                            : [{ label: "Loading...", data: [0], fill: false, tension: 0.1 }],
                                     }}
                                     options={{
                                         scales: {
