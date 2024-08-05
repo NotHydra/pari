@@ -57,6 +57,8 @@ export default function RSSIPage(): JSX.Element {
 
     const params: { tagId: string } = useParams<{ tagId: string }>();
 
+    const frequencyColor: string[] = ["#3E26A8", "#9EACFD", "#23A0E5", "#2EC4A4", "#B6C532", "#F4BA3A", "#F9D82C"];
+
     const [chartData, setChartData] = useState<TagDetailedModel>();
     const [minRSSIValue, setMinRSSIValue] = useState<number | null>(null);
     const [maxRSSIValue, setMaxRSSIValue] = useState<number | null>(null);
@@ -99,11 +101,12 @@ export default function RSSIPage(): JSX.Element {
                                             : ["Loading..."],
                                         datasets: chartData
                                             ? chartData.frequency
-                                                  .map((frequencyModel: FrequencyDetailedModel) => {
+                                                  .map((frequencyModel: FrequencyDetailedModel, frequencyIndex: number) => {
                                                       return {
                                                           label: `${frequencyModel.frequency}Hz`,
                                                           data: frequencyModel.rssi.map((rssiModel: RSSIModel): number => rssiModel.rssi),
                                                           fill: false,
+                                                          borderColor: frequencyColor[frequencyIndex],
                                                           tension: 0.1,
                                                       };
                                                   })
