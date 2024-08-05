@@ -15,7 +15,7 @@ import { RSSIModel } from "@/common/interface/rssi.interface";
 defaults.font.size = 10;
 
 export default function RSSIPage(): JSX.Element {
-    const frequencyColor: string[] = ["#3E26A8", "#9EACFD", "#23A0E5", "#2EC4A4", "#B6C532", "#F4BA3A", "#F9D82C"];
+    const frequencyColor: string[] = ["#F9D82C", "#F4BA3A", "#B6C532", "#2EC4A4", "#23A0E5", "#9EACFD", "#3E26A8"];
     const getFrequencyColor = (index: number): string => {
         const hexColorCode: string = frequencyColor[index % frequencyColor.length];
         const darkenPercentage: number = 1 - ((Math.floor(index / frequencyColor.length) * 25) % 100) / 100;
