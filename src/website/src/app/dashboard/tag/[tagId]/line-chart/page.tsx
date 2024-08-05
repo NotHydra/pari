@@ -135,12 +135,14 @@ export default function RSSIPage(): JSX.Element {
                                                           fill: false,
                                                           borderColor: getFrequencyColor(frequencyIndex),
                                                           tension: 0.1,
+                                                          order: frequencyIndex + 1,
                                                       };
                                                   })
                                                   .reverse()
                                             : [{ label: "Loading...", data: [0], fill: false, tension: 0.1 }],
                                     }}
                                     options={{
+                                        responsive: true,
                                         scales: {
                                             y: {
                                                 type: "linear",
@@ -155,11 +157,6 @@ export default function RSSIPage(): JSX.Element {
                                                         return "";
                                                     },
                                                 },
-                                            },
-                                        },
-                                        plugins: {
-                                            legend: {
-                                                reverse: true,
                                             },
                                         },
                                     }}
