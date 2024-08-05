@@ -75,6 +75,15 @@ export default function RSSIPage(): JSX.Element {
         return length;
     };
 
+    const averageRSSI = (frequency: FrequencyDetailedModel): number => {
+        let sum: number = 0;
+        frequency.rssi.forEach((rssiModel: RSSIModel): void => {
+            sum += rssiModel.rssi;
+        });
+
+        return sum / frequency.rssi.length;
+    };
+
     const params: { tagId: string } = useParams<{ tagId: string }>();
 
     const [chartData, setChartData] = useState<TagDetailedModel>();
@@ -121,7 +130,7 @@ export default function RSSIPage(): JSX.Element {
                                             ? chartData.frequency
                                                   .map((frequencyModel: FrequencyDetailedModel, frequencyIndex: number) => {
                                                       return {
-                                                          label: `${frequencyModel.frequency}Hz`,
+                                                          label: `${frequencyModel.frequency}Hz (${averageRSSI(frequencyModel)}dBm)`,
                                                           data: frequencyModel.rssi.map((rssiModel: RSSIModel): number => rssiModel.rssi),
                                                           fill: false,
                                                           borderColor: getFrequencyColor(frequencyIndex),
