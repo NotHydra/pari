@@ -120,7 +120,7 @@ export default function RSSIPage(): JSX.Element {
                 <div className="content">
                     <div className="fixed-grid has-1-cols is-fullwidth">
                         <div className="grid">
-                            <div className="cell chart has-back-button">
+                            <div className="cell chart has-back-button" style={{ display: "flex", justifyContent: "center" }}>
                                 <Line
                                     data={{
                                         labels: chartData
