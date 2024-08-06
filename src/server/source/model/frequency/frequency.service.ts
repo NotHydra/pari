@@ -42,7 +42,7 @@ export class FrequencyService
 
                 FROM
                     frequency
-                    INNER JOIN rssi ON frequency.id=rssi.frequency_id
+                    LEFT JOIN rssi ON frequency.id=rssi.frequency_id
 
                 WHERE
                     frequency.tag_id=${tagId}
