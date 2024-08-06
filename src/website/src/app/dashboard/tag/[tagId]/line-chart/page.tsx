@@ -86,7 +86,7 @@ export default function RSSIPage(): JSX.Element {
 
     const params: { tagId: string } = useParams<{ tagId: string }>();
 
-    const [chartData, setChartData] = useState<TagDetailedModel>();
+    const [chartData, setChartData] = useState<TagDetailedModel | null>(null);
     const [minRSSIValue, setMinRSSIValue] = useState<number | null>(null);
     const [maxRSSIValue, setMaxRSSIValue] = useState<number | null>(null);
 
@@ -97,10 +97,12 @@ export default function RSSIPage(): JSX.Element {
                     .get<ResponseFormatInterface<TagDetailedModel>>(`http://localhost:3001/api/tag/id/${params.tagId}/detailed`)
                     .then((response: AxiosResponse<ResponseFormatInterface<TagDetailedModel>>): void => {
                         setChartData(response.data.data);
+
                         const minMaxValue: {
                             min: number;
                             max: number;
                         } | null = minMaxRSSI(response.data.data);
+
                         if (minMaxValue !== null) {
                             setMinRSSIValue(minMaxValue.min);
                             setMaxRSSIValue(minMaxValue.max);
@@ -124,23 +126,25 @@ export default function RSSIPage(): JSX.Element {
                                 <Line
                                     width={"325%"}
                                     data={{
-                                        labels: chartData
-                                            ? Array.from({ length: lengthRSSI(chartData) }, (_, x) => x).map((value: number): string => `RSSI ${value + 1}`)
-                                            : ["Loading..."],
-                                        datasets: chartData
-                                            ? chartData.frequency
-                                                  .map((frequencyModel: FrequencyDetailedModel, frequencyIndex: number) => {
-                                                      return {
-                                                          label: `${frequencyModel.frequency}Hz (${averageRSSI(frequencyModel)}dBm)`,
-                                                          data: frequencyModel.rssi.map((rssiModel: RSSIModel): number => rssiModel.rssi),
-                                                          fill: false,
-                                                          borderColor: getFrequencyColor(frequencyIndex),
-                                                          tension: 0.1,
-                                                          order: frequencyIndex + 1,
-                                                      };
-                                                  })
-                                                  .reverse()
-                                            : [{ label: "Loading...", data: [0], fill: false, tension: 0.1 }],
+                                        labels:
+                                            chartData !== null
+                                                ? Array.from({ length: lengthRSSI(chartData) }, (_, x) => x).map((value: number): string => `RSSI ${value + 1}`)
+                                                : ["Loading..."],
+                                        datasets:
+                                            chartData != null
+                                                ? chartData.frequency
+                                                      .map((frequencyModel: FrequencyDetailedModel, frequencyIndex: number) => {
+                                                          return {
+                                                              label: `${frequencyModel.frequency}Hz (${averageRSSI(frequencyModel)}dBm)`,
+                                                              data: frequencyModel.rssi.map((rssiModel: RSSIModel): number => rssiModel.rssi),
+                                                              fill: false,
+                                                              borderColor: getFrequencyColor(frequencyIndex),
+                                                              tension: 0.1,
+                                                              order: frequencyIndex + 1,
+                                                          };
+                                                      })
+                                                      .reverse()
+                                                : [{ label: "Loading...", data: [0], fill: false, tension: 0.1 }],
                                     }}
                                     options={{
                                         responsive: true,
