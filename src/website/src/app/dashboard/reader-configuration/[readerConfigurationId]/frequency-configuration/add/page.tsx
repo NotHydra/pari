@@ -87,6 +87,7 @@ export default function FrequencyConfigurationAddPage(): JSX.Element {
                                 <input
                                     className="input"
                                     type="number"
+                                    step="0.01"
                                     name="frequency"
                                     value={frequency == 0 ? "" : frequency}
                                     min="0"
