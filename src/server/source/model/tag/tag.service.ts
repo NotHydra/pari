@@ -99,8 +99,8 @@ export class TagService
                 FROM
                     tag
                     INNER JOIN reader_configuration ON tag.reader_configuration_id=reader_configuration.id
-                    INNER JOIN frequency ON tag.id=frequency.tag_id
-                    INNER JOIN rssi ON frequency.id=rssi.frequency_id
+                    LEFT JOIN frequency ON tag.id=frequency.tag_id
+                    LEFT JOIN rssi ON frequency.id=rssi.frequency_id
                     
                 GROUP BY
                     tag.id,
