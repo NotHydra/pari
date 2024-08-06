@@ -54,7 +54,7 @@ export class ReaderConfigurationService
                     
                 FROM
                     reader_configuration 
-                    INNER JOIN frequency_configuration ON reader_configuration.id=frequency_configuration.reader_configuration_id 
+                    LEFT JOIN frequency_configuration ON reader_configuration.id=frequency_configuration.reader_configuration_id 
                 
                 GROUP BY
                     reader_configuration.id
