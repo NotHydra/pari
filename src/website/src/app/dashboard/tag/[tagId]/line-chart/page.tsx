@@ -81,7 +81,7 @@ export default function RSSIPage(): JSX.Element {
             sum += rssiModel.rssi;
         });
 
-        return sum / frequency.rssi.length;
+        return parseFloat((sum / frequency.rssi.length).toFixed(4));
     };
 
     const params: { tagId: string } = useParams<{ tagId: string }>();
