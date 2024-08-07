@@ -13,7 +13,6 @@ import { FrequencyDetailedModel } from "./../frequency/frequency";
 import { RSSIModel } from "./../rssi/rssi";
 
 interface TagServiceInterface {
-    findLatest(): Promise<TagModel>;
     findRSSIByTag(tag: string): Promise<number>;
     findTable(): Promise<TagTableModel[]>;
 }
@@ -33,19 +32,10 @@ export class TagService
         );
     }
 
-    public async findLatest(): Promise<TagModel> {
-        try {
-            return await this.prismaModel.findFirst({ orderBy: { createdAt: "desc" }, include: this.detailed });
-        } catch (error) {
-            this.loggerService.error(`Latest: ${error.message}`);
-
-            throw new InternalServerErrorException("Internal Server Error");
-        }
-    }
-
     public async findRSSIByTag(tag: string): Promise<number> {
         try {
-            this.loggerService.debug(`Find RSSI By Tag: ${tag}`);
+            this.loggerService.log("Find RSSI By Tag");
+            this.loggerService.debug(`Find RSSI By Tag Argument: ${JSON.stringify({ tag })}`);
 
             const model: TagDetailedModel = await this.prismaModel.findFirst({
                 where: { tag },
@@ -57,8 +47,6 @@ export class TagService
                 throw new NotFoundException(`Tag ${tag} Not Found`);
             }
 
-            this.loggerService.debug(JSON.stringify(model));
-
             const averageRSSI: number = average(
                 model.frequency.map((frequency: FrequencyDetailedModel) => {
                     return average(
@@ -69,7 +57,7 @@ export class TagService
                 })
             );
 
-            this.loggerService.log(`Find RSSI By Tag: ${JSON.stringify(averageRSSI)}`);
+            this.loggerService.debug(`Find RSSI By Tag Result: ${averageRSSI}`);
 
             return averageRSSI;
         } catch (error) {
@@ -87,6 +75,8 @@ export class TagService
 
     public async findTable(): Promise<TagTableModel[]> {
         try {
+            this.loggerService.log("Find Table");
+
             const models: TagTableModel[] = await this.prismaService.$queryRaw`
                 SELECT
                     tag.id AS "id",
@@ -110,7 +100,7 @@ export class TagService
                     tag.id ASC
             `;
 
-            this.loggerService.log(`Find Table: ${JSON.stringify(models)}`);
+            this.loggerService.debug(`Find Table Result: ${JSON.stringify(models)}`);
 
             return models;
         } catch (error) {

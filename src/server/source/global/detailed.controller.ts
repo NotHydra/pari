@@ -23,14 +23,14 @@ export class DetailedController<
         @Query("count") count: string = "0"
     ): Promise<ResponseFormatInterface<ModelDetailedType[] | null>> {
         try {
+            this.loggerService.log("Find Detailed");
+
             const response: ResponseFormatInterface<ModelDetailedType[]> = formatResponse<ModelDetailedType[]>(
                 true,
                 200,
                 "Detailed Found",
                 await this.modelService.findDetailed(parseInt(page), parseInt(count))
             );
-
-            this.loggerService.log(`Find Detailed: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {
@@ -45,14 +45,14 @@ export class DetailedController<
         @Param("id", ParseIntPipe) id: number
     ): Promise<ResponseFormatInterface<ModelDetailedType | null>> {
         try {
+            this.loggerService.log("Find Id Detailed");
+
             const response: ResponseFormatInterface<ModelDetailedType> = formatResponse<ModelDetailedType>(
                 true,
                 200,
                 `Detailed Id ${id} Found`,
                 await this.modelService.findIdDetailed(id)
             );
-
-            this.loggerService.log(`Find Id Detailed: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {

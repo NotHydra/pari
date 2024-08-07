@@ -37,11 +37,11 @@ export class ReaderConfigurationController
     @Get("table")
     public async findTable(): Promise<ResponseFormatInterface<ReaderConfigurationTableModel[] | null>> {
         try {
+            this.loggerService.log("Find Table");
+
             const response: ResponseFormatInterface<ReaderConfigurationTableModel[]> = formatResponse<
                 ReaderConfigurationTableModel[]
             >(true, 200, "Table Found", await this.modelService.findTable());
-
-            this.loggerService.log(`Find Table: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {

@@ -28,6 +28,9 @@ export class DetailedService<
 
     public async findDetailed(page: number = 0, count: number = 0): Promise<ModelDetailedType[]> {
         try {
+            this.loggerService.log("Find Detailed");
+            this.loggerService.debug(`Find Detailed Argument: ${JSON.stringify({ page, count })}`);
+
             const models: ModelDetailedType[] =
                 page !== 0 && count !== 0
                     ? await this.prismaModel.findMany({
@@ -45,7 +48,7 @@ export class DetailedService<
                           include: this.detailed,
                       });
 
-            this.loggerService.log(`Find Detailed: ${JSON.stringify(models)}`);
+            this.loggerService.debug(`Find Detailed Result: ${JSON.stringify(models)}`);
 
             return models;
         } catch (error) {
@@ -57,6 +60,9 @@ export class DetailedService<
 
     public async findIdDetailed(id: number): Promise<ModelDetailedType> {
         try {
+            this.loggerService.log("Find Id Detailed");
+            this.loggerService.debug(`Find Id Detailed Argument: ${JSON.stringify({ id })}`);
+
             const model: ModelDetailedType = await this.prismaModel.findUnique({
                 where: { id },
                 include: this.detailed,
@@ -66,7 +72,7 @@ export class DetailedService<
                 throw new NotFoundException(`Id ${id} Not Found`);
             }
 
-            this.loggerService.log(`Find Id Detailed: ${JSON.stringify(model)}`);
+            this.loggerService.debug(`Find Id Detailed Result: ${JSON.stringify(model)}`);
 
             return model;
         } catch (error) {

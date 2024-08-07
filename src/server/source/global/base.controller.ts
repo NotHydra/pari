@@ -40,14 +40,14 @@ export class BaseController<
         @Query("count") count: string = "0"
     ): Promise<ResponseFormatInterface<ModelType[] | null>> {
         try {
+            this.loggerService.log("Find");
+
             const response: ResponseFormatInterface<ModelType[]> = formatResponse<ModelType[]>(
                 true,
                 200,
                 "Found",
                 await this.modelService.find(parseInt(page), parseInt(count))
             );
-
-            this.loggerService.log(`Find: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {
@@ -60,14 +60,14 @@ export class BaseController<
     @Get("id/:id")
     public async findId(@Param("id", ParseIntPipe) id: number): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
+            this.loggerService.log("Find Id");
+
             const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
                 true,
                 200,
                 `Id ${id} Found`,
                 await this.modelService.findId(id)
             );
-
-            this.loggerService.log(`Find Id: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {
@@ -86,7 +86,7 @@ export class BaseController<
     @Post()
     public async add(@Body() payload: ModelCreateDTO): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
-            this.loggerService.debug(`Add: ${JSON.stringify(payload)}`);
+            this.loggerService.log("Add");
 
             const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
                 true,
@@ -94,8 +94,6 @@ export class BaseController<
                 "Added",
                 await this.modelService.add(payload)
             );
-
-            this.loggerService.log(`Add: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {
@@ -117,14 +115,14 @@ export class BaseController<
         @Body() payload: ModelUpdateDTO
     ): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
+            this.loggerService.log("Change");
+
             const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
                 true,
                 200,
                 `Id ${id} Changed`,
                 await this.modelService.change(id, payload)
             );
-
-            this.loggerService.log(`Change: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {
@@ -149,14 +147,14 @@ export class BaseController<
     @Delete("id/:id")
     public async remove(@Param("id", ParseIntPipe) id: number): Promise<ResponseFormatInterface<ModelType | null>> {
         try {
+            this.loggerService.log("Remove");
+
             const response: ResponseFormatInterface<ModelType> = formatResponse<ModelType>(
                 true,
                 200,
                 `Id ${id} Removed`,
                 await this.modelService.remove(id)
             );
-
-            this.loggerService.log(`Remove: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {

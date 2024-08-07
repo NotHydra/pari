@@ -42,6 +42,8 @@ export class ReaderConfigurationService
 
     public async findTable(): Promise<ReaderConfigurationTableModel[]> {
         try {
+            this.loggerService.log("Find Table");
+
             const models: ReaderConfigurationTableModel[] = await this.prismaService.$queryRaw`
                 SELECT
                     reader_configuration.id AS "id", 
@@ -63,7 +65,7 @@ export class ReaderConfigurationService
                     reader_configuration.id ASC
             `;
 
-            this.loggerService.log(`Find Table: ${JSON.stringify(models)}`);
+            this.loggerService.debug(`Find Table Result: ${JSON.stringify(models)}`);
 
             return models;
         } catch (error) {

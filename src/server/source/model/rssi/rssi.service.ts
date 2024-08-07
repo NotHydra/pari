@@ -32,6 +32,9 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
 
     public async findTable(frequencyId: number): Promise<RSSIModel[]> {
         try {
+            this.loggerService.log("Find Table");
+            this.loggerService.debug(`Find Table Argument: ${JSON.stringify({ frequencyId })}`);
+
             const models: RSSIModel[] = await this.prismaModel.findMany({
                 where: { frequencyId },
                 orderBy: {
@@ -39,7 +42,7 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
                 },
             });
 
-            this.loggerService.log(`Find Table: ${JSON.stringify(models)}`);
+            this.loggerService.debug(`Find Table Result: ${JSON.stringify(models)}`);
 
             return models;
         } catch (error) {
@@ -52,6 +55,9 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
     @Override
     public async add(payload: RSSICreateDTO): Promise<RSSIModel> {
         try {
+            this.loggerService.log("Add");
+            this.loggerService.debug(`Add Argument: ${JSON.stringify(payload)}`);
+
             const model: RSSIModel & { frequency: FrequencyModel } = (await this.prismaModel.create({
                 data: payload,
                 include: { frequency: true },
@@ -64,7 +70,7 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
                 })) as unknown as TagDetailedModel
             );
 
-            this.loggerService.log(`Add: ${JSON.stringify(model)}`);
+            this.loggerService.debug(`Add Result: ${JSON.stringify(model)}`);
 
             return model;
         } catch (error) {

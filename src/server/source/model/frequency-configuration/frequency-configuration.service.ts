@@ -38,6 +38,11 @@ export class FrequencyConfigurationService
         count: number = 0
     ): Promise<FrequencyConfigurationModel[]> {
         try {
+            this.loggerService.log("Find Reader Configuration Id");
+            this.loggerService.debug(
+                `Find Reader Configuration Id Argument: ${JSON.stringify({ readerConfigurationId, page, count })}`
+            );
+
             const models: FrequencyConfigurationModel[] =
                 page !== 0 && count !== 0
                     ? await this.prismaModel.findMany({
@@ -55,7 +60,7 @@ export class FrequencyConfigurationService
                           },
                       });
 
-            this.loggerService.log(`Find Reader Configuration Id: ${JSON.stringify(models)}`);
+            this.loggerService.debug(`Find Reader Configuration Id Result: ${JSON.stringify(models)}`);
 
             return models;
         } catch (error) {

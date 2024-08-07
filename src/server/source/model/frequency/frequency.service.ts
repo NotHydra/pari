@@ -34,6 +34,9 @@ export class FrequencyService
 
     public async findTable(tagId: number): Promise<FrequencyTableModel[]> {
         try {
+            this.loggerService.log("Find Table");
+            this.loggerService.debug(`Find Table Argument: ${JSON.stringify({ tagId })}`);
+
             const models: FrequencyTableModel[] = await this.prismaService.$queryRaw`
                 SELECT
                     frequency.id AS "id",
@@ -54,7 +57,7 @@ export class FrequencyService
                     frequency.id ASC
             `;
 
-            this.loggerService.log(`Find Table: ${JSON.stringify(models)}`);
+            this.loggerService.debug(`Find Table Result: ${JSON.stringify(models)}`);
 
             return models;
         } catch (error) {

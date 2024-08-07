@@ -40,14 +40,14 @@ export class FrequencyController
         @Param("tagId", ParseIntPipe) tagId: number
     ): Promise<ResponseFormatInterface<FrequencyTableModel[] | null>> {
         try {
+            this.loggerService.log("Find Table");
+
             const response: ResponseFormatInterface<FrequencyTableModel[]> = formatResponse<FrequencyTableModel[]>(
                 true,
                 200,
                 "Table Found",
                 await this.modelService.findTable(tagId)
             );
-
-            this.loggerService.log(`Find Table: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {

@@ -38,6 +38,8 @@ export class ActiveReaderConfigurationController
     @Get("configuration")
     public async findConfiguration(): Promise<ResponseFormatInterface<ActiveReaderConfigurationRawModel | null>> {
         try {
+            this.loggerService.log("Find Configuration");
+
             const response: ResponseFormatInterface<ActiveReaderConfigurationRawModel> =
                 formatResponse<ActiveReaderConfigurationRawModel>(
                     true,
@@ -45,8 +47,6 @@ export class ActiveReaderConfigurationController
                     "Configuration Found",
                     await this.modelService.findConfiguration()
                 );
-
-            this.loggerService.log(`Find Configuration: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {

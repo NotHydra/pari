@@ -17,6 +17,9 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
 
     public async find(page: number = 0, count: number = 0): Promise<ModelType[]> {
         try {
+            this.loggerService.log("Find");
+            this.loggerService.debug(`Find Argument: ${JSON.stringify({ page, count })}`);
+
             const models: ModelType[] =
                 page !== 0 && count !== 0
                     ? await this.prismaModel.findMany({
@@ -32,7 +35,7 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
                           },
                       });
 
-            this.loggerService.log(`Find: ${JSON.stringify(models)}`);
+            this.loggerService.debug(`Find Result: ${JSON.stringify(models)}`);
 
             return models;
         } catch (error) {
@@ -44,13 +47,16 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
 
     public async findId(id: number): Promise<ModelType> {
         try {
+            this.loggerService.log("Find Id");
+            this.loggerService.debug(`Find Id Argument: ${JSON.stringify({ id })}`);
+
             const model: ModelType = await this.prismaModel.findUnique({ where: { id } });
 
             if (!model) {
                 throw new NotFoundException(`Id ${id} Not Found`);
             }
 
-            this.loggerService.log(`Find Id: ${JSON.stringify(model)}`);
+            this.loggerService.debug(`Find Id Result: ${JSON.stringify(model)}`);
 
             return model;
         } catch (error) {
@@ -68,9 +74,12 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
 
     public async add(payload: ModelCreateDTO): Promise<ModelType> {
         try {
+            this.loggerService.log("Add");
+            this.loggerService.debug(`Add Argument: ${JSON.stringify(payload)}`);
+
             const model: ModelType = await this.prismaModel.create({ data: payload });
 
-            this.loggerService.log(`Add: ${JSON.stringify(model)}`);
+            this.loggerService.debug(`Add Result: ${JSON.stringify(model)}`);
 
             return model;
         } catch (error) {
@@ -94,6 +103,9 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
 
     public async change(id: number, payload: ModelUpdateDTO): Promise<ModelType> {
         try {
+            this.loggerService.log("Change");
+            this.loggerService.debug(`Change Argument: ${JSON.stringify({ id, payload })}`);
+
             const model: ModelType = await this.prismaModel.update({
                 where: { id },
                 data: payload,
@@ -103,7 +115,7 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
                 throw new NotFoundException(`Id ${id} Not Found`);
             }
 
-            this.loggerService.log(`Change: ${JSON.stringify(model)}`);
+            this.loggerService.debug(`Change Result: ${JSON.stringify(model)}`);
 
             return model;
         } catch (error) {
@@ -127,13 +139,16 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
 
     public async remove(id: number): Promise<ModelType> {
         try {
+            this.loggerService.log("Remove");
+            this.loggerService.debug(`Remove Argument: ${JSON.stringify({ id })}`);
+
             const model: ModelType = await this.prismaModel.delete({ where: { id } });
 
             if (!model) {
                 throw new NotFoundException(`Id ${id} Not Found`);
             }
 
-            this.loggerService.log(`Remove: ${JSON.stringify(model)}`);
+            this.loggerService.debug(`Remove Result: ${JSON.stringify(model)}`);
 
             return model;
         } catch (error) {

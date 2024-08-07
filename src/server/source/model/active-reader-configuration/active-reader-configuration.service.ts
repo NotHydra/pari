@@ -45,6 +45,8 @@ export class ActiveReaderConfigurationService
 
     public async findConfiguration(): Promise<ActiveReaderConfigurationRawModel> {
         try {
+            this.loggerService.log("Find Configuration");
+
             const model: ActiveReaderConfigurationDetailedModel = await this.prismaModel.findFirst({
                 include: this.detailed,
             });
@@ -61,7 +63,7 @@ export class ActiveReaderConfigurationService
                 ),
             };
 
-            this.loggerService.log(`Find Configuration: ${JSON.stringify(rawModel)}`);
+            this.loggerService.debug(`Find Configuration Result: ${JSON.stringify(rawModel)}`);
 
             return rawModel;
         } catch (error) {

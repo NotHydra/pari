@@ -28,14 +28,14 @@ export class RSSIController
         @Param("frequencyId", ParseIntPipe) frequencyId: number
     ): Promise<ResponseFormatInterface<RSSIModel[] | null>> {
         try {
+            this.loggerService.log("Find Table");
+
             const response: ResponseFormatInterface<RSSIModel[]> = formatResponse<RSSIModel[]>(
                 true,
                 200,
                 "Table Found",
                 await this.modelService.findTable(frequencyId)
             );
-
-            this.loggerService.log(`Find Table: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {

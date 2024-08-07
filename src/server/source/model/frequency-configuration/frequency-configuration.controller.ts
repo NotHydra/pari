@@ -42,6 +42,8 @@ export class FrequencyConfigurationController
         @Query("count") count: string = "0"
     ): Promise<ResponseFormatInterface<FrequencyConfigurationModel[] | null>> {
         try {
+            this.loggerService.log("Find Reader Configuration Id");
+
             const response: ResponseFormatInterface<FrequencyConfigurationModel[]> = formatResponse<
                 FrequencyConfigurationModel[]
             >(
@@ -54,8 +56,6 @@ export class FrequencyConfigurationController
                     parseInt(count)
                 )
             );
-
-            this.loggerService.log(`Find Reader Configuration Id: ${JSON.stringify(response)}`);
 
             return response;
         } catch (error) {
