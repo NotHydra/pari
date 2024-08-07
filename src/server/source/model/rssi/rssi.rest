@@ -21,7 +21,7 @@ POST {{url}}
 Content-Type: application/json
 
 {   
-    "frequencyId": 1,
+    "frequencyId": 61,
     "rssi": -40
 }
 

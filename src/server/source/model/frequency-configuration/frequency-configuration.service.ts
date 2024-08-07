@@ -1,5 +1,7 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 
+import { PrismaModelInterface } from "./../../common/interface/prisma-model.interface";
+
 import { PrismaService } from "./../../provider/prisma.service";
 
 import { BaseService } from "./../../global/base.service";
@@ -9,7 +11,6 @@ import {
     FrequencyConfigurationCreateDTO,
     FrequencyConfigurationUpdateDTO,
 } from "./frequency-configuration";
-import { PrismaModelInterface } from "source/common/interface/prisma-model.interface";
 
 interface FrequencyConfigurationServiceInterface {
     findReaderConfigurationId(

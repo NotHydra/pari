@@ -11,6 +11,7 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { TagDetailedModel } from "@/common/interface/tag.interface";
 import { FrequencyDetailedModel } from "@/common/interface/frequency.interface";
 import { RSSIModel } from "@/common/interface/rssi.interface";
+import { io, Socket } from "socket.io-client";
 
 defaults.font.size = 10;
 
@@ -114,6 +115,29 @@ export default function RSSIPage(): JSX.Element {
         };
 
         fetchData();
+    }, []);
+
+    useEffect(() => {
+        const socket: Socket = io("http://localhost:3001", {
+            transports: ["websocket"],
+        });
+
+        socket.emit("subscribeTag", { id: params.tagId });
+        socket.on("tag", (tag: TagDetailedModel): void => {
+            console.log(tag);
+
+            setChartData(tag);
+
+            const minMaxValue: {
+                min: number;
+                max: number;
+            } | null = minMaxRSSI(tag);
+
+            if (minMaxValue !== null) {
+                setMinRSSIValue(minMaxValue.min);
+                setMaxRSSIValue(minMaxValue.max);
+            }
+        });
     }, []);
 
     return (

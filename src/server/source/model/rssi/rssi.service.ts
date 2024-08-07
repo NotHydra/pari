@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException } from "@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 import { Override } from "./../../common/decorator/override.decorator";
+import { PrismaModelInterface } from "./../../common/interface/prisma-model.interface";
 
 import { SocketGateway } from "./../../provider/socket.gateway";
 import { PrismaService } from "./../../provider/prisma.service";
@@ -9,7 +10,8 @@ import { PrismaService } from "./../../provider/prisma.service";
 import { BaseService } from "./../../global/base.service";
 
 import { RSSIModel, RSSICreateDTO, RSSIUpdateDTO } from "./rssi";
-import { PrismaModelInterface } from "source/common/interface/prisma-model.interface";
+import { TagDetailedModel } from "../tag/tag";
+import { FrequencyModel } from "../frequency/frequency";
 
 interface RSSIServiceInterface {
     findTable(frequencyId: number): Promise<RSSIModel[]>;
@@ -50,15 +52,16 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
     @Override
     public async add(payload: RSSICreateDTO): Promise<RSSIModel> {
         try {
-            const model: RSSIModel = await this.prismaModel.create({ data: payload });
+            const model: RSSIModel & { frequency: FrequencyModel } = (await this.prismaModel.create({
+                data: payload,
+                include: { frequency: true },
+            })) as unknown as RSSIModel & { frequency: FrequencyModel };
 
-            this.socketGateway.handleTagLatest(
-                await this.prismaService.tag.findFirst({
-                    orderBy: { createdAt: "desc" },
-                    include: {
-                        frequency: { include: { rssi: true } },
-                    },
-                })
+            this.socketGateway.sendTag(
+                (await this.prismaService.tag.findUnique({
+                    where: { id: model.frequency.tagId },
+                    include: { frequency: { include: { rssi: true } } },
+                })) as unknown as TagDetailedModel
             );
 
             this.loggerService.log(`Add: ${JSON.stringify(model)}`);

@@ -1,17 +1,28 @@
-import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
-import { Tag } from "@prisma/client";
+import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
+
+import { LoggerService } from "./logger.service";
+
+import { TagDetailedModel } from "./../model/tag/tag";
 
 @WebSocketGateway()
 export class SocketGateway {
+    private readonly loggerService: LoggerService = new LoggerService(SocketGateway.name);
+
     @WebSocketServer()
     server: Server;
 
-    @SubscribeMessage("tagLatest")
-    handleTagLatest(@MessageBody() tag: Tag | null): void {
-        console.log(tag);
+    @SubscribeMessage("subscribeTag")
+    handleTag(@MessageBody() data: { id: number }, @ConnectedSocket() client: Socket): void {
+        this.loggerService.log(`Client ${client.id} subscribed to tag ${data.id}`);
 
-        this.server.emit("tagLatest", tag);
+        client.join(`tag-${data.id}`);
+    }
+
+    sendTag(tag: TagDetailedModel): void {
+        this.loggerService.log(`Sending tag ${tag.id}`);
+
+        this.server.to(`tag-${tag.id}`).emit("tag", tag);
     }
 }
