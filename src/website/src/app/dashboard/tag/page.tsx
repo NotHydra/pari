@@ -83,6 +83,10 @@ export default function TagPage(): JSX.Element {
                                             </th>
 
                                             <th>
+                                                <abbr title="The amount of RSSI scan done ">RSSI Count</abbr>
+                                            </th>
+
+                                            <th>
                                                 <abbr title="The average RSSI of each frequency obtained">Average RSSI (dBm)</abbr>
                                             </th>
 
@@ -100,6 +104,8 @@ export default function TagPage(): JSX.Element {
                                                 <td>{data.tag}</td>
 
                                                 <td>{data.readerConfigurationName}</td>
+
+                                                <td>{data.rssiCount}</td>
 
                                                 <td>{data.averageRSSI}</td>
 

@@ -20,6 +20,7 @@ export class FrequencyDetailedModel extends FrequencyModel {
 }
 
 export class FrequencyTableModel extends FrequencyModel {
+    rssiCount: number;
     averageRSSI: number;
 }
 

@@ -41,6 +41,7 @@ export class FrequencyService
                 SELECT
                     frequency.id AS "id",
                     frequency.frequency AS "frequency",
+                    COUNT(rssi.rssi)::INT AS "rssiCount",
                     ROUND(AVG(rssi.rssi), 4)::double precision AS "averageRSSI"
 
                 FROM

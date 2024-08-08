@@ -84,6 +84,7 @@ export class TagService
                     tag.tag AS "tag",
                     tag.created_at AS "createdAt",
                     reader_configuration.name AS "readerConfigurationName",
+                    COUNT(rssi.rssi)::INT AS "rssiCount",
                     ROUND(AVG(rssi.rssi), 4)::double precision AS "averageRSSI"
                     
                 FROM

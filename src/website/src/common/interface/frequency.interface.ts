@@ -11,5 +11,6 @@ export interface FrequencyDetailedModel extends FrequencyModel {
 }
 
 export interface FrequencyTableModel extends FrequencyModel {
+    rssiCount: number;
     averageRSSI: number;
 }

@@ -13,5 +13,6 @@ export interface TagDetailedModel extends TagModel {
 
 export interface TagTableModel extends TagModel {
     readerConfigurationName: string;
+    rssiCount: number;
     averageRSSI: number;
 }

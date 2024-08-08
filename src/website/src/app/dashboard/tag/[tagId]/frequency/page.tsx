@@ -80,6 +80,10 @@ export default function FrequencyPage(): JSX.Element {
                                             </th>
 
                                             <th>
+                                                <abbr title="The amount of RSSI scan done ">RSSI Count</abbr>
+                                            </th>
+
+                                            <th>
                                                 <abbr title="The average RSSI obtained">Average RSSI (dBm)</abbr>
                                             </th>
 
@@ -93,6 +97,8 @@ export default function FrequencyPage(): JSX.Element {
                                                 <td className="no">{index + 1}.</td>
 
                                                 <td>{data.frequency}</td>
+
+                                                <td>{data.rssiCount}</td>
 
                                                 <td>{data.averageRSSI}</td>
 

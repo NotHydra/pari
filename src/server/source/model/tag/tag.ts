@@ -24,6 +24,7 @@ export class TagDetailedModel extends TagModel {
 
 export class TagTableModel extends TagModel {
     readerConfigurationName: string;
+    rssiCount: number;
     averageRSSI: number;
 }
 
