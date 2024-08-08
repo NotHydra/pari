@@ -45,3 +45,7 @@ Content-Type: application/json
 }
 
 ###
+
+DELETE {{url}}/id/1
+
+###

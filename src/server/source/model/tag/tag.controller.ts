@@ -63,14 +63,4 @@ export class TagController
             return formatResponse<null>(false, 500, error.message, null);
         }
     }
-
-    @Override
-    public async remove(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        @Param("id", ParseIntPipe) id: number
-    ): Promise<ResponseFormatInterface<TagModel>> {
-        this.loggerService.error(`Remove: Method Is Disabled`);
-
-        throw new ForbiddenException("Method Is Disabled");
-    }
 }

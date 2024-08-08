@@ -3,9 +3,10 @@
 import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
 import { ChangeEvent, useEffect, useState } from "react";
+import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { TagTableModel } from "@/common/interface/tag.interface";
+import { TagModel, TagTableModel } from "@/common/interface/tag.interface";
 
 import Timestamp from "@/components/timestamp.component";
 
@@ -36,6 +37,63 @@ export default function TagPage(): JSX.Element {
         } else if (e.target.value === "descending") {
             setTableData([...tableData].sort((a: TagTableModel, b: TagTableModel) => b.id - a.id));
         }
+    };
+
+    const handleRemove = async (id: number): Promise<void> => {
+        Swal.fire<void>({
+            icon: "question",
+            title: "Are you sure?",
+            confirmButtonText: "Yes",
+            confirmButtonColor: "#3ABB81",
+            showCancelButton: true,
+            cancelButtonColor: "#FF6685",
+        }).then(async (result: SweetAlertResult<void>): Promise<void> => {
+            if (result.isConfirmed) {
+                try {
+                    await axios.delete<ResponseFormatInterface<TagModel>>(`http://localhost:3001/api/tag/id/${id}`).then(
+                        async (response: AxiosResponse<ResponseFormatInterface<TagModel>>): Promise<void> => {
+                            console.log(response.data);
+
+                            await axios
+                                .get<ResponseFormatInterface<TagTableModel[]>>("http://localhost:3001/api/tag/table")
+                                .then((response: AxiosResponse<ResponseFormatInterface<TagTableModel[]>>): void => {
+                                    console.log(response.data);
+
+                                    setTableData(response.data.data);
+
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Success",
+                                        confirmButtonText: "Close",
+                                        confirmButtonColor: "#FF6685",
+                                    });
+                                });
+                        },
+                        (response: AxiosResponse<ResponseFormatInterface<TagModel>>): void => {
+                            console.log(response.data);
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: response.data.message,
+                                confirmButtonText: "Close",
+                                confirmButtonColor: "#FF6685",
+                            });
+                        }
+                    );
+                } catch (error) {
+                    console.log(error);
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: error instanceof Error ? error.message : "Internal Server Error",
+                        confirmButtonText: "Close",
+                        confirmButtonColor: "#FF6685",
+                    });
+                }
+            }
+        });
     };
 
     return (
@@ -138,6 +196,20 @@ export default function TagPage(): JSX.Element {
                                                                         <i className="fas fa-sliders"></i>
                                                                     </span>
                                                                 </Link>
+                                                            </div>
+
+                                                            <div className="cell">
+                                                                <button
+                                                                    className="button is-small is-fullwidth is-danger has-text-white"
+                                                                    title="Remove Action"
+                                                                    onClick={(): void => {
+                                                                        handleRemove(data.id);
+                                                                    }}
+                                                                >
+                                                                    <span className="icon">
+                                                                        <i className="fas fa-trash"></i>
+                                                                    </span>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
