@@ -1,7 +1,6 @@
 "use client";
 
 import axios, { AxiosResponse } from "axios";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
 
@@ -14,6 +13,8 @@ import ContentTableTimestampTitle from "@/components/content/table/timestamp/tit
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
 import ContentTableActionButton from "@/components/content/table/action/button/index.component";
+import ContentTableActionButtonChange from "@/components/content/table/action/button/change.component";
+import ContentTableActionButtonRemove from "@/components/content/table/action/button/remove.component";
 
 export default function ReaderConfigurationPage(): JSX.Element {
     const [activeReaderConfiguration, setActiveReaderConfiguration] = useState<ActiveReaderConfigurationModel | null>(null);
@@ -165,19 +166,9 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                                                 action={`/dashboard/reader-configuration/${data.id}/frequency-configuration`}
                                                             />
 
-                                                            <ContentTableActionButton
-                                                                title="Change"
-                                                                icon="pen-to-square"
-                                                                color="warning"
-                                                                action={`/dashboard/reader-configuration/${data.id}/change`}
-                                                            />
+                                                            <ContentTableActionButtonChange action={`/dashboard/reader-configuration/${data.id}/change`} />
 
-                                                            <ContentTableActionButton
-                                                                title="Remove"
-                                                                icon="trash"
-                                                                color="danger"
-                                                                action={`/dashboard/reader-configuration/${data.id}/remove`}
-                                                            />
+                                                            <ContentTableActionButtonRemove action={`/dashboard/reader-configuration/${data.id}/remove`} />
                                                         </div>
                                                     </div>
                                                 </td>

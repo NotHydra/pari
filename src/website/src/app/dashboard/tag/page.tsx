@@ -1,7 +1,6 @@
 "use client";
 
 import axios, { AxiosResponse } from "axios";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
 
@@ -13,6 +12,7 @@ import ContentTableTimestampTitle from "@/components/content/table/timestamp/tit
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
 import ContentTableActionButton from "@/components/content/table/action/button/index.component";
+import ContentTableActionButtonRemove from "@/components/content/table/action/button/remove.component";
 
 export default function TagPage(): JSX.Element {
     const [tableData, setTableData] = useState<TagTableModel[]>([]);
@@ -160,12 +160,7 @@ export default function TagPage(): JSX.Element {
                                                                 action={`/dashboard/tag/${data.id}/frequency`}
                                                             />
 
-                                                            <ContentTableActionButton
-                                                                title="Remove"
-                                                                icon="trash"
-                                                                color="danger"
-                                                                action={() => handleRemove(data.id)}
-                                                            />
+                                                            <ContentTableActionButtonRemove action={() => handleRemove(data.id)} />
                                                         </div>
                                                     </div>
                                                 </td>
