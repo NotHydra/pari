@@ -10,7 +10,7 @@ import { TagModel, TagTableModel } from "@/common/interface/tag.interface";
 
 import ContentSort from "@/components/content/sort.component";
 import ContentTimestampTitle from "@/components/content/timestamp/title.component";
-import ContentTimestamp from "@/components/content/timestamp.component";
+import ContentTimestampValue from "@/components/content/timestamp/value.component";
 
 export default function TagPage(): JSX.Element {
     const [tableData, setTableData] = useState<TagTableModel[]>([]);
@@ -139,9 +139,7 @@ export default function TagPage(): JSX.Element {
 
                                                 <td>{data.averageRSSI}</td>
 
-                                                <td className="timestamp">
-                                                    <ContentTimestamp timestamp={data.createdAt} />
-                                                </td>
+                                                <ContentTimestampValue createdAt={data.createdAt} />
 
                                                 <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">

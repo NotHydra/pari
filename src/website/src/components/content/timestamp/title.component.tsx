@@ -3,7 +3,7 @@ export default function ContentTimestampTitle({ updatedAt = true }: { updatedAt?
         <>
             <th className="timestamp">Created At</th>
 
-            {updatedAt && <th className="timestamp">Updated At</th>}
+            {updatedAt === true && <th className="timestamp">Updated At</th>}
         </>
     );
 }

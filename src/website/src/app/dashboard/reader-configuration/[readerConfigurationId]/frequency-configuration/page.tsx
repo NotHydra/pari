@@ -10,7 +10,7 @@ import { FrequencyConfigurationModel } from "@/common/interface/frequency-config
 
 import ContentSort from "@/components/content/sort.component";
 import ContentTimestampTitle from "@/components/content/timestamp/title.component";
-import ContentTimestamp from "@/components/content/timestamp.component";
+import ContentTimestampValue from "@/components/content/timestamp/value.component";
 
 export default function FrequencyConfigurationPage(): JSX.Element {
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
@@ -68,13 +68,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
 
                                                 <td>{data.frequency}</td>
 
-                                                <td className="timestamp">
-                                                    <ContentTimestamp timestamp={data.createdAt} />
-                                                </td>
-
-                                                <td className="timestamp">
-                                                    <ContentTimestamp timestamp={data.updatedAt} />
-                                                </td>
+                                                <ContentTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
 
                                                 <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">

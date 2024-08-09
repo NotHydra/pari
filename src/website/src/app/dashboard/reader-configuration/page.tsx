@@ -11,7 +11,7 @@ import { ReaderConfigurationTableModel } from "@/common/interface/reader-configu
 
 import ContentSort from "@/components/content/sort.component";
 import ContentTimestampTitle from "@/components/content/timestamp/title.component";
-import ContentTimestamp from "@/components/content/timestamp.component";
+import ContentTimestampValue from "@/components/content/timestamp/value.component";
 
 export default function ReaderConfigurationPage(): JSX.Element {
     const [activeReaderConfiguration, setActiveReaderConfiguration] = useState<ActiveReaderConfigurationModel | null>(null);
@@ -138,13 +138,7 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
                                                 <td>{data.rssiScanInterval}</td>
 
-                                                <td className="timestamp">
-                                                    <ContentTimestamp timestamp={data.createdAt} />
-                                                </td>
-
-                                                <td className="timestamp">
-                                                    <ContentTimestamp timestamp={data.updatedAt} />
-                                                </td>
+                                                <ContentTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
 
                                                 <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">
