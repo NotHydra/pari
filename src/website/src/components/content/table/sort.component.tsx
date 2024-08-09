@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-export default function ContentSort<T extends { id: number }>({
+export default function ContentTableSort<T extends { id: number }>({
     tableData,
     setTableData,
 }: {

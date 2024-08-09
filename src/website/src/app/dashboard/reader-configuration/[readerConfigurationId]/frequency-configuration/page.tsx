@@ -8,9 +8,9 @@ import { useEffect, useState } from "react";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration.interface";
 
-import ContentSort from "@/components/content/sort.component";
-import ContentTimestampTitle from "@/components/content/timestamp/title.component";
-import ContentTimestampValue from "@/components/content/timestamp/value.component";
+import ContentTableSort from "@/components/content/table/sort.component";
+import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
+import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 
 export default function FrequencyConfigurationPage(): JSX.Element {
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
@@ -43,7 +43,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                 <div className="content">
                     <div className="fixed-grid has-1-cols is-fullwidth">
                         <div className="grid">
-                            <ContentSort tableData={tableData} setTableData={setTableData} />
+                            <ContentTableSort tableData={tableData} setTableData={setTableData} />
 
                             <div className="cell table-container has-back-button line has-background-light">
                                 <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
@@ -55,7 +55,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                                 <abbr title="The value of the frequency configuration">Frequency (Hz)</abbr>
                                             </th>
 
-                                            <ContentTimestampTitle />
+                                            <ContentTableTimestampTitle />
 
                                             <th>Action</th>
                                         </tr>
@@ -68,7 +68,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
 
                                                 <td>{data.frequency}</td>
 
-                                                <ContentTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
+                                                <ContentTableTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
 
                                                 <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">

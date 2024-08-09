@@ -8,9 +8,9 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { TagModel, TagTableModel } from "@/common/interface/tag.interface";
 
-import ContentSort from "@/components/content/sort.component";
-import ContentTimestampTitle from "@/components/content/timestamp/title.component";
-import ContentTimestampValue from "@/components/content/timestamp/value.component";
+import ContentTableSort from "@/components/content/table/sort.component";
+import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
+import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 
 export default function TagPage(): JSX.Element {
     const [tableData, setTableData] = useState<TagTableModel[]>([]);
@@ -96,7 +96,7 @@ export default function TagPage(): JSX.Element {
                 <div className="content">
                     <div className="fixed-grid has-1-cols is-fullwidth">
                         <div className="grid">
-                            <ContentSort tableData={tableData} setTableData={setTableData} />
+                            <ContentTableSort tableData={tableData} setTableData={setTableData} />
 
                             <div className="cell table-container line has-background-light">
                                 <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
@@ -120,7 +120,7 @@ export default function TagPage(): JSX.Element {
                                                 <abbr title="The average RSSI of each frequency obtained">Average RSSI (dBm)</abbr>
                                             </th>
 
-                                            <ContentTimestampTitle updatedAt={false} />
+                                            <ContentTableTimestampTitle updatedAt={false} />
 
                                             <th>Action</th>
                                         </tr>
@@ -139,7 +139,7 @@ export default function TagPage(): JSX.Element {
 
                                                 <td>{data.averageRSSI}</td>
 
-                                                <ContentTimestampValue createdAt={data.createdAt} />
+                                                <ContentTableTimestampValue createdAt={data.createdAt} />
 
                                                 <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">

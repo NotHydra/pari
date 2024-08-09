@@ -1,4 +1,4 @@
-export default function ContentTimestampTitle({ updatedAt = true }: { updatedAt?: boolean }): JSX.Element {
+export default function ContentTableTimestampTitle({ updatedAt = true }: { updatedAt?: boolean }): JSX.Element {
     return (
         <>
             <th className="timestamp">Created At</th>

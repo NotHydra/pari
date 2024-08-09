@@ -9,9 +9,9 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { ActiveReaderConfigurationModel } from "@/common/interface/active-reader-configuration.interface";
 import { ReaderConfigurationTableModel } from "@/common/interface/reader-configuration.interface";
 
-import ContentSort from "@/components/content/sort.component";
-import ContentTimestampTitle from "@/components/content/timestamp/title.component";
-import ContentTimestampValue from "@/components/content/timestamp/value.component";
+import ContentTableSort from "@/components/content/table/sort.component";
+import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
+import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 
 export default function ReaderConfigurationPage(): JSX.Element {
     const [activeReaderConfiguration, setActiveReaderConfiguration] = useState<ActiveReaderConfigurationModel | null>(null);
@@ -95,7 +95,7 @@ export default function ReaderConfigurationPage(): JSX.Element {
                 <div className="content">
                     <div className="fixed-grid has-1-cols is-fullwidth">
                         <div className="grid">
-                            <ContentSort tableData={tableData} setTableData={setTableData} />
+                            <ContentTableSort tableData={tableData} setTableData={setTableData} />
 
                             <div className="cell table-container line has-background-light">
                                 <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
@@ -119,7 +119,7 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                                 <abbr title="The amount of delay after each RSSI scan">RSSI Scan Interval {"(ms)"}</abbr>
                                             </th>
 
-                                            <ContentTimestampTitle />
+                                            <ContentTableTimestampTitle />
 
                                             <th>Action</th>
                                         </tr>
@@ -138,7 +138,7 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
                                                 <td>{data.rssiScanInterval}</td>
 
-                                                <ContentTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
+                                                <ContentTableTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
 
                                                 <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">

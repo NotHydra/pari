@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { RSSIModel } from "@/common/interface/rssi.interface";
 
-import ContentSort from "@/components/content/sort.component";
+import ContentTableSort from "@/components/content/table/sort.component";
 
 export default function RSSIPage(): JSX.Element {
     const params: { tagId: string; frequencyId: string } = useParams<{ tagId: string; frequencyId: string }>();
@@ -39,7 +39,7 @@ export default function RSSIPage(): JSX.Element {
                 <div className="content">
                     <div className="fixed-grid has-1-cols is-fullwidth">
                         <div className="grid">
-                            <ContentSort tableData={tableData} setTableData={setTableData} />
+                            <ContentTableSort tableData={tableData} setTableData={setTableData} />
 
                             <div className="cell table-container has-back-button line has-background-light">
                                 <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
