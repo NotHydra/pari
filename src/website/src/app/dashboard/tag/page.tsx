@@ -11,6 +11,7 @@ import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
+import ContentTableActionButtonContainer from "@/components/content/table/action/button/container.component";
 import ContentTableActionButton from "@/components/content/table/action/button/index.component";
 import ContentTableActionButtonRemove from "@/components/content/table/action/button/remove.component";
 
@@ -143,27 +144,24 @@ export default function TagPage(): JSX.Element {
 
                                                 <ContentTableTimestampValue createdAt={data.createdAt} />
 
-                                                <td className="action m-0 p-0">
-                                                    <div className="fixed-grid has-1-cols">
-                                                        <div className="grid is-row-gap-0">
-                                                            <ContentTableActionButton
-                                                                title="Line Chart"
-                                                                icon="chart-line"
-                                                                color="info"
-                                                                action={`/dashboard/tag/${data.id}/line-chart`}
-                                                            />
+                                                <ContentTableActionButtonContainer
+                                                    buttons={[
+                                                        <ContentTableActionButton
+                                                            title="Line Chart"
+                                                            icon="chart-line"
+                                                            color="info"
+                                                            action={`/dashboard/tag/${data.id}/line-chart`}
+                                                        />,
 
-                                                            <ContentTableActionButton
-                                                                title="Frequency"
-                                                                icon="sliders"
-                                                                color="info"
-                                                                action={`/dashboard/tag/${data.id}/frequency`}
-                                                            />
-
-                                                            <ContentTableActionButtonRemove action={() => handleRemove(data.id)} />
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                        <ContentTableActionButton
+                                                            title="Frequency"
+                                                            icon="sliders"
+                                                            color="info"
+                                                            action={`/dashboard/tag/${data.id}/frequency`}
+                                                        />,
+                                                        <ContentTableActionButtonRemove action={() => handleRemove(data.id)} />,
+                                                    ]}
+                                                />
                                             </tr>
                                         ))}
                                     </tbody>

@@ -13,6 +13,7 @@ import ContentTableTimestampTitle from "@/components/content/table/timestamp/tit
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
 import ContentTableActionButton from "@/components/content/table/action/button/index.component";
+import ContentTableActionButtonContainer from "@/components/content/table/action/button/container.component";
 import ContentTableActionButtonChange from "@/components/content/table/action/button/change.component";
 import ContentTableActionButtonRemove from "@/components/content/table/action/button/remove.component";
 
@@ -143,35 +144,33 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
                                                 <ContentTableTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
 
-                                                <td className="action m-0 p-0">
-                                                    <div className="fixed-grid has-1-cols">
-                                                        <div className="grid is-row-gap-0">
-                                                            <ContentTableActionButton
-                                                                title="Use"
-                                                                icon="check"
-                                                                color="success"
-                                                                action={() => handleUse(data.id)}
-                                                                disabled={
-                                                                    activeReaderConfiguration !== null &&
-                                                                    activeReaderConfiguration.readerConfigurationId === data.id
-                                                                        ? true
-                                                                        : false
-                                                                }
-                                                            />
+                                                <ContentTableActionButtonContainer
+                                                    buttons={[
+                                                        <ContentTableActionButton
+                                                            title="Use"
+                                                            icon="check"
+                                                            color="success"
+                                                            action={() => handleUse(data.id)}
+                                                            disabled={
+                                                                activeReaderConfiguration !== null &&
+                                                                activeReaderConfiguration.readerConfigurationId === data.id
+                                                                    ? true
+                                                                    : false
+                                                            }
+                                                        />,
 
-                                                            <ContentTableActionButton
-                                                                title="Frequency Configuration"
-                                                                icon="sliders"
-                                                                color="info"
-                                                                action={`/dashboard/reader-configuration/${data.id}/frequency-configuration`}
-                                                            />
+                                                        <ContentTableActionButton
+                                                            title="Frequency Configuration"
+                                                            icon="sliders"
+                                                            color="info"
+                                                            action={`/dashboard/reader-configuration/${data.id}/frequency-configuration`}
+                                                        />,
 
-                                                            <ContentTableActionButtonChange action={`/dashboard/reader-configuration/${data.id}/change`} />
+                                                        <ContentTableActionButtonChange action={`/dashboard/reader-configuration/${data.id}/change`} />,
 
-                                                            <ContentTableActionButtonRemove action={`/dashboard/reader-configuration/${data.id}/remove`} />
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                        <ContentTableActionButtonRemove action={`/dashboard/reader-configuration/${data.id}/remove`} />,
+                                                    ]}
+                                                />
                                             </tr>
                                         ))}
                                     </tbody>

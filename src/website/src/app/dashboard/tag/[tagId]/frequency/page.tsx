@@ -10,6 +10,7 @@ import { FrequencyTableModel } from "@/common/interface/frequency.interface";
 
 import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
+import ContentTableActionButtonContainer from "@/components/content/table/action/button/container.component";
 import ContentTableActionButton from "@/components/content/table/action/button/index.component";
 
 export default function FrequencyPage(): JSX.Element {
@@ -76,18 +77,16 @@ export default function FrequencyPage(): JSX.Element {
 
                                                 <td>{data.averageRSSI}</td>
 
-                                                <td className="action m-0 p-0">
-                                                    <div className="fixed-grid has-1-cols">
-                                                        <div className="grid is-row-gap-0">
-                                                            <ContentTableActionButton
-                                                                title="RSSI"
-                                                                icon="wifi"
-                                                                color="info"
-                                                                action={`/dashboard/tag/${params.tagId}/frequency/${data.id}/rssi`}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                <ContentTableActionButtonContainer
+                                                    buttons={[
+                                                        <ContentTableActionButton
+                                                            title="RSSI"
+                                                            icon="wifi"
+                                                            color="info"
+                                                            action={`/dashboard/tag/${params.tagId}/frequency/${data.id}/rssi`}
+                                                        />,
+                                                    ]}
+                                                />
                                             </tr>
                                         ))}
                                     </tbody>

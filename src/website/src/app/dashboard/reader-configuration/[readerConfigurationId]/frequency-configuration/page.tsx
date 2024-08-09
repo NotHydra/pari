@@ -12,6 +12,7 @@ import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
+import ContentTableActionButtonContainer from "@/components/content/table/action/button/container.component";
 import ContentTableActionButtonChange from "@/components/content/table/action/button/change.component";
 import ContentTableActionButtonRemove from "@/components/content/table/action/button/remove.component";
 
@@ -73,19 +74,17 @@ export default function FrequencyConfigurationPage(): JSX.Element {
 
                                                 <ContentTableTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
 
-                                                <td className="action m-0 p-0">
-                                                    <div className="fixed-grid has-1-cols">
-                                                        <div className="grid is-row-gap-0">
-                                                            <ContentTableActionButtonChange
-                                                                action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/change`}
-                                                            />
+                                                <ContentTableActionButtonContainer
+                                                    buttons={[
+                                                        <ContentTableActionButtonChange
+                                                            action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/change`}
+                                                        />,
 
-                                                            <ContentTableActionButtonRemove
-                                                                action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/remove`}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                        <ContentTableActionButtonRemove
+                                                            action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/remove`}
+                                                        />,
+                                                    ]}
+                                                />
                                             </tr>
                                         ))}
                                     </tbody>
