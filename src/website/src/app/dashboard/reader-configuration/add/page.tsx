@@ -1,13 +1,13 @@
 "use client";
 
 import axios, { AxiosResponse } from "axios";
-import Link from "next/link";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
 
+import ContentFormButtonContainer from "@/components/content/form/button/container.component";
 import ContentFormButton from "@/components/content/form/button/index.component";
 import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
@@ -141,11 +141,9 @@ export default function ReaderConfigurationAddPage(): JSX.Element {
                             </div>
                         </div>
 
-                        <div className="buttons">
-                            <ContentFormButton type="add" />
-
-                            <ContentFormButtonBack link="/dashboard/reader-configuration" />
-                        </div>
+                        <ContentFormButtonContainer
+                            buttons={[<ContentFormButton type="add" />, <ContentFormButtonBack link="/dashboard/reader-configuration" />]}
+                        />
                     </form>
                 </div>
             </div>

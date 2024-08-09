@@ -2,7 +2,6 @@
 
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
@@ -10,6 +9,7 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration.interface";
 
+import ContentFormButtonContainer from "@/components/content/form/button/container.component";
 import ContentFormButton from "@/components/content/form/button/index.component";
 import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
@@ -156,11 +156,13 @@ export default function FrequencyConfigurationChangePage(): JSX.Element {
                             </div>
                         </div>
 
-                        <div className="buttons">
-                            <ContentFormButton type="change" />
+                        <ContentFormButtonContainer
+                            buttons={[
+                                <ContentFormButton type="change" />,
 
-                            <ContentFormButtonBack link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`} />
-                        </div>
+                                <ContentFormButtonBack link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`} />,
+                            ]}
+                        />
                     </form>
                 </div>
             </div>

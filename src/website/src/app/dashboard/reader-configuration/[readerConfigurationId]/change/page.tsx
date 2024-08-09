@@ -9,6 +9,7 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
 
+import ContentFormButtonContainer from "@/components/content/form/button/container.component";
 import ContentFormButton from "@/components/content/form/button/index.component";
 import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
@@ -198,11 +199,9 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
                             </div>
                         </div>
 
-                        <div className="buttons">
-                            <ContentFormButton type="change" />
-
-                            <ContentFormButtonBack link="/dashboard/reader-configuration" />
-                        </div>
+                        <ContentFormButtonContainer
+                            buttons={[<ContentFormButton type="change" />, <ContentFormButtonBack link="/dashboard/reader-configuration" />]}
+                        />
                     </form>
                 </div>
             </div>

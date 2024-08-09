@@ -2,7 +2,6 @@
 
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
@@ -10,6 +9,7 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
 
+import ContentFormButtonContainer from "@/components/content/form/button/container.component";
 import ContentFormButton from "@/components/content/form/button/index.component";
 import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
@@ -182,11 +182,9 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
                             </div>
                         </div>
 
-                        <div className="buttons">
-                            <ContentFormButton type="remove" />
-
-                            <ContentFormButtonBack link="/dashboard/reader-configuration" />
-                        </div>
+                        <ContentFormButtonContainer
+                            buttons={[<ContentFormButton type="remove" />, <ContentFormButtonBack link="/dashboard/reader-configuration" />]}
+                        />
                     </form>
                 </div>
             </div>
