@@ -1,7 +1,6 @@
 "use client";
 
 import axios, { AxiosResponse } from "axios";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -9,6 +8,7 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { RSSIModel } from "@/common/interface/rssi.interface";
 
 import ContentTableSort from "@/components/content/table/sort.component";
+import ContentTableBack from "@/components/content/table/back.component";
 
 export default function RSSIPage(): JSX.Element {
     const params: { tagId: string; frequencyId: string } = useParams<{ tagId: string; frequencyId: string }>();
@@ -65,19 +65,7 @@ export default function RSSIPage(): JSX.Element {
                                 </table>
                             </div>
 
-                            <div className="cell">
-                                <Link
-                                    href={`/dashboard/tag/${params.tagId}/frequency`}
-                                    className="button is-fullwidth is-danger has-text-white has-text-weight-bold"
-                                    title="Back Action"
-                                >
-                                    <span className="icon">
-                                        <i className="fas fa-reply"></i>
-                                    </span>
-
-                                    <span>Back</span>
-                                </Link>
-                            </div>
+                            <ContentTableBack link={`/dashboard/tag/${params.tagId}/frequency`} />
                         </div>
                     </div>
                 </div>

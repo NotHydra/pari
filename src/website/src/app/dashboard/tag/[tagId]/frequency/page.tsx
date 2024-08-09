@@ -1,7 +1,6 @@
 "use client";
 
 import axios, { AxiosResponse } from "axios";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -12,6 +11,7 @@ import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
 import ContentTableActionButtonContainer from "@/components/content/table/action/button/container.component";
 import ContentTableActionButton from "@/components/content/table/action/button/index.component";
+import ContentTableBack from "@/components/content/table/back.component";
 
 export default function FrequencyPage(): JSX.Element {
     const params: { tagId: string } = useParams<{ tagId: string }>();
@@ -93,15 +93,7 @@ export default function FrequencyPage(): JSX.Element {
                                 </table>
                             </div>
 
-                            <div className="cell">
-                                <Link href="/dashboard/tag" className="button is-fullwidth is-danger has-text-white has-text-weight-bold" title="Back Action">
-                                    <span className="icon">
-                                        <i className="fas fa-reply"></i>
-                                    </span>
-
-                                    <span>Back</span>
-                                </Link>
-                            </div>
+                            <ContentTableBack link={"/dashboard/tag"} />
                         </div>
                     </div>
                 </div>

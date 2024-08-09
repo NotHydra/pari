@@ -2,16 +2,17 @@
 
 import axios, { AxiosResponse } from "axios";
 import { defaults } from "chart.js/auto";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
+import { io, Socket } from "socket.io-client";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { TagDetailedModel } from "@/common/interface/tag.interface";
 import { FrequencyDetailedModel } from "@/common/interface/frequency.interface";
 import { RSSIModel } from "@/common/interface/rssi.interface";
-import { io, Socket } from "socket.io-client";
+
+import ContentTableBack from "@/components/content/table/back.component";
 
 defaults.font.size = 10;
 
@@ -192,15 +193,7 @@ export default function RSSIPage(): JSX.Element {
                                 ></Line>
                             </div>
 
-                            <div className="cell">
-                                <Link href={`/dashboard/tag`} className="button is-fullwidth is-danger has-text-white has-text-weight-bold" title="Back Action">
-                                    <span className="icon">
-                                        <i className="fas fa-reply"></i>
-                                    </span>
-
-                                    <span>Back</span>
-                                </Link>
-                            </div>
+                            <ContentTableBack link={"/dashboard/tag"} />
                         </div>
                     </div>
                 </div>

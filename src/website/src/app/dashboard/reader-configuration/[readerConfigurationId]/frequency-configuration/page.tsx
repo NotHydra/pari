@@ -15,6 +15,7 @@ import ContentTableActionTitle from "@/components/content/table/action/title.com
 import ContentTableActionButtonContainer from "@/components/content/table/action/button/container.component";
 import ContentTableActionButtonChange from "@/components/content/table/action/button/change.component";
 import ContentTableActionButtonRemove from "@/components/content/table/action/button/remove.component";
+import ContentTableBack from "@/components/content/table/back.component";
 
 export default function FrequencyConfigurationPage(): JSX.Element {
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
@@ -91,19 +92,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                 </table>
                             </div>
 
-                            <div className="cell">
-                                <Link
-                                    href="/dashboard/reader-configuration"
-                                    className="button is-fullwidth is-danger has-text-white has-text-weight-bold"
-                                    title="Back Action"
-                                >
-                                    <span className="icon">
-                                        <i className="fas fa-reply"></i>
-                                    </span>
-
-                                    <span>Back</span>
-                                </Link>
-                            </div>
+                            <ContentTableBack link={"/dashboard/reader-configuration"} />
                         </div>
                     </div>
                 </div>
