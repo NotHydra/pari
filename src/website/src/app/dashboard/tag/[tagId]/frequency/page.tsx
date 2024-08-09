@@ -9,6 +9,7 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { FrequencyTableModel } from "@/common/interface/frequency.interface";
 
 import ContentTableSort from "@/components/content/table/sort.component";
+import ContentTableActionTitle from "@/components/content/table/action/title.component";
 
 export default function FrequencyPage(): JSX.Element {
     const params: { tagId: string } = useParams<{ tagId: string }>();
@@ -59,7 +60,7 @@ export default function FrequencyPage(): JSX.Element {
                                                 <abbr title="The average RSSI obtained">Average RSSI (dBm)</abbr>
                                             </th>
 
-                                            <th>Action</th>
+                                            <ContentTableActionTitle />
                                         </tr>
                                     </thead>
 

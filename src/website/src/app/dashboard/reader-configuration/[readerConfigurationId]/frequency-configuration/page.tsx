@@ -11,6 +11,7 @@ import { FrequencyConfigurationModel } from "@/common/interface/frequency-config
 import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
+import ContentTableActionTitle from "@/components/content/table/action/title.component";
 
 export default function FrequencyConfigurationPage(): JSX.Element {
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
@@ -57,7 +58,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
 
                                             <ContentTableTimestampTitle />
 
-                                            <th>Action</th>
+                                            <ContentTableActionTitle />
                                         </tr>
                                     </thead>
 

@@ -11,6 +11,7 @@ import { TagModel, TagTableModel } from "@/common/interface/tag.interface";
 import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
+import ContentTableActionTitle from "@/components/content/table/action/title.component";
 
 export default function TagPage(): JSX.Element {
     const [tableData, setTableData] = useState<TagTableModel[]>([]);
@@ -122,7 +123,7 @@ export default function TagPage(): JSX.Element {
 
                                             <ContentTableTimestampTitle updatedAt={false} />
 
-                                            <th>Action</th>
+                                            <ContentTableActionTitle />
                                         </tr>
                                     </thead>
 
