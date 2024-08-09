@@ -3,10 +3,12 @@
 import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { RSSIModel } from "@/common/interface/rssi.interface";
+
+import ContentSort from "@/components/content-sort.component";
 
 export default function RSSIPage(): JSX.Element {
     const params: { tagId: string; frequencyId: string } = useParams<{ tagId: string; frequencyId: string }>();
@@ -31,43 +33,13 @@ export default function RSSIPage(): JSX.Element {
         fetchData();
     }, []);
 
-    const handleSort = (e: ChangeEvent<HTMLSelectElement>): void => {
-        if (e.target.value === "ascending") {
-            setTableData([...tableData].sort((a: RSSIModel, b: RSSIModel) => a.id - b.id));
-        } else if (e.target.value === "descending") {
-            setTableData([...tableData].sort((a: RSSIModel, b: RSSIModel) => b.id - a.id));
-        }
-    };
-
     return (
         <div className="card has-background-white">
             <div className="card-content">
                 <div className="content">
                     <div className="fixed-grid has-1-cols is-fullwidth">
                         <div className="grid">
-                            <div className="cell">
-                                <div className="columns action">
-                                    <div className="column m-0 p-0">
-                                        <div className="control has-icons-left" title="Sort Action">
-                                            <div className="select is-fullwidth">
-                                                <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSort(e)}>
-                                                    <option disabled>Sort</option>
-
-                                                    <option value={"ascending"} selected>
-                                                        Ascending
-                                                    </option>
-
-                                                    <option value={"descending"}>Descending</option>
-                                                </select>
-                                            </div>
-
-                                            <div className="icon is-small is-left">
-                                                <i className="fas fa-up-down"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <ContentSort tableData={tableData} setTableData={setTableData} />
 
                             <div className="cell table-container has-back-button line has-background-light">
                                 <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">

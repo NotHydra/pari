@@ -2,12 +2,13 @@
 
 import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { TagModel, TagTableModel } from "@/common/interface/tag.interface";
 
+import ContentSort from "@/components/content-sort.component";
 import Timestamp from "@/components/timestamp.component";
 
 export default function TagPage(): JSX.Element {
@@ -30,14 +31,6 @@ export default function TagPage(): JSX.Element {
 
         fetchData();
     }, []);
-
-    const handleSort = (e: ChangeEvent<HTMLSelectElement>): void => {
-        if (e.target.value === "ascending") {
-            setTableData([...tableData].sort((a: TagTableModel, b: TagTableModel) => a.id - b.id));
-        } else if (e.target.value === "descending") {
-            setTableData([...tableData].sort((a: TagTableModel, b: TagTableModel) => b.id - a.id));
-        }
-    };
 
     const handleRemove = async (id: number): Promise<void> => {
         Swal.fire<void>({
@@ -102,29 +95,7 @@ export default function TagPage(): JSX.Element {
                 <div className="content">
                     <div className="fixed-grid has-1-cols is-fullwidth">
                         <div className="grid">
-                            <div className="cell">
-                                <div className="columns action">
-                                    <div className="column m-0 p-0">
-                                        <div className="control has-icons-left" title="Sort Action">
-                                            <div className="select is-fullwidth">
-                                                <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSort(e)}>
-                                                    <option disabled>Sort</option>
-
-                                                    <option value={"ascending"} selected>
-                                                        Ascending
-                                                    </option>
-
-                                                    <option value={"descending"}>Descending</option>
-                                                </select>
-                                            </div>
-
-                                            <div className="icon is-small is-left">
-                                                <i className="fas fa-up-down"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <ContentSort tableData={tableData} setTableData={setTableData} />
 
                             <div className="cell table-container line has-background-light">
                                 <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">

@@ -2,13 +2,14 @@
 
 import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { ActiveReaderConfigurationModel } from "@/common/interface/active-reader-configuration.interface";
 import { ReaderConfigurationTableModel } from "@/common/interface/reader-configuration.interface";
 
+import ContentSort from "@/components/content-sort.component";
 import Timestamp from "@/components/timestamp.component";
 
 export default function ReaderConfigurationPage(): JSX.Element {
@@ -87,55 +88,13 @@ export default function ReaderConfigurationPage(): JSX.Element {
         });
     };
 
-    const handleSort = (e: ChangeEvent<HTMLSelectElement>): void => {
-        if (e.target.value === "ascending") {
-            setTableData([...tableData].sort((a: ReaderConfigurationTableModel, b: ReaderConfigurationTableModel) => a.id - b.id));
-        } else if (e.target.value === "descending") {
-            setTableData([...tableData].sort((a: ReaderConfigurationTableModel, b: ReaderConfigurationTableModel) => b.id - a.id));
-        }
-    };
-
     return (
         <div className="card has-background-white">
             <div className="card-content">
                 <div className="content">
                     <div className="fixed-grid has-1-cols is-fullwidth">
                         <div className="grid">
-                            <div className="cell">
-                                <div className="columns action">
-                                    <div className="column is-1 m-0 mr-1 p-0">
-                                        <Link
-                                            href="/dashboard/reader-configuration/add"
-                                            className="button is-normal is-fullwidth is-success has-text-weight-bold"
-                                            title="Add Action"
-                                        >
-                                            <span className="icon">
-                                                <i className="fab fa-plus"></i>
-                                            </span>
-                                        </Link>
-                                    </div>
-
-                                    <div className="column m-0 ml-1 p-0">
-                                        <div className="control has-icons-left" title="Sort Action">
-                                            <div className="select is-fullwidth">
-                                                <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSort(e)}>
-                                                    <option disabled>Sort</option>
-
-                                                    <option value={"ascending"} selected>
-                                                        Ascending
-                                                    </option>
-
-                                                    <option value={"descending"}>Descending</option>
-                                                </select>
-                                            </div>
-
-                                            <div className="icon is-small is-left">
-                                                <i className="fas fa-up-down"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <ContentSort tableData={tableData} setTableData={setTableData} />
 
                             <div className="cell table-container line has-background-light">
                                 <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
