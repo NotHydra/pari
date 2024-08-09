@@ -2,7 +2,6 @@
 
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Swal, { SweetAlertResult } from "sweetalert2";
@@ -11,6 +10,7 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
 
 import ContentFormButton from "@/components/content/form/button/index.component";
+import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
 export default function ReaderConfigurationChangePage(): JSX.Element {
     const router: AppRouterInstance = useRouter();
@@ -201,17 +201,7 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
                         <div className="buttons">
                             <ContentFormButton type="change" />
 
-                            <Link
-                                href="/dashboard/reader-configuration"
-                                className="button is-fullwidth is-danger has-text-white has-text-weight-bold"
-                                title="Back Action"
-                            >
-                                <span className="icon">
-                                    <i className="fas fa-reply"></i>
-                                </span>
-
-                                <span>Back</span>
-                            </Link>
+                            <ContentFormButtonBack link="/dashboard/reader-configuration" />
                         </div>
                     </form>
                 </div>

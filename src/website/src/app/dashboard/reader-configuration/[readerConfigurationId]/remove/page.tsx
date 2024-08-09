@@ -11,6 +11,7 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
 
 import ContentFormButton from "@/components/content/form/button/index.component";
+import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
 export default function ReaderConfigurationRemovePage(): JSX.Element {
     const router: AppRouterInstance = useRouter();
@@ -184,17 +185,7 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
                         <div className="buttons">
                             <ContentFormButton type="remove" />
 
-                            <Link
-                                href="/dashboard/reader-configuration"
-                                className="button is-fullwidth is-danger has-text-white has-text-weight-bold"
-                                title="Back Action"
-                            >
-                                <span className="icon">
-                                    <i className="fas fa-reply"></i>
-                                </span>
-
-                                <span>Back</span>
-                            </Link>
+                            <ContentFormButtonBack link="/dashboard/reader-configuration" />
                         </div>
                     </form>
                 </div>

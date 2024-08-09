@@ -10,6 +10,7 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration.interface";
 
 import ContentFormButton from "@/components/content/form/button/index.component";
+import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
 export default function FrequencyConfigurationAddPage(): JSX.Element {
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
@@ -102,17 +103,7 @@ export default function FrequencyConfigurationAddPage(): JSX.Element {
                         <div className="buttons">
                             <ContentFormButton type="add" />
 
-                            <Link
-                                href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`}
-                                className="button is-fullwidth is-danger has-text-white has-text-weight-bold"
-                                title="Back Action"
-                            >
-                                <span className="icon">
-                                    <i className="fas fa-reply"></i>
-                                </span>
-
-                                <span>Back</span>
-                            </Link>
+                            <ContentFormButtonBack link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`} />
                         </div>
                     </form>
                 </div>
