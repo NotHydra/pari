@@ -10,7 +10,7 @@ import { FrequencyTableModel } from "@/common/interface/frequency.interface";
 
 import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
-import ContentTableActionButton from "@/components/content/table/action/button.component";
+import ContentTableActionButton from "@/components/content/table/action/button/index.component";
 
 export default function FrequencyPage(): JSX.Element {
     const params: { tagId: string } = useParams<{ tagId: string }>();

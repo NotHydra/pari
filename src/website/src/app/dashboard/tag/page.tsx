@@ -12,7 +12,7 @@ import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
-import ContentTableActionButton from "@/components/content/table/action/button.component";
+import ContentTableActionButton from "@/components/content/table/action/button/index.component";
 
 export default function TagPage(): JSX.Element {
     const [tableData, setTableData] = useState<TagTableModel[]>([]);
