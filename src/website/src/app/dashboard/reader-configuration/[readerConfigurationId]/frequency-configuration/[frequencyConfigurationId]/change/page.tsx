@@ -10,6 +10,8 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration.interface";
 
+import ContentFormButton from "@/components/content/form/button/index.component";
+
 export default function FrequencyConfigurationChangePage(): JSX.Element {
     const router: AppRouterInstance = useRouter();
 
@@ -154,13 +156,7 @@ export default function FrequencyConfigurationChangePage(): JSX.Element {
                         </div>
 
                         <div className="buttons">
-                            <button className="button is-fullwidth is-warning has-text-weight-bold" type="submit" title="Change Action">
-                                <span className="icon">
-                                    <i className="fas fa-pen-to-square"></i>
-                                </span>
-
-                                <span>Change</span>
-                            </button>
+                            <ContentFormButton type="change" />
 
                             <Link
                                 href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`}

@@ -10,6 +10,8 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
 
+import ContentFormButton from "@/components/content/form/button/index.component";
+
 export default function ReaderConfigurationChangePage(): JSX.Element {
     const router: AppRouterInstance = useRouter();
 
@@ -197,13 +199,7 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
                         </div>
 
                         <div className="buttons">
-                            <button className="button is-fullwidth is-warning has-text-weight-bold" type="submit" title="Change Action">
-                                <span className="icon">
-                                    <i className="fas fa-pen-to-square"></i>
-                                </span>
-
-                                <span>Change</span>
-                            </button>
+                            <ContentFormButton type="change" />
 
                             <Link
                                 href="/dashboard/reader-configuration"

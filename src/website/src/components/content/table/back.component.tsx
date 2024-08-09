@@ -8,7 +8,7 @@ export default function ContentTableBack({ link }: { link: string }): JSX.Elemen
                     <i className="fas fa-reply"></i>
                 </span>
 
-                <span>Back 123</span>
+                <span>Back</span>
             </Link>
         </div>
     );
