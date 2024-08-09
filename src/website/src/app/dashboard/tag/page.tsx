@@ -9,6 +9,7 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { TagModel, TagTableModel } from "@/common/interface/tag.interface";
 
 import ContentSort from "@/components/content/sort.component";
+import ContentTimestampTitle from "@/components/content/timestamp/title.component";
 import ContentTimestamp from "@/components/content/timestamp.component";
 
 export default function TagPage(): JSX.Element {
@@ -119,7 +120,7 @@ export default function TagPage(): JSX.Element {
                                                 <abbr title="The average RSSI of each frequency obtained">Average RSSI (dBm)</abbr>
                                             </th>
 
-                                            <th className="timestamp">Created At</th>
+                                            <ContentTimestampTitle updatedAt={false} />
 
                                             <th>Action</th>
                                         </tr>

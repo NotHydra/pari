@@ -22,7 +22,7 @@ export default function ContentSort<T extends { id: number }>({
                     <div className="control has-icons-left" title="Sort Action">
                         <div className="select is-fullwidth">
                             <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSort(e)}>
-                                <option disabled>Sort 123</option>
+                                <option disabled>Sort</option>
 
                                 <option value={"ascending"} selected>
                                     Ascending

@@ -10,6 +10,7 @@ import { ActiveReaderConfigurationModel } from "@/common/interface/active-reader
 import { ReaderConfigurationTableModel } from "@/common/interface/reader-configuration.interface";
 
 import ContentSort from "@/components/content/sort.component";
+import ContentTimestampTitle from "@/components/content/timestamp/title.component";
 import ContentTimestamp from "@/components/content/timestamp.component";
 
 export default function ReaderConfigurationPage(): JSX.Element {
@@ -118,9 +119,7 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                                 <abbr title="The amount of delay after each RSSI scan">RSSI Scan Interval {"(ms)"}</abbr>
                                             </th>
 
-                                            <th className="timestamp">Created At</th>
-
-                                            <th className="timestamp">Updated At</th>
+                                            <ContentTimestampTitle />
 
                                             <th>Action</th>
                                         </tr>

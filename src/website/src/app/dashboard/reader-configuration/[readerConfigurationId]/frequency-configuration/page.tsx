@@ -9,6 +9,7 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration.interface";
 
 import ContentSort from "@/components/content/sort.component";
+import ContentTimestampTitle from "@/components/content/timestamp/title.component";
 import ContentTimestamp from "@/components/content/timestamp.component";
 
 export default function FrequencyConfigurationPage(): JSX.Element {
@@ -54,9 +55,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                                 <abbr title="The value of the frequency configuration">Frequency (Hz)</abbr>
                                             </th>
 
-                                            <th className="timestamp">Created At</th>
-
-                                            <th className="timestamp">Updated At</th>
+                                            <ContentTimestampTitle />
 
                                             <th>Action</th>
                                         </tr>
