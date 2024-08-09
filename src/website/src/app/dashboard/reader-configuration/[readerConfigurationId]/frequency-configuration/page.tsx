@@ -47,7 +47,11 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                 <div className="content">
                     <div className="fixed-grid has-1-cols is-fullwidth">
                         <div className="grid">
-                            <ContentTableSort tableData={tableData} setTableData={setTableData} />
+                            <ContentTableSort
+                                tableData={tableData}
+                                setTableData={setTableData}
+                                addAction={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add`}
+                            />
 
                             <div className="cell table-container has-back-button line has-background-light">
                                 <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">

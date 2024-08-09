@@ -152,7 +152,6 @@ export default function TagPage(): JSX.Element {
                                                             color="info"
                                                             action={`/dashboard/tag/${data.id}/line-chart`}
                                                         />,
-
                                                         <ContentTableActionButton
                                                             title="Frequency"
                                                             icon="sliders"

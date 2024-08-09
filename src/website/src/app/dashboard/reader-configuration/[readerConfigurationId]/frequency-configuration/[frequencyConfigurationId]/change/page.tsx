@@ -159,7 +159,6 @@ export default function FrequencyConfigurationChangePage(): JSX.Element {
                         <ContentFormButtonContainer
                             buttons={[
                                 <ContentFormButton type="change" />,
-
                                 <ContentFormButtonBack link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`} />,
                             ]}
                         />
