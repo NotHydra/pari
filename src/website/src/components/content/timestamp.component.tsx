@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export default function Timestamp({ timestamp }: { timestamp: Date }): JSX.Element {
+export default function ContentTimestamp({ timestamp }: { timestamp: Date }): JSX.Element {
     const value: string[] = moment(timestamp).format(`HH:mm:ss DD-MMMM-YYYY`).split(" ");
 
     return (

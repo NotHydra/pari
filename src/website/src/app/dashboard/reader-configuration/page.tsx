@@ -9,8 +9,8 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { ActiveReaderConfigurationModel } from "@/common/interface/active-reader-configuration.interface";
 import { ReaderConfigurationTableModel } from "@/common/interface/reader-configuration.interface";
 
-import ContentSort from "@/components/content-sort.component";
-import Timestamp from "@/components/timestamp.component";
+import ContentSort from "@/components/content/sort.component";
+import ContentTimestamp from "@/components/content/timestamp.component";
 
 export default function ReaderConfigurationPage(): JSX.Element {
     const [activeReaderConfiguration, setActiveReaderConfiguration] = useState<ActiveReaderConfigurationModel | null>(null);
@@ -140,11 +140,11 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                                 <td>{data.rssiScanInterval}</td>
 
                                                 <td className="timestamp">
-                                                    <Timestamp timestamp={data.createdAt} />
+                                                    <ContentTimestamp timestamp={data.createdAt} />
                                                 </td>
 
                                                 <td className="timestamp">
-                                                    <Timestamp timestamp={data.updatedAt} />
+                                                    <ContentTimestamp timestamp={data.updatedAt} />
                                                 </td>
 
                                                 <td className="action m-0 p-0">

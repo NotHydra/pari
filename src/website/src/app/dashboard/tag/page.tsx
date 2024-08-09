@@ -8,8 +8,8 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { TagModel, TagTableModel } from "@/common/interface/tag.interface";
 
-import ContentSort from "@/components/content-sort.component";
-import Timestamp from "@/components/timestamp.component";
+import ContentSort from "@/components/content/sort.component";
+import ContentTimestamp from "@/components/content/timestamp.component";
 
 export default function TagPage(): JSX.Element {
     const [tableData, setTableData] = useState<TagTableModel[]>([]);
@@ -139,7 +139,7 @@ export default function TagPage(): JSX.Element {
                                                 <td>{data.averageRSSI}</td>
 
                                                 <td className="timestamp">
-                                                    <Timestamp timestamp={data.createdAt} />
+                                                    <ContentTimestamp timestamp={data.createdAt} />
                                                 </td>
 
                                                 <td className="action m-0 p-0">

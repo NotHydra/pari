@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration.interface";
 
-import ContentSort from "@/components/content-sort.component";
-import Timestamp from "@/components/timestamp.component";
+import ContentSort from "@/components/content/sort.component";
+import ContentTimestamp from "@/components/content/timestamp.component";
 
 export default function FrequencyConfigurationPage(): JSX.Element {
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
@@ -70,11 +70,11 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                                 <td>{data.frequency}</td>
 
                                                 <td className="timestamp">
-                                                    <Timestamp timestamp={data.createdAt} />
+                                                    <ContentTimestamp timestamp={data.createdAt} />
                                                 </td>
 
                                                 <td className="timestamp">
-                                                    <Timestamp timestamp={data.updatedAt} />
+                                                    <ContentTimestamp timestamp={data.updatedAt} />
                                                 </td>
 
                                                 <td className="action m-0 p-0">

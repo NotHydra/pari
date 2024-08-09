@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { FrequencyTableModel } from "@/common/interface/frequency.interface";
 
-import ContentSort from "@/components/content-sort.component";
+import ContentSort from "@/components/content/sort.component";
 
 export default function FrequencyPage(): JSX.Element {
     const params: { tagId: string } = useParams<{ tagId: string }>();

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { RSSIModel } from "@/common/interface/rssi.interface";
 
-import ContentSort from "@/components/content-sort.component";
+import ContentSort from "@/components/content/sort.component";
 
 export default function RSSIPage(): JSX.Element {
     const params: { tagId: string; frequencyId: string } = useParams<{ tagId: string; frequencyId: string }>();
