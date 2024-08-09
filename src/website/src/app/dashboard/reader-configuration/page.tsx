@@ -13,6 +13,7 @@ import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
+import ContentTableActionButton from "@/components/content/table/action/button.component";
 
 export default function ReaderConfigurationPage(): JSX.Element {
     const [activeReaderConfiguration, setActiveReaderConfiguration] = useState<ActiveReaderConfigurationModel | null>(null);
@@ -144,61 +145,39 @@ export default function ReaderConfigurationPage(): JSX.Element {
                                                 <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">
                                                         <div className="grid is-row-gap-0">
-                                                            <div className="cell">
-                                                                <button
-                                                                    className="button is-small is-fullwidth is-success has-text-white"
-                                                                    title="Use Action"
-                                                                    onClick={(): void => {
-                                                                        handleUse(data.id);
-                                                                    }}
-                                                                    disabled={
-                                                                        activeReaderConfiguration !== null &&
-                                                                        activeReaderConfiguration.readerConfigurationId === data.id
-                                                                            ? true
-                                                                            : false
-                                                                    }
-                                                                >
-                                                                    <span className="icon">
-                                                                        <i className="fas fa-check"></i>
-                                                                    </span>
-                                                                </button>
-                                                            </div>
+                                                            <ContentTableActionButton
+                                                                title="Use"
+                                                                icon="check"
+                                                                color="success"
+                                                                action={() => handleUse(data.id)}
+                                                                disabled={
+                                                                    activeReaderConfiguration !== null &&
+                                                                    activeReaderConfiguration.readerConfigurationId === data.id
+                                                                        ? true
+                                                                        : false
+                                                                }
+                                                            />
 
-                                                            <div className="cell">
-                                                                <Link
-                                                                    href={`/dashboard/reader-configuration/${data.id}/frequency-configuration`}
-                                                                    className="button is-small is-fullwidth is-info has-text-white"
-                                                                    title="Frequency Configuration Action"
-                                                                >
-                                                                    <span className="icon">
-                                                                        <i className="fas fa-sliders"></i>
-                                                                    </span>
-                                                                </Link>
-                                                            </div>
+                                                            <ContentTableActionButton
+                                                                title="Frequency Configuration"
+                                                                icon="sliders"
+                                                                color="info"
+                                                                action={`/dashboard/reader-configuration/${data.id}/frequency-configuration`}
+                                                            />
 
-                                                            <div className="cell">
-                                                                <Link
-                                                                    href={`/dashboard/reader-configuration/${data.id}/change`}
-                                                                    className="button is-small is-fullwidth is-warning has-text-white"
-                                                                    title="Change Action"
-                                                                >
-                                                                    <span className="icon">
-                                                                        <i className="fas fa-pen-to-square"></i>
-                                                                    </span>
-                                                                </Link>
-                                                            </div>
+                                                            <ContentTableActionButton
+                                                                title="Change"
+                                                                icon="pen-to-square"
+                                                                color="warning"
+                                                                action={`/dashboard/reader-configuration/${data.id}/change`}
+                                                            />
 
-                                                            <div className="cell">
-                                                                <Link
-                                                                    href={`/dashboard/reader-configuration/${data.id}/remove`}
-                                                                    className="button is-small is-fullwidth is-danger has-text-white"
-                                                                    title="Remove Action"
-                                                                >
-                                                                    <span className="icon">
-                                                                        <i className="fas fa-trash"></i>
-                                                                    </span>
-                                                                </Link>
-                                                            </div>
+                                                            <ContentTableActionButton
+                                                                title="Remove"
+                                                                icon="trash"
+                                                                color="danger"
+                                                                action={`/dashboard/reader-configuration/${data.id}/remove`}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </td>

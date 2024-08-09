@@ -12,6 +12,7 @@ import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
+import ContentTableActionButton from "@/components/content/table/action/button.component";
 
 export default function FrequencyConfigurationPage(): JSX.Element {
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
@@ -74,29 +75,19 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                                                 <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">
                                                         <div className="grid is-row-gap-0">
-                                                            <div className="cell">
-                                                                <Link
-                                                                    href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/change`}
-                                                                    className="button is-small is-fullwidth is-warning has-text-white"
-                                                                    title="Change Action"
-                                                                >
-                                                                    <span className="icon">
-                                                                        <i className="fas fa-pen-to-square"></i>
-                                                                    </span>
-                                                                </Link>
-                                                            </div>
+                                                            <ContentTableActionButton
+                                                                title="Change"
+                                                                icon="pen-to-square"
+                                                                color="warning"
+                                                                action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/change`}
+                                                            />
 
-                                                            <div className="cell">
-                                                                <Link
-                                                                    href={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/remove`}
-                                                                    className="button is-small is-fullwidth is-danger has-text-white"
-                                                                    title="Remove Action"
-                                                                >
-                                                                    <span className="icon">
-                                                                        <i className="fas fa-trash"></i>
-                                                                    </span>
-                                                                </Link>
-                                                            </div>
+                                                            <ContentTableActionButton
+                                                                title="Remove"
+                                                                icon="trash"
+                                                                color="danger"
+                                                                action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/remove`}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </td>

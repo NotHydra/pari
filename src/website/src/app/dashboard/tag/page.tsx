@@ -12,6 +12,7 @@ import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
+import ContentTableActionButton from "@/components/content/table/action/button.component";
 
 export default function TagPage(): JSX.Element {
     const [tableData, setTableData] = useState<TagTableModel[]>([]);
@@ -145,43 +146,26 @@ export default function TagPage(): JSX.Element {
                                                 <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">
                                                         <div className="grid is-row-gap-0">
-                                                            <div className="cell">
-                                                                <Link
-                                                                    href={`/dashboard/tag/${data.id}/line-chart`}
-                                                                    className="button is-small is-fullwidth is-info has-text-white"
-                                                                    title="Line Chart Action"
-                                                                >
-                                                                    <span className="icon">
-                                                                        <i className="fas fa-chart-line"></i>
-                                                                    </span>
-                                                                </Link>
-                                                            </div>
+                                                            <ContentTableActionButton
+                                                                title="Line Chart"
+                                                                icon="chart-line"
+                                                                color="info"
+                                                                action={`/dashboard/tag/${data.id}/line-chart`}
+                                                            />
 
-                                                            <div className="cell">
-                                                                <Link
-                                                                    href={`/dashboard/tag/${data.id}/frequency`}
-                                                                    className="button is-small is-fullwidth is-info has-text-white"
-                                                                    title="Frequency Action"
-                                                                >
-                                                                    <span className="icon">
-                                                                        <i className="fas fa-sliders"></i>
-                                                                    </span>
-                                                                </Link>
-                                                            </div>
+                                                            <ContentTableActionButton
+                                                                title="Frequency"
+                                                                icon="sliders"
+                                                                color="info"
+                                                                action={`/dashboard/tag/${data.id}/frequency`}
+                                                            />
 
-                                                            <div className="cell">
-                                                                <button
-                                                                    className="button is-small is-fullwidth is-danger has-text-white"
-                                                                    title="Remove Action"
-                                                                    onClick={(): void => {
-                                                                        handleRemove(data.id);
-                                                                    }}
-                                                                >
-                                                                    <span className="icon">
-                                                                        <i className="fas fa-trash"></i>
-                                                                    </span>
-                                                                </button>
-                                                            </div>
+                                                            <ContentTableActionButton
+                                                                title="Remove"
+                                                                icon="trash"
+                                                                color="danger"
+                                                                action={() => handleRemove(data.id)}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </td>

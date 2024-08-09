@@ -10,6 +10,7 @@ import { FrequencyTableModel } from "@/common/interface/frequency.interface";
 
 import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
+import ContentTableActionButton from "@/components/content/table/action/button.component";
 
 export default function FrequencyPage(): JSX.Element {
     const params: { tagId: string } = useParams<{ tagId: string }>();
@@ -78,17 +79,12 @@ export default function FrequencyPage(): JSX.Element {
                                                 <td className="action m-0 p-0">
                                                     <div className="fixed-grid has-1-cols">
                                                         <div className="grid is-row-gap-0">
-                                                            <div className="cell">
-                                                                <Link
-                                                                    href={`/dashboard/tag/${params.tagId}/frequency/${data.id}/rssi`}
-                                                                    className="button is-small is-fullwidth is-info has-text-white"
-                                                                    title="RSSI Action"
-                                                                >
-                                                                    <span className="icon">
-                                                                        <i className="fas fa-wifi"></i>
-                                                                    </span>
-                                                                </Link>
-                                                            </div>
+                                                            <ContentTableActionButton
+                                                                title="RSSI"
+                                                                icon="wifi"
+                                                                color="info"
+                                                                action={`/dashboard/tag/${params.tagId}/frequency/${data.id}/rssi`}
+                                                            />
                                                         </div>
                                                     </div>
                                                 </td>
