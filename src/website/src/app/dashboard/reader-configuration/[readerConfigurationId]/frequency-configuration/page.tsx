@@ -9,7 +9,9 @@ import { FrequencyConfigurationModel } from "@/common/interface/frequency-config
 
 import ContentContainer from "@/components/content/container.component";
 import ContentTableContainer from "@/components/content/table/container.component";
-import ContentTableSort from "@/components/content/table/sort.component";
+import ContentTableBarContainer from "@/components/content/table/bar/container.component";
+import ContentTableBarAdd from "@/components/content/table/bar/add.component";
+import ContentTableBarSort from "@/components/content/table/bar/sort.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
@@ -46,11 +48,11 @@ export default function FrequencyConfigurationPage(): JSX.Element {
     return (
         <ContentContainer>
             <ContentTableContainer>
-                <ContentTableSort
-                    tableData={tableData}
-                    setTableData={setTableData}
-                    addAction={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add`}
-                />
+                <ContentTableBarContainer>
+                    <ContentTableBarAdd link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add`} />
+
+                    <ContentTableBarSort tableData={tableData} setTableData={setTableData} />
+                </ContentTableBarContainer>
 
                 <div className="cell table-container has-back-button line has-background-light">
                     <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">

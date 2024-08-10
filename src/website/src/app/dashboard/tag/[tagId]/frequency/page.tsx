@@ -9,7 +9,8 @@ import { FrequencyTableModel } from "@/common/interface/frequency.interface";
 
 import ContentContainer from "@/components/content/container.component";
 import ContentTableContainer from "@/components/content/table/container.component";
-import ContentTableSort from "@/components/content/table/sort.component";
+import ContentTableBarContainer from "@/components/content/table/bar/container.component";
+import ContentTableBarSort from "@/components/content/table/bar/sort.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
 import ContentTableActionButtonContainer from "@/components/content/table/action/button/container.component";
 import ContentTableActionButton from "@/components/content/table/action/button/index.component";
@@ -41,7 +42,9 @@ export default function FrequencyPage(): JSX.Element {
     return (
         <ContentContainer>
             <ContentTableContainer>
-                <ContentTableSort tableData={tableData} setTableData={setTableData} />
+                <ContentTableBarContainer>
+                    <ContentTableBarSort tableData={tableData} setTableData={setTableData} />
+                </ContentTableBarContainer>
 
                 <div className="cell table-container has-back-button line has-background-light">
                     <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">

@@ -8,8 +8,9 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { RSSIModel } from "@/common/interface/rssi.interface";
 
 import ContentContainer from "@/components/content/container.component";
+import ContentTableBarContainer from "@/components/content/table/bar/container.component";
+import ContentTableBarSort from "@/components/content/table/bar/sort.component";
 import ContentTableContainer from "@/components/content/table/container.component";
-import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableBack from "@/components/content/table/back.component";
 
 export default function RSSIPage(): JSX.Element {
@@ -38,7 +39,9 @@ export default function RSSIPage(): JSX.Element {
     return (
         <ContentContainer>
             <ContentTableContainer>
-                <ContentTableSort tableData={tableData} setTableData={setTableData} />
+                <ContentTableBarContainer>
+                    <ContentTableBarSort tableData={tableData} setTableData={setTableData} />
+                </ContentTableBarContainer>
 
                 <div className="cell table-container has-back-button line has-background-light">
                     <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
