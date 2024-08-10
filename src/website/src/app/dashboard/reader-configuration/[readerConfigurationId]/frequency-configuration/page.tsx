@@ -78,17 +78,15 @@ export default function FrequencyConfigurationPage(): JSX.Element {
 
                                                 <ContentTableTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
 
-                                                <ContentTableActionButtonContainer
-                                                    buttons={[
-                                                        <ContentTableActionButtonChange
-                                                            action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/change`}
-                                                        />,
+                                                <ContentTableActionButtonContainer>
+                                                    <ContentTableActionButtonChange
+                                                        action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/change`}
+                                                    />
 
-                                                        <ContentTableActionButtonRemove
-                                                            action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/remove`}
-                                                        />,
-                                                    ]}
-                                                />
+                                                    <ContentTableActionButtonRemove
+                                                        action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/remove`}
+                                                    />
+                                                </ContentTableActionButtonContainer>
                                             </tr>
                                         ))}
                                     </tbody>

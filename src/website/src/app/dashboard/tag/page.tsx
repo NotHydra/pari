@@ -144,23 +144,23 @@ export default function TagPage(): JSX.Element {
 
                                                 <ContentTableTimestampValue createdAt={data.createdAt} />
 
-                                                <ContentTableActionButtonContainer
-                                                    buttons={[
-                                                        <ContentTableActionButton
-                                                            title="Line Chart"
-                                                            icon="chart-line"
-                                                            color="info"
-                                                            action={`/dashboard/tag/${data.id}/line-chart`}
-                                                        />,
-                                                        <ContentTableActionButton
-                                                            title="Frequency"
-                                                            icon="sliders"
-                                                            color="info"
-                                                            action={`/dashboard/tag/${data.id}/frequency`}
-                                                        />,
-                                                        <ContentTableActionButtonRemove action={() => handleRemove(data.id)} />,
-                                                    ]}
-                                                />
+                                                <ContentTableActionButtonContainer>
+                                                    <ContentTableActionButton
+                                                        title="Line Chart"
+                                                        icon="chart-line"
+                                                        color="info"
+                                                        action={`/dashboard/tag/${data.id}/line-chart`}
+                                                    />
+
+                                                    <ContentTableActionButton
+                                                        title="Frequency"
+                                                        icon="sliders"
+                                                        color="info"
+                                                        action={`/dashboard/tag/${data.id}/frequency`}
+                                                    />
+                                                    
+                                                    <ContentTableActionButtonRemove action={() => handleRemove(data.id)} />
+                                                </ContentTableActionButtonContainer>
                                             </tr>
                                         ))}
                                     </tbody>

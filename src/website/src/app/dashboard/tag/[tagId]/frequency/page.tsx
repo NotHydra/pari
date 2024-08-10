@@ -77,16 +77,14 @@ export default function FrequencyPage(): JSX.Element {
 
                                                 <td>{data.averageRSSI}</td>
 
-                                                <ContentTableActionButtonContainer
-                                                    buttons={[
-                                                        <ContentTableActionButton
-                                                            title="RSSI"
-                                                            icon="wifi"
-                                                            color="info"
-                                                            action={`/dashboard/tag/${params.tagId}/frequency/${data.id}/rssi`}
-                                                        />,
-                                                    ]}
-                                                />
+                                                <ContentTableActionButtonContainer>
+                                                    <ContentTableActionButton
+                                                        title="RSSI"
+                                                        icon="wifi"
+                                                        color="info"
+                                                        action={`/dashboard/tag/${params.tagId}/frequency/${data.id}/rssi`}
+                                                    />
+                                                </ContentTableActionButtonContainer>
                                             </tr>
                                         ))}
                                     </tbody>

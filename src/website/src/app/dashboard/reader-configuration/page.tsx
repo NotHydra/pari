@@ -144,33 +144,30 @@ export default function ReaderConfigurationPage(): JSX.Element {
 
                                                 <ContentTableTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
 
-                                                <ContentTableActionButtonContainer
-                                                    buttons={[
-                                                        <ContentTableActionButton
-                                                            title="Use"
-                                                            icon="check"
-                                                            color="success"
-                                                            action={() => handleUse(data.id)}
-                                                            disabled={
-                                                                activeReaderConfiguration !== null &&
-                                                                activeReaderConfiguration.readerConfigurationId === data.id
-                                                                    ? true
-                                                                    : false
-                                                            }
-                                                        />,
+                                                <ContentTableActionButtonContainer>
+                                                    <ContentTableActionButton
+                                                        title="Use"
+                                                        icon="check"
+                                                        color="success"
+                                                        action={() => handleUse(data.id)}
+                                                        disabled={
+                                                            activeReaderConfiguration !== null && activeReaderConfiguration.readerConfigurationId === data.id
+                                                                ? true
+                                                                : false
+                                                        }
+                                                    />
 
-                                                        <ContentTableActionButton
-                                                            title="Frequency Configuration"
-                                                            icon="sliders"
-                                                            color="info"
-                                                            action={`/dashboard/reader-configuration/${data.id}/frequency-configuration`}
-                                                        />,
+                                                    <ContentTableActionButton
+                                                        title="Frequency Configuration"
+                                                        icon="sliders"
+                                                        color="info"
+                                                        action={`/dashboard/reader-configuration/${data.id}/frequency-configuration`}
+                                                    />
 
-                                                        <ContentTableActionButtonChange action={`/dashboard/reader-configuration/${data.id}/change`} />,
+                                                    <ContentTableActionButtonChange action={`/dashboard/reader-configuration/${data.id}/change`} />
 
-                                                        <ContentTableActionButtonRemove action={`/dashboard/reader-configuration/${data.id}/remove`} />,
-                                                    ]}
-                                                />
+                                                    <ContentTableActionButtonRemove action={`/dashboard/reader-configuration/${data.id}/remove`} />
+                                                </ContentTableActionButtonContainer>
                                             </tr>
                                         ))}
                                     </tbody>
