@@ -12,6 +12,7 @@ import { TagDetailedModel } from "@/common/interface/tag.interface";
 import { FrequencyDetailedModel } from "@/common/interface/frequency.interface";
 import { RSSIModel } from "@/common/interface/rssi.interface";
 
+import ContentContainer from "@/components/content/container.component";
 import ContentTableBack from "@/components/content/table/back.component";
 
 defaults.font.size = 10;
@@ -142,62 +143,58 @@ export default function RSSIPage(): JSX.Element {
     }, []);
 
     return (
-        <div className="card has-background-white">
-            <div className="card-content">
-                <div className="content">
-                    <div className="fixed-grid has-1-cols is-fullwidth">
-                        <div className="grid">
-                            <div className="cell chart has-back-button" style={{ display: "flex", justifyContent: "center" }}>
-                                <Line
-                                    width={"325%"}
-                                    data={{
-                                        labels:
-                                            chartData !== null
-                                                ? Array.from({ length: lengthRSSI(chartData) }, (_, x) => x).map((value: number): string => `RSSI ${value + 1}`)
-                                                : ["Loading..."],
-                                        datasets:
-                                            chartData != null
-                                                ? chartData.frequency
-                                                      .map((frequencyModel: FrequencyDetailedModel, frequencyIndex: number) => {
-                                                          return {
-                                                              label: `${frequencyModel.frequency}Hz (${averageRSSI(frequencyModel)}dBm)`,
-                                                              data: frequencyModel.rssi.map((rssiModel: RSSIModel): number => rssiModel.rssi),
-                                                              fill: false,
-                                                              borderColor: getFrequencyColor(frequencyIndex),
-                                                              tension: 0.1,
-                                                              order: frequencyIndex + 1,
-                                                          };
-                                                      })
-                                                      .reverse()
-                                                : [{ label: "Loading...", data: [0], fill: false, tension: 0.1 }],
-                                    }}
-                                    options={{
-                                        responsive: true,
-                                        scales: {
-                                            y: {
-                                                type: "linear",
-                                                suggestedMin: minRSSIValue !== null ? minRSSIValue - 5 : -30,
-                                                suggestedMax: maxRSSIValue !== null ? maxRSSIValue + 5 : -50,
-                                                ticks: {
-                                                    callback: (value: string | number): string => {
-                                                        if (Number(value) % 5 === 0) {
-                                                            return value.toString();
-                                                        }
+        <ContentContainer>
+            <div className="fixed-grid has-1-cols is-fullwidth">
+                <div className="grid">
+                    <div className="cell chart has-back-button" style={{ display: "flex", justifyContent: "center" }}>
+                        <Line
+                            width={"325%"}
+                            data={{
+                                labels:
+                                    chartData !== null
+                                        ? Array.from({ length: lengthRSSI(chartData) }, (_, x) => x).map((value: number): string => `RSSI ${value + 1}`)
+                                        : ["Loading..."],
+                                datasets:
+                                    chartData != null
+                                        ? chartData.frequency
+                                              .map((frequencyModel: FrequencyDetailedModel, frequencyIndex: number) => {
+                                                  return {
+                                                      label: `${frequencyModel.frequency}Hz (${averageRSSI(frequencyModel)}dBm)`,
+                                                      data: frequencyModel.rssi.map((rssiModel: RSSIModel): number => rssiModel.rssi),
+                                                      fill: false,
+                                                      borderColor: getFrequencyColor(frequencyIndex),
+                                                      tension: 0.1,
+                                                      order: frequencyIndex + 1,
+                                                  };
+                                              })
+                                              .reverse()
+                                        : [{ label: "Loading...", data: [0], fill: false, tension: 0.1 }],
+                            }}
+                            options={{
+                                responsive: true,
+                                scales: {
+                                    y: {
+                                        type: "linear",
+                                        suggestedMin: minRSSIValue !== null ? minRSSIValue - 5 : -30,
+                                        suggestedMax: maxRSSIValue !== null ? maxRSSIValue + 5 : -50,
+                                        ticks: {
+                                            callback: (value: string | number): string => {
+                                                if (Number(value) % 5 === 0) {
+                                                    return value.toString();
+                                                }
 
-                                                        return "";
-                                                    },
-                                                },
+                                                return "";
                                             },
                                         },
-                                    }}
-                                ></Line>
-                            </div>
-
-                            <ContentTableBack link={"/dashboard/tag"} />
-                        </div>
+                                    },
+                                },
+                            }}
+                        ></Line>
                     </div>
+
+                    <ContentTableBack link={"/dashboard/tag"} />
                 </div>
             </div>
-        </div>
+        </ContentContainer>
     );
 }

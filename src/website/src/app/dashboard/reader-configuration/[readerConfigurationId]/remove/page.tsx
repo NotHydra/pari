@@ -9,6 +9,7 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { ReaderConfigurationModel } from "@/common/interface/reader-configuration.interface";
 
+import ContentContainer from "@/components/content/container.component";
 import ContentFormButtonContainer from "@/components/content/form/button/container.component";
 import ContentFormButton from "@/components/content/form/button/index.component";
 import ContentFormButtonBack from "@/components/content/form/button/back.component";
@@ -132,64 +133,60 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
     };
 
     return (
-        <div className="card has-background-white">
-            <div className="card-content">
-                <div className="content">
-                    <form onSubmit={handleRemove}>
-                        <div className="field" title="The name of the reader configuration">
-                            <label className="label" htmlFor="name">
-                                Name
-                            </label>
+        <ContentContainer>
+            <form onSubmit={handleRemove}>
+                <div className="field" title="The name of the reader configuration">
+                    <label className="label" htmlFor="name">
+                        Name
+                    </label>
 
-                            <div className="control">
-                                <input className="input" type="text" name="name" value={name} placeholder="Insert name here" disabled />
-                            </div>
-                        </div>
-
-                        <div className="field" title="The amount of RSSI scan for each frequency">
-                            <label className="label" htmlFor="rssiScanCount">
-                                RSSI Scan Count
-                            </label>
-
-                            <div className="control">
-                                <input
-                                    className="input"
-                                    type="number"
-                                    name="rssiScanCount"
-                                    value={rssiScanCount === 0 ? "" : rssiScanCount}
-                                    min="0"
-                                    placeholder="Insert RSSI scan count here"
-                                    disabled
-                                />
-                            </div>
-                        </div>
-
-                        <div className="field" title="The amount of delay after each RSSI scan">
-                            <label className="label" htmlFor="rssiScanInterval">
-                                RSSI Scan Interval {"(ms)"}
-                            </label>
-
-                            <div className="control">
-                                <input
-                                    className="input"
-                                    type="number"
-                                    name="rssiScanInterval"
-                                    value={rssiScanInterval == 0 ? "" : rssiScanInterval}
-                                    min="0"
-                                    placeholder="Insert RSSI scan interval here"
-                                    disabled
-                                />
-                            </div>
-                        </div>
-
-                        <ContentFormButtonContainer>
-                            <ContentFormButton type="remove" />
-
-                            <ContentFormButtonBack link="/dashboard/reader-configuration" />
-                        </ContentFormButtonContainer>
-                    </form>
+                    <div className="control">
+                        <input className="input" type="text" name="name" value={name} placeholder="Insert name here" disabled />
+                    </div>
                 </div>
-            </div>
-        </div>
+
+                <div className="field" title="The amount of RSSI scan for each frequency">
+                    <label className="label" htmlFor="rssiScanCount">
+                        RSSI Scan Count
+                    </label>
+
+                    <div className="control">
+                        <input
+                            className="input"
+                            type="number"
+                            name="rssiScanCount"
+                            value={rssiScanCount === 0 ? "" : rssiScanCount}
+                            min="0"
+                            placeholder="Insert RSSI scan count here"
+                            disabled
+                        />
+                    </div>
+                </div>
+
+                <div className="field" title="The amount of delay after each RSSI scan">
+                    <label className="label" htmlFor="rssiScanInterval">
+                        RSSI Scan Interval {"(ms)"}
+                    </label>
+
+                    <div className="control">
+                        <input
+                            className="input"
+                            type="number"
+                            name="rssiScanInterval"
+                            value={rssiScanInterval == 0 ? "" : rssiScanInterval}
+                            min="0"
+                            placeholder="Insert RSSI scan interval here"
+                            disabled
+                        />
+                    </div>
+                </div>
+
+                <ContentFormButtonContainer>
+                    <ContentFormButton type="remove" />
+
+                    <ContentFormButtonBack link="/dashboard/reader-configuration" />
+                </ContentFormButtonContainer>
+            </form>
+        </ContentContainer>
     );
 }

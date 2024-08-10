@@ -12,6 +12,7 @@ import { FrequencyConfigurationModel } from "@/common/interface/frequency-config
 import ContentFormButtonContainer from "@/components/content/form/button/container.component";
 import ContentFormButton from "@/components/content/form/button/index.component";
 import ContentFormButtonBack from "@/components/content/form/button/back.component";
+import ContentContainer from "@/components/content/container.component";
 
 export default function FrequencyConfigurationChangePage(): JSX.Element {
     const router: AppRouterInstance = useRouter();
@@ -133,37 +134,33 @@ export default function FrequencyConfigurationChangePage(): JSX.Element {
     };
 
     return (
-        <div className="card has-background-white">
-            <div className="card-content">
-                <div className="content">
-                    <form onSubmit={handleChange}>
-                        <div className="field" title="The name of the reader configuration">
-                            <label className="label" htmlFor="frequency">
-                                Frequency (Hz)
-                            </label>
+        <ContentContainer>
+            <form onSubmit={handleChange}>
+                <div className="field" title="The name of the reader configuration">
+                    <label className="label" htmlFor="frequency">
+                        Frequency (Hz)
+                    </label>
 
-                            <div className="control">
-                                <input
-                                    className="input"
-                                    type="number"
-                                    step="0.01"
-                                    name="frequency"
-                                    value={frequency == 0 ? "" : frequency}
-                                    min="0"
-                                    placeholder="Insert frequency here"
-                                    onChange={(e: ChangeEvent<HTMLInputElement>): void => setFrequency(Number(e.target.value))}
-                                />
-                            </div>
-                        </div>
-
-                        <ContentFormButtonContainer>
-                            <ContentFormButton type="change" />
-                            
-                            <ContentFormButtonBack link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`} />
-                        </ContentFormButtonContainer>
-                    </form>
+                    <div className="control">
+                        <input
+                            className="input"
+                            type="number"
+                            step="0.01"
+                            name="frequency"
+                            value={frequency == 0 ? "" : frequency}
+                            min="0"
+                            placeholder="Insert frequency here"
+                            onChange={(e: ChangeEvent<HTMLInputElement>): void => setFrequency(Number(e.target.value))}
+                        />
+                    </div>
                 </div>
-            </div>
-        </div>
+
+                <ContentFormButtonContainer>
+                    <ContentFormButton type="change" />
+
+                    <ContentFormButtonBack link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`} />
+                </ContentFormButtonContainer>
+            </form>
+        </ContentContainer>
     );
 }
