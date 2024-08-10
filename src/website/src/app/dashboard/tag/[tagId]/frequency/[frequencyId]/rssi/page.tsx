@@ -44,7 +44,7 @@ export default function RSSIPage(): JSX.Element {
                     <ContentTableBarSort tableData={tableData} setTableData={setTableData} />
                 </ContentTableBarContainer>
 
-                <ContentTable>
+                <ContentTable hasBackButton={true}>
                     <thead>
                         <tr>
                             <th>No.</th>
