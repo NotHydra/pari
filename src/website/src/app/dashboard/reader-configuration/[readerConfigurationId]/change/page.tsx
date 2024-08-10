@@ -199,9 +199,11 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
                             </div>
                         </div>
 
-                        <ContentFormButtonContainer
-                            buttons={[<ContentFormButton type="change" />, <ContentFormButtonBack link="/dashboard/reader-configuration" />]}
-                        />
+                        <ContentFormButtonContainer>
+                            <ContentFormButton type="change" />
+
+                            <ContentFormButtonBack link="/dashboard/reader-configuration" />
+                        </ContentFormButtonContainer>
                     </form>
                 </div>
             </div>

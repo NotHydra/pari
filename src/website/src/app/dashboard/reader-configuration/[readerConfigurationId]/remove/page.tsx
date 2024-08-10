@@ -182,9 +182,11 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
                             </div>
                         </div>
 
-                        <ContentFormButtonContainer
-                            buttons={[<ContentFormButton type="remove" />, <ContentFormButtonBack link="/dashboard/reader-configuration" />]}
-                        />
+                        <ContentFormButtonContainer>
+                            <ContentFormButton type="remove" />
+
+                            <ContentFormButtonBack link="/dashboard/reader-configuration" />
+                        </ContentFormButtonContainer>
                     </form>
                 </div>
             </div>

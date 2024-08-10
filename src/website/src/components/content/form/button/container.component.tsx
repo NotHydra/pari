@@ -1,9 +1,3 @@
-export default function ContentFormButtonContainer({ buttons }: { buttons: JSX.Element[] }): JSX.Element {
-    return (
-        <div className="buttons">
-            {buttons.map((button: JSX.Element) => {
-                return button;
-            })}
-        </div>
-    );
+export default function ContentFormButtonContainer({ children }: { children: React.ReactNode }): JSX.Element {
+    return <div className="buttons">{children}</div>;
 }

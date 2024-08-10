@@ -141,9 +141,11 @@ export default function ReaderConfigurationAddPage(): JSX.Element {
                             </div>
                         </div>
 
-                        <ContentFormButtonContainer
-                            buttons={[<ContentFormButton type="add" />, <ContentFormButtonBack link="/dashboard/reader-configuration" />]}
-                        />
+                        <ContentFormButtonContainer>
+                            <ContentFormButton type="add" />
+
+                            <ContentFormButtonBack link="/dashboard/reader-configuration" />
+                        </ContentFormButtonContainer>
                     </form>
                 </div>
             </div>

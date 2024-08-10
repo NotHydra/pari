@@ -100,12 +100,11 @@ export default function FrequencyConfigurationAddPage(): JSX.Element {
                             </div>
                         </div>
 
-                        <ContentFormButtonContainer
-                            buttons={[
-                                <ContentFormButton type="add" />,
-                                <ContentFormButtonBack link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`} />,
-                            ]}
-                        />
+                        <ContentFormButtonContainer>
+                            <ContentFormButton type="add" />
+
+                            <ContentFormButtonBack link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`} />
+                        </ContentFormButtonContainer>
                     </form>
                 </div>
             </div>
