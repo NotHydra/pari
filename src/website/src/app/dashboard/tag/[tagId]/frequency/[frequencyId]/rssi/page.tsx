@@ -8,6 +8,7 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { RSSIModel } from "@/common/interface/rssi.interface";
 
 import ContentContainer from "@/components/content/container.component";
+import ContentTableContainer from "@/components/content/table/container.component";
 import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableBack from "@/components/content/table/back.component";
 
@@ -36,37 +37,35 @@ export default function RSSIPage(): JSX.Element {
 
     return (
         <ContentContainer>
-            <div className="fixed-grid has-1-cols is-fullwidth">
-                <div className="grid">
-                    <ContentTableSort tableData={tableData} setTableData={setTableData} />
+            <ContentTableContainer>
+                <ContentTableSort tableData={tableData} setTableData={setTableData} />
 
-                    <div className="cell table-container has-back-button line has-background-light">
-                        <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
+                <div className="cell table-container has-back-button line has-background-light">
+                    <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
 
-                                    <th>
-                                        <abbr title="The value of the frequency configuration">RSSI (dBm)</abbr>
-                                    </th>
+                                <th>
+                                    <abbr title="The value of the frequency configuration">RSSI (dBm)</abbr>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {tableData.map((data: RSSIModel, index: number) => (
+                                <tr key={index}>
+                                    <td className="no">{index + 1}.</td>
+
+                                    <td>{data.rssi}</td>
                                 </tr>
-                            </thead>
-
-                            <tbody>
-                                {tableData.map((data: RSSIModel, index: number) => (
-                                    <tr key={index}>
-                                        <td className="no">{index + 1}.</td>
-
-                                        <td>{data.rssi}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <ContentTableBack link={`/dashboard/tag/${params.tagId}/frequency`} />
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
-            </div>
+
+                <ContentTableBack link={`/dashboard/tag/${params.tagId}/frequency`} />
+            </ContentTableContainer>
         </ContentContainer>
     );
 }

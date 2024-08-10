@@ -8,6 +8,7 @@ import { ResponseFormatInterface } from "@/common/interface/response-format.inte
 import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration.interface";
 
 import ContentContainer from "@/components/content/container.component";
+import ContentTableContainer from "@/components/content/table/container.component";
 import ContentTableSort from "@/components/content/table/sort.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
@@ -44,57 +45,55 @@ export default function FrequencyConfigurationPage(): JSX.Element {
 
     return (
         <ContentContainer>
-            <div className="fixed-grid has-1-cols is-fullwidth">
-                <div className="grid">
-                    <ContentTableSort
-                        tableData={tableData}
-                        setTableData={setTableData}
-                        addAction={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add`}
-                    />
+            <ContentTableContainer>
+                <ContentTableSort
+                    tableData={tableData}
+                    setTableData={setTableData}
+                    addAction={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add`}
+                />
 
-                    <div className="cell table-container has-back-button line has-background-light">
-                        <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
+                <div className="cell table-container has-back-button line has-background-light">
+                    <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
 
-                                    <th>
-                                        <abbr title="The value of the frequency configuration">Frequency (Hz)</abbr>
-                                    </th>
+                                <th>
+                                    <abbr title="The value of the frequency configuration">Frequency (Hz)</abbr>
+                                </th>
 
-                                    <ContentTableTimestampTitle />
+                                <ContentTableTimestampTitle />
 
-                                    <ContentTableActionTitle />
+                                <ContentTableActionTitle />
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {tableData.map((data: FrequencyConfigurationModel, index: number) => (
+                                <tr key={index}>
+                                    <td className="no">{index + 1}.</td>
+
+                                    <td>{data.frequency}</td>
+
+                                    <ContentTableTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
+
+                                    <ContentTableActionButtonContainer>
+                                        <ContentTableActionButtonChange
+                                            action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/change`}
+                                        />
+
+                                        <ContentTableActionButtonRemove
+                                            action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/remove`}
+                                        />
+                                    </ContentTableActionButtonContainer>
                                 </tr>
-                            </thead>
-
-                            <tbody>
-                                {tableData.map((data: FrequencyConfigurationModel, index: number) => (
-                                    <tr key={index}>
-                                        <td className="no">{index + 1}.</td>
-
-                                        <td>{data.frequency}</td>
-
-                                        <ContentTableTimestampValue createdAt={data.createdAt} updatedAt={data.updatedAt} />
-
-                                        <ContentTableActionButtonContainer>
-                                            <ContentTableActionButtonChange
-                                                action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/change`}
-                                            />
-
-                                            <ContentTableActionButtonRemove
-                                                action={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/${data.id}/remove`}
-                                            />
-                                        </ContentTableActionButtonContainer>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <ContentTableBack link={"/dashboard/reader-configuration"} />
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
-            </div>
+
+                <ContentTableBack link={"/dashboard/reader-configuration"} />
+            </ContentTableContainer>
         </ContentContainer>
     );
 }
