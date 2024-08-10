@@ -11,6 +11,7 @@ import ContentContainer from "@/components/content/container.component";
 import ContentTableContainer from "@/components/content/table/container.component";
 import ContentTableBarContainer from "@/components/content/table/bar/container.component";
 import ContentTableBarSort from "@/components/content/table/bar/sort.component";
+import ContentTable from "@/components/content/table/index.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
 import ContentTableActionButtonContainer from "@/components/content/table/action/button/container.component";
 import ContentTableActionButton from "@/components/content/table/action/button/index.component";
@@ -46,52 +47,50 @@ export default function FrequencyPage(): JSX.Element {
                     <ContentTableBarSort tableData={tableData} setTableData={setTableData} />
                 </ContentTableBarContainer>
 
-                <div className="cell table-container has-back-button line has-background-light">
-                    <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
+                <ContentTable>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
 
-                                <th>
-                                    <abbr title="The value of the frequency">Frequency (Hz)</abbr>
-                                </th>
+                            <th>
+                                <abbr title="The value of the frequency">Frequency (Hz)</abbr>
+                            </th>
 
-                                <th>
-                                    <abbr title="The amount of RSSI scan done ">RSSI Count</abbr>
-                                </th>
+                            <th>
+                                <abbr title="The amount of RSSI scan done ">RSSI Count</abbr>
+                            </th>
 
-                                <th>
-                                    <abbr title="The average RSSI obtained">Average RSSI (dBm)</abbr>
-                                </th>
+                            <th>
+                                <abbr title="The average RSSI obtained">Average RSSI (dBm)</abbr>
+                            </th>
 
-                                <ContentTableActionTitle />
+                            <ContentTableActionTitle />
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {tableData.map((data: FrequencyTableModel, index: number) => (
+                            <tr key={index}>
+                                <td className="no">{index + 1}.</td>
+
+                                <td>{data.frequency}</td>
+
+                                <td>{data.rssiCount}</td>
+
+                                <td>{data.averageRSSI}</td>
+
+                                <ContentTableActionButtonContainer>
+                                    <ContentTableActionButton
+                                        title="RSSI"
+                                        icon="wifi"
+                                        color="info"
+                                        action={`/dashboard/tag/${params.tagId}/frequency/${data.id}/rssi`}
+                                    />
+                                </ContentTableActionButtonContainer>
                             </tr>
-                        </thead>
-
-                        <tbody>
-                            {tableData.map((data: FrequencyTableModel, index: number) => (
-                                <tr key={index}>
-                                    <td className="no">{index + 1}.</td>
-
-                                    <td>{data.frequency}</td>
-
-                                    <td>{data.rssiCount}</td>
-
-                                    <td>{data.averageRSSI}</td>
-
-                                    <ContentTableActionButtonContainer>
-                                        <ContentTableActionButton
-                                            title="RSSI"
-                                            icon="wifi"
-                                            color="info"
-                                            action={`/dashboard/tag/${params.tagId}/frequency/${data.id}/rssi`}
-                                        />
-                                    </ContentTableActionButtonContainer>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                        ))}
+                    </tbody>
+                </ContentTable>
 
                 <ContentTableBack link={"/dashboard/tag"} />
             </ContentTableContainer>

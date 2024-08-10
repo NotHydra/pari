@@ -11,6 +11,7 @@ import ContentContainer from "@/components/content/container.component";
 import ContentTableContainer from "@/components/content/table/container.component";
 import ContentTableBarContainer from "@/components/content/table/bar/container.component";
 import ContentTableBarSort from "@/components/content/table/bar/sort.component";
+import ContentTable from "@/components/content/table/index.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
 import ContentTableActionTitle from "@/components/content/table/action/title.component";
@@ -103,71 +104,64 @@ export default function TagPage(): JSX.Element {
                     <ContentTableBarSort tableData={tableData} setTableData={setTableData} />
                 </ContentTableBarContainer>
 
-                <div className="cell table-container line has-background-light">
-                    <table className="table has-background-white has-text-dark is-fullwidth is-bordered is-striped is-narrow is-hoverable">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
+                <ContentTable>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
 
-                                <th>
-                                    <abbr title="The byte id of the tag">Tag</abbr>
-                                </th>
+                            <th>
+                                <abbr title="The byte id of the tag">Tag</abbr>
+                            </th>
 
-                                <th>
-                                    <abbr title="The name of the reader configuration used">Reader Configuration Name</abbr>
-                                </th>
+                            <th>
+                                <abbr title="The name of the reader configuration used">Reader Configuration Name</abbr>
+                            </th>
 
-                                <th>
-                                    <abbr title="The amount of RSSI scan done ">RSSI Count</abbr>
-                                </th>
+                            <th>
+                                <abbr title="The amount of RSSI scan done ">RSSI Count</abbr>
+                            </th>
 
-                                <th>
-                                    <abbr title="The average RSSI of each frequency obtained">Average RSSI (dBm)</abbr>
-                                </th>
+                            <th>
+                                <abbr title="The average RSSI of each frequency obtained">Average RSSI (dBm)</abbr>
+                            </th>
 
-                                <ContentTableTimestampTitle updatedAt={false} />
+                            <ContentTableTimestampTitle updatedAt={false} />
 
-                                <ContentTableActionTitle />
+                            <ContentTableActionTitle />
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {tableData.map((data: TagTableModel, index: number) => (
+                            <tr key={index}>
+                                <td className="no">{index + 1}.</td>
+
+                                <td>{data.tag}</td>
+
+                                <td>{data.readerConfigurationName}</td>
+
+                                <td>{data.rssiCount}</td>
+
+                                <td>{data.averageRSSI}</td>
+
+                                <ContentTableTimestampValue createdAt={data.createdAt} />
+
+                                <ContentTableActionButtonContainer>
+                                    <ContentTableActionButton
+                                        title="Line Chart"
+                                        icon="chart-line"
+                                        color="info"
+                                        action={`/dashboard/tag/${data.id}/line-chart`}
+                                    />
+
+                                    <ContentTableActionButton title="Frequency" icon="sliders" color="info" action={`/dashboard/tag/${data.id}/frequency`} />
+
+                                    <ContentTableActionButtonRemove action={() => handleRemove(data.id)} />
+                                </ContentTableActionButtonContainer>
                             </tr>
-                        </thead>
-
-                        <tbody>
-                            {tableData.map((data: TagTableModel, index: number) => (
-                                <tr key={index}>
-                                    <td className="no">{index + 1}.</td>
-
-                                    <td>{data.tag}</td>
-
-                                    <td>{data.readerConfigurationName}</td>
-
-                                    <td>{data.rssiCount}</td>
-
-                                    <td>{data.averageRSSI}</td>
-
-                                    <ContentTableTimestampValue createdAt={data.createdAt} />
-
-                                    <ContentTableActionButtonContainer>
-                                        <ContentTableActionButton
-                                            title="Line Chart"
-                                            icon="chart-line"
-                                            color="info"
-                                            action={`/dashboard/tag/${data.id}/line-chart`}
-                                        />
-
-                                        <ContentTableActionButton
-                                            title="Frequency"
-                                            icon="sliders"
-                                            color="info"
-                                            action={`/dashboard/tag/${data.id}/frequency`}
-                                        />
-
-                                        <ContentTableActionButtonRemove action={() => handleRemove(data.id)} />
-                                    </ContentTableActionButtonContainer>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                        ))}
+                    </tbody>
+                </ContentTable>
             </ContentTableContainer>
         </ContentContainer>
     );
