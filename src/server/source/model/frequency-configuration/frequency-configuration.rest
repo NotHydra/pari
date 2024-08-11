@@ -5,7 +5,19 @@ GET {{url}}
 
 ###
 
-GET {{url}}?page=1&count=5
+GET {{url}}?count=5
+
+###
+
+GET {{url}}?count=5&page=1
+
+###
+
+GET {{url}}?sortBy=id&sortOrder=asc
+
+###
+
+GET {{url}}/id/1
 
 ###
 
@@ -17,9 +29,6 @@ GET {{url}}/reader-configuration-id/1?page=1&count=5
 
 ###
 
-GET {{url}}/id/1
-
-###
 
 POST {{url}}
 Content-Type: application/json

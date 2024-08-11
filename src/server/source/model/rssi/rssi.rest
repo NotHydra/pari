@@ -5,7 +5,15 @@ GET {{url}}
 
 ###
 
-GET {{url}}?page=1&count=5
+GET {{url}}?count=5
+
+###
+
+GET {{url}}?count=5&page=1
+
+###
+
+GET {{url}}?sortBy=id&sortOrder=asc
 
 ###
 

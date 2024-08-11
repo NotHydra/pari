@@ -5,6 +5,8 @@ import { PrismaModelInterface } from "./../common/interface/prisma-model.interfa
 
 import { LoggerService } from "./../provider/logger.service";
 
+import { queryOptions } from "./../utility/query-options.utility";
+
 export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
     protected readonly loggerService: LoggerService;
 
@@ -15,25 +17,17 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
         this.loggerService = new LoggerService(serviceName);
     }
 
-    public async find(page: number = 0, count: number = 0): Promise<ModelType[]> {
+    public async find(
+        count: number = 0,
+        page: number = 0,
+        sortBy: string = "id",
+        sortOrder: string = "asc"
+    ): Promise<ModelType[]> {
         try {
             this.loggerService.log("Find");
-            this.loggerService.debug(`Find Argument: ${JSON.stringify({ page, count })}`);
+            this.loggerService.debug(`Find Argument: ${JSON.stringify({ count, page, sortBy, sortOrder })}`);
 
-            const models: ModelType[] =
-                page !== 0 && count !== 0
-                    ? await this.prismaModel.findMany({
-                          skip: (page - 1) * count,
-                          take: count,
-                          orderBy: {
-                              id: "asc",
-                          },
-                      })
-                    : await this.prismaModel.findMany({
-                          orderBy: {
-                              id: "asc",
-                          },
-                      });
+            const models: ModelType[] = await this.prismaModel.findMany(queryOptions(count, page, sortBy, sortOrder));
 
             this.loggerService.debug(`Find Result: ${JSON.stringify(models)}`);
 

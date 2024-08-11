@@ -4,6 +4,8 @@ import { PrismaDetailedModelInterface } from "./../common/interface/prisma-model
 
 import { BaseService } from "./base.service";
 
+import { queryOptions } from "./../utility/query-options.utility";
+
 interface DetailedInterface {
     [key: string]: { include: DetailedInterface } | boolean;
 }
@@ -26,27 +28,20 @@ export class DetailedService<
         this.detailed = detailed;
     }
 
-    public async findDetailed(page: number = 0, count: number = 0): Promise<ModelDetailedType[]> {
+    public async findDetailed(
+        page: number = 0,
+        count: number = 0,
+        sortBy: string = "id",
+        sortOrder: string = "asc"
+    ): Promise<ModelDetailedType[]> {
         try {
             this.loggerService.log("Find Detailed");
-            this.loggerService.debug(`Find Detailed Argument: ${JSON.stringify({ page, count })}`);
+            this.loggerService.debug(`Find Detailed Argument: ${JSON.stringify({ page, count, sortBy, sortOrder })}`);
 
-            const models: ModelDetailedType[] =
-                page !== 0 && count !== 0
-                    ? await this.prismaModel.findMany({
-                          skip: (page - 1) * count,
-                          take: count,
-                          orderBy: {
-                              id: "asc",
-                          },
-                          include: this.detailed,
-                      })
-                    : await this.prismaModel.findMany({
-                          orderBy: {
-                              id: "asc",
-                          },
-                          include: this.detailed,
-                      });
+            const models: ModelDetailedType[] = await this.prismaModel.findMany({
+                ...queryOptions(count, page, sortBy, sortOrder),
+                ...{ include: this.detailed },
+            });
 
             this.loggerService.debug(`Find Detailed Result: ${JSON.stringify(models)}`);
 

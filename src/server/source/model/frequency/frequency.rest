@@ -5,7 +5,15 @@ GET {{url}}
 
 ###
 
-GET {{url}}?page=1&count=5
+GET {{url}}?count=5
+
+###
+
+GET {{url}}?count=5&page=1
+
+###
+
+GET {{url}}?sortBy=id&sortOrder=asc
 
 ###
 
@@ -17,7 +25,15 @@ GET {{url}}/detailed
 
 ###
 
-GET {{url}}/detailed?page=1&count=5
+GET {{url}}/detailed?count=5
+
+###
+
+GET {{url}}/detailed?count=5&page=1
+
+###
+
+GET {{url}}/detailed?sortBy=id&sortOrder=asc
 
 ###
 
