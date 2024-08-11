@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException, NotFoundException } from "@ne
 
 import { PrismaDetailedModelInterface } from "./../../common/interface/prisma-model.interface";
 
-import { average } from "./../../utility/average";
+import { average } from "../../utility/average.utility";
 
 import { PrismaService } from "./../../provider/prisma.service";
 

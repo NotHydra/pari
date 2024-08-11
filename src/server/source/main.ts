@@ -5,7 +5,7 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ConfigService } from "./config/config.service";
 
-import { capitalize } from "./utility/capitalize";
+import { capitalize } from "./utility/capitalize.utility";
 
 async function bootstrap(): Promise<void> {
     const app: INestApplication<AppModule> = await NestFactory.create<INestApplication<AppModule>>(AppModule);
