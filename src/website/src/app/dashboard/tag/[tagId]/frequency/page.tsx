@@ -45,7 +45,15 @@ export default function FrequencyPage(): JSX.Element {
         <ContentContainer>
             <ContentTableContainer>
                 <ContentTableBarContainer>
-                    <ContentTableBarSort<FrequencyTableModel> tableURL={tableURL} setTableData={setTableData} />
+                    <ContentTableBarSort<FrequencyTableModel>
+                        tableURL={tableURL}
+                        setTableData={setTableData}
+                        sortByOption={{
+                            frequency: "Frequency (Hz)",
+                            rssi_count: "RSSI Count",
+                            average_rssi: "Average RSSI (dBm)",
+                        }}
+                    />
                 </ContentTableBarContainer>
 
                 <ContentTable hasBackButton={true}>

@@ -51,7 +51,15 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                 <ContentTableBarContainer>
                     <ContentTableBarAdd link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add`} />
 
-                    <ContentTableBarSort<FrequencyConfigurationTableModel> tableURL={tableURL} setTableData={setTableData} />
+                    <ContentTableBarSort<FrequencyConfigurationTableModel>
+                        tableURL={tableURL}
+                        setTableData={setTableData}
+                        sortByOption={{
+                            frequency: "Frequency (Hz)",
+                            created_at: "Created At",
+                            updated_at: "Updated At",
+                        }}
+                    />
                 </ContentTableBarContainer>
 
                 <ContentTable hasBackButton={true}>

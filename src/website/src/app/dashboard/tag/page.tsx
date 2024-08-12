@@ -102,7 +102,17 @@ export default function TagPage(): JSX.Element {
         <ContentContainer>
             <ContentTableContainer>
                 <ContentTableBarContainer>
-                    <ContentTableBarSort<TagTableModel> tableURL={tableURL} setTableData={setTableData} />
+                    <ContentTableBarSort<TagTableModel>
+                        tableURL={tableURL}
+                        setTableData={setTableData}
+                        sortByOption={{
+                            tag: "Tag",
+                            reader_configuration_name: "Reader Configuration Name",
+                            rssi_count: "RSSI Count",
+                            average_rssi: "Average RSSI (dBm)",
+                            created_at: "Created At",
+                        }}
+                    />
                 </ContentTableBarContainer>
 
                 <ContentTable>

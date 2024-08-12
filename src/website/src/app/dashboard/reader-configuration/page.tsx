@@ -105,7 +105,18 @@ export default function ReaderConfigurationPage(): JSX.Element {
                 <ContentTableBarContainer>
                     <ContentTableBarAdd link="/dashboard/reader-configuration/add" />
 
-                    <ContentTableBarSort<ReaderConfigurationTableModel> tableURL={tableURL} setTableData={setTableData} />
+                    <ContentTableBarSort<ReaderConfigurationTableModel>
+                        tableURL={tableURL}
+                        setTableData={setTableData}
+                        sortByOption={{
+                            name: "Name",
+                            frequency_configuration_count: "Frequency Configuration Count",
+                            rssi_scan_count: "RSSI Scan Count",
+                            rssi_scan_interval: "RSSI Scan Interval (ms)",
+                            created_at: "Created At",
+                            updated_at: "Updated At",
+                        }}
+                    />
                 </ContentTableBarContainer>
 
                 <ContentTable>

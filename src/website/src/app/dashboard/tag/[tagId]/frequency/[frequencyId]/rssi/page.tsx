@@ -42,7 +42,13 @@ export default function RSSIPage(): JSX.Element {
         <ContentContainer>
             <ContentTableContainer>
                 <ContentTableBarContainer>
-                    <ContentTableBarSort<RSSITableModel> tableURL={tableURL} setTableData={setTableData} />
+                    <ContentTableBarSort<RSSITableModel>
+                        tableURL={tableURL}
+                        setTableData={setTableData}
+                        sortByOption={{
+                            rssi: "RSSI (dBm)",
+                        }}
+                    />
                 </ContentTableBarContainer>
 
                 <ContentTable hasBackButton={true}>
