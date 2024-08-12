@@ -89,10 +89,10 @@ export class TagService
                 SELECT
                     tag.id AS "id",
                     tag.tag AS "tag",
-                    tag.created_at AS "created_at",
                     reader_configuration.name AS "reader_configuration_name",
                     COUNT(rssi.rssi)::INT AS "rssi_count",
-                    ROUND(AVG(rssi.rssi), 4)::double precision AS "average_rssi"
+                    ROUND(AVG(rssi.rssi), 4)::double precision AS "average_rssi",
+                    tag.created_at AS "created_at"
                     
                 FROM
                     tag

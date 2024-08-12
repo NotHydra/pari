@@ -53,19 +53,19 @@ export class ReaderConfigurationUpdateDTO {
 export class ReaderConfigurationTableRawModel {
     id: number;
     name: string;
+    frequency_configuration_count: number;
     rssi_scan_count: number;
     rssi_scan_interval: number;
     created_at: Date;
     updated_at: Date;
-    frequency_configuration_count: number;
 }
 
 export class ReaderConfigurationTableModel {
     id: number;
     name: string;
+    frequencyConfigurationCount: number;
     rssiScanCount: number;
     rssiScanInterval: number;
     createdAt: Date;
     updatedAt: Date;
-    frequencyConfigurationCount: number;
 }

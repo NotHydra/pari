@@ -56,13 +56,13 @@ export class ReaderConfigurationService
             const models: ReaderConfigurationTableModel[] = (
                 (await this.prismaService.$queryRaw`
                 SELECT
-                    reader_configuration.id AS "id", 
-                    reader_configuration.name AS "name", 
-                    reader_configuration.rssi_scan_count AS "rssi_scan_count", 
-                    reader_configuration.rssi_scan_interval AS "rssi_scan_interval", 
-                    reader_configuration.created_at AS "created_at", 
-                    reader_configuration.updated_at AS "updated_at", 
-                    COUNT(frequency_configuration)::INT AS "frequency_configuration_count" 
+                    reader_configuration.id AS "id",
+                    reader_configuration.name AS "name",
+                    reader_configuration.rssi_scan_count AS "rssi_scan_count",
+                    reader_configuration.rssi_scan_interval AS "rssi_scan_interval",
+                    COUNT(frequency_configuration)::INT AS "frequency_configuration_count",
+                    reader_configuration.created_at AS "created_at",
+                    reader_configuration.updated_at AS "updated_at"
                     
                 FROM
                     reader_configuration 
