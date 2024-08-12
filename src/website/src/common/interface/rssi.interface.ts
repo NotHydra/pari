@@ -3,3 +3,8 @@ export interface RSSIModel {
     frequencyId: number;
     rssi: number;
 }
+
+export interface RSSITableModel {
+    id: number;
+    rssi: number;
+}

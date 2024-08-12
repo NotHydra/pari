@@ -20,13 +20,14 @@ import ContentTableBack from "@/components/content/table/back.component";
 export default function FrequencyPage(): JSX.Element {
     const params: { tagId: string } = useParams<{ tagId: string }>();
 
+    const tableURL: string = `http://localhost:3001/api/frequency/table/tag-id/${params.tagId}`;
     const [tableData, setTableData] = useState<FrequencyTableModel[]>([]);
 
     useEffect((): void => {
         const fetchData = async (): Promise<void> => {
             try {
                 await axios
-                    .get<ResponseFormatInterface<FrequencyTableModel[]>>(`http://localhost:3001/api/frequency/table/tag-id/${params.tagId}`)
+                    .get<ResponseFormatInterface<FrequencyTableModel[]>>(`${tableURL}?sortOrder=desc`)
                     .then((response: AxiosResponse<ResponseFormatInterface<FrequencyTableModel[]>>): void => {
                         console.log(response.data);
 
@@ -44,7 +45,7 @@ export default function FrequencyPage(): JSX.Element {
         <ContentContainer>
             <ContentTableContainer>
                 <ContentTableBarContainer>
-                    <ContentTableBarSort tableData={tableData} setTableData={setTableData} />
+                    <ContentTableBarSort<FrequencyTableModel> tableURL={tableURL} setTableData={setTableData} />
                 </ContentTableBarContainer>
 
                 <ContentTable hasBackButton={true}>

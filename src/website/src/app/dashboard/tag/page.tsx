@@ -20,13 +20,14 @@ import ContentTableActionButton from "@/components/content/table/action/button/i
 import ContentTableActionButtonRemove from "@/components/content/table/action/button/remove.component";
 
 export default function TagPage(): JSX.Element {
+    const tableURL: string = "http://localhost:3001/api/tag/table";
     const [tableData, setTableData] = useState<TagTableModel[]>([]);
 
     useEffect((): void => {
         const fetchData = async (): Promise<void> => {
             try {
                 await axios
-                    .get<ResponseFormatInterface<TagTableModel[]>>("http://localhost:3001/api/tag/table")
+                    .get<ResponseFormatInterface<TagTableModel[]>>(`${tableURL}?sortOrder=desc`)
                     .then((response: AxiosResponse<ResponseFormatInterface<TagTableModel[]>>): void => {
                         console.log(response.data);
 
@@ -101,7 +102,7 @@ export default function TagPage(): JSX.Element {
         <ContentContainer>
             <ContentTableContainer>
                 <ContentTableBarContainer>
-                    <ContentTableBarSort tableData={tableData} setTableData={setTableData} />
+                    <ContentTableBarSort<TagTableModel> tableURL={tableURL} setTableData={setTableData} />
                 </ContentTableBarContainer>
 
                 <ContentTable>

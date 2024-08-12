@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { RSSIModel } from "@/common/interface/rssi.interface";
+import { RSSITableModel } from "@/common/interface/rssi.interface";
 
 import ContentContainer from "@/components/content/container.component";
 import ContentTableContainer from "@/components/content/table/container.component";
@@ -17,14 +17,15 @@ import ContentTableBack from "@/components/content/table/back.component";
 export default function RSSIPage(): JSX.Element {
     const params: { tagId: string; frequencyId: string } = useParams<{ tagId: string; frequencyId: string }>();
 
-    const [tableData, setTableData] = useState<RSSIModel[]>([]);
+    const tableURL: string = `http://localhost:3001/api/rssi/table/frequency-id/${params.frequencyId}`;
+    const [tableData, setTableData] = useState<RSSITableModel[]>([]);
 
     useEffect((): void => {
         const fetchData = async (): Promise<void> => {
             try {
                 await axios
-                    .get<ResponseFormatInterface<RSSIModel[]>>(`http://localhost:3001/api/rssi/table/frequency-id/${params.frequencyId}`)
-                    .then((response: AxiosResponse<ResponseFormatInterface<RSSIModel[]>>): void => {
+                    .get<ResponseFormatInterface<RSSITableModel[]>>(`${tableURL}?sortOrder=desc`)
+                    .then((response: AxiosResponse<ResponseFormatInterface<RSSITableModel[]>>): void => {
                         console.log(response.data);
 
                         setTableData(response.data.data);
@@ -41,7 +42,7 @@ export default function RSSIPage(): JSX.Element {
         <ContentContainer>
             <ContentTableContainer>
                 <ContentTableBarContainer>
-                    <ContentTableBarSort tableData={tableData} setTableData={setTableData} />
+                    <ContentTableBarSort<RSSITableModel> tableURL={tableURL} setTableData={setTableData} />
                 </ContentTableBarContainer>
 
                 <ContentTable hasBackButton={true}>
@@ -56,7 +57,7 @@ export default function RSSIPage(): JSX.Element {
                     </thead>
 
                     <tbody>
-                        {tableData.map((data: RSSIModel, index: number) => (
+                        {tableData.map((data: RSSITableModel, index: number) => (
                             <tr key={index}>
                                 <td className="no">{index + 1}.</td>
 

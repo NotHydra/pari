@@ -11,7 +11,10 @@ export interface TagDetailedModel extends TagModel {
     frequency: FrequencyDetailedModel[];
 }
 
-export interface TagTableModel extends TagModel {
+export interface TagTableModel {
+    id: number;
+    tag?: string;
+    createdAt: Date;
     readerConfigurationName: string;
     rssiCount: number;
     averageRSSI: number;

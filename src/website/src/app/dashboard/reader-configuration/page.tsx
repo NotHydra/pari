@@ -23,6 +23,7 @@ import ContentTableActionButtonChange from "@/components/content/table/action/bu
 import ContentTableActionButtonRemove from "@/components/content/table/action/button/remove.component";
 
 export default function ReaderConfigurationPage(): JSX.Element {
+    const tableURL: string = "http://localhost:3001/api/reader-configuration/table";
     const [activeReaderConfiguration, setActiveReaderConfiguration] = useState<ActiveReaderConfigurationModel | null>(null);
     const [tableData, setTableData] = useState<ReaderConfigurationTableModel[]>([]);
 
@@ -38,7 +39,7 @@ export default function ReaderConfigurationPage(): JSX.Element {
                     });
 
                 await axios
-                    .get<ResponseFormatInterface<ReaderConfigurationTableModel[]>>("http://localhost:3001/api/reader-configuration/table")
+                    .get<ResponseFormatInterface<ReaderConfigurationTableModel[]>>(`${tableURL}?sortOrder=desc`)
                     .then((response: AxiosResponse<ResponseFormatInterface<ReaderConfigurationTableModel[]>>): void => {
                         console.log(response.data);
 
@@ -104,7 +105,7 @@ export default function ReaderConfigurationPage(): JSX.Element {
                 <ContentTableBarContainer>
                     <ContentTableBarAdd link="/dashboard/reader-configuration/add" />
 
-                    <ContentTableBarSort tableData={tableData} setTableData={setTableData} />
+                    <ContentTableBarSort<ReaderConfigurationTableModel> tableURL={tableURL} setTableData={setTableData} />
                 </ContentTableBarContainer>
 
                 <ContentTable>

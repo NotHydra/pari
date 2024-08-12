@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
-import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration.interface";
+import { FrequencyConfigurationTableModel } from "@/common/interface/frequency-configuration.interface";
 
 import ContentContainer from "@/components/content/container.component";
 import ContentTableContainer from "@/components/content/table/container.component";
@@ -24,16 +24,15 @@ import ContentTableBack from "@/components/content/table/back.component";
 export default function FrequencyConfigurationPage(): JSX.Element {
     const params: { readerConfigurationId: string } = useParams<{ readerConfigurationId: string }>();
 
-    const [tableData, setTableData] = useState<FrequencyConfigurationModel[]>([]);
+    const tableURL: string = `http://localhost:3001/api/frequency-configuration/table/reader-configuration-id/${params.readerConfigurationId}`;
+    const [tableData, setTableData] = useState<FrequencyConfigurationTableModel[]>([]);
 
     useEffect((): void => {
         const fetchData = async (): Promise<void> => {
             try {
                 await axios
-                    .get<
-                        ResponseFormatInterface<FrequencyConfigurationModel[]>
-                    >(`http://localhost:3001/api/frequency-configuration/reader-configuration-id/${params.readerConfigurationId}`)
-                    .then((response: AxiosResponse<ResponseFormatInterface<FrequencyConfigurationModel[]>>): void => {
+                    .get<ResponseFormatInterface<FrequencyConfigurationTableModel[]>>(`${tableURL}?sortOrder=desc`)
+                    .then((response: AxiosResponse<ResponseFormatInterface<FrequencyConfigurationTableModel[]>>): void => {
                         console.log(response.data);
 
                         setTableData(response.data.data);
@@ -52,7 +51,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                 <ContentTableBarContainer>
                     <ContentTableBarAdd link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add`} />
 
-                    <ContentTableBarSort tableData={tableData} setTableData={setTableData} />
+                    <ContentTableBarSort<FrequencyConfigurationTableModel> tableURL={tableURL} setTableData={setTableData} />
                 </ContentTableBarContainer>
 
                 <ContentTable hasBackButton={true}>
@@ -71,7 +70,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                     </thead>
 
                     <tbody>
-                        {tableData.map((data: FrequencyConfigurationModel, index: number) => (
+                        {tableData.map((data: FrequencyConfigurationTableModel, index: number) => (
                             <tr key={index}>
                                 <td className="no">{index + 1}.</td>
 

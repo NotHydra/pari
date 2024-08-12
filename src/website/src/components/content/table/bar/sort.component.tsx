@@ -1,17 +1,26 @@
+import axios, { AxiosResponse } from "axios";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-export default function ContentTableBarSort<T extends { id: number }>({
-    tableData,
+import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
+
+export default function ContentTableBarSort<TableType>({
+    tableURL,
     setTableData,
 }: {
-    tableData: T[];
-    setTableData: Dispatch<SetStateAction<T[]>>;
+    tableURL: string;
+    setTableData: Dispatch<SetStateAction<TableType[]>>;
 }): JSX.Element {
-    const handleSort = (e: ChangeEvent<HTMLSelectElement>): void => {
-        if (e.target.value === "ascending") {
-            setTableData([...tableData].sort((a: T, b: T) => a.id - b.id));
-        } else if (e.target.value === "descending") {
-            setTableData([...tableData].sort((a: T, b: T) => b.id - a.id));
+    const handleSort = async (e: ChangeEvent<HTMLSelectElement>): Promise<void> => {
+        try {
+            await axios
+                .get<ResponseFormatInterface<TableType[]>>(`${tableURL}?sortOrder=${e.target.value === "asc" ? "asc" : "desc"}`)
+                .then((response: AxiosResponse<ResponseFormatInterface<TableType[]>>): void => {
+                    console.log(response.data);
+
+                    setTableData(response.data.data);
+                });
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -19,14 +28,14 @@ export default function ContentTableBarSort<T extends { id: number }>({
         <div className="column m-0 p-0">
             <div className="control has-icons-left" title="Sort Action">
                 <div className="select is-fullwidth">
-                    <select onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSort(e)}>
+                    <select onChange={(e: ChangeEvent<HTMLSelectElement>): Promise<void> => handleSort(e)}>
                         <option disabled>Sort</option>
 
-                        <option value={"ascending"} selected>
-                            Ascending
-                        </option>
+                        <option value={"asc"}>Ascending</option>
 
-                        <option value={"descending"}>Descending</option>
+                        <option value={"desc"} selected>
+                            Descending
+                        </option>
                     </select>
                 </div>
 

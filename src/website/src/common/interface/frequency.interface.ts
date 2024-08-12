@@ -10,7 +10,9 @@ export interface FrequencyDetailedModel extends FrequencyModel {
     rssi: RSSIModel[];
 }
 
-export interface FrequencyTableModel extends FrequencyModel {
+export interface FrequencyTableModel {
+    id: number;
+    frequency: string;
     rssiCount: number;
     averageRSSI: number;
 }
