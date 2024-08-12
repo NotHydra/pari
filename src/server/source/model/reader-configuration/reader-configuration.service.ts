@@ -1,4 +1,7 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
+
+import { PrismaDetailedModelInterface } from "./../../common/interface/prisma-model.interface";
 
 import { PrismaService } from "./../../provider/prisma.service";
 
@@ -10,11 +13,11 @@ import {
     ReaderConfigurationUpdateDTO,
     ReaderConfigurationDetailedModel,
     ReaderConfigurationTableModel,
+    ReaderConfigurationTableRawModel,
 } from "./reader-configuration";
-import { PrismaDetailedModelInterface } from "source/common/interface/prisma-model.interface";
 
 interface ReaderConfigurationServiceInterface {
-    findTable(): Promise<ReaderConfigurationTableModel[]>;
+    findTable(count: number, page: number, sortBy: string, sortOrder: string): Promise<ReaderConfigurationTableModel[]>;
 }
 
 @Injectable()
@@ -40,19 +43,26 @@ export class ReaderConfigurationService
         );
     }
 
-    public async findTable(): Promise<ReaderConfigurationTableModel[]> {
+    public async findTable(
+        count: number = 0,
+        page: number = 0,
+        sortBy: string = "id",
+        sortOrder: string = "asc"
+    ): Promise<ReaderConfigurationTableModel[]> {
         try {
             this.loggerService.log("Find Table");
+            this.loggerService.debug(`Find Table Argument: ${JSON.stringify({ count, page, sortBy, sortOrder })}`);
 
-            const models: ReaderConfigurationTableModel[] = await this.prismaService.$queryRaw`
+            const models: ReaderConfigurationTableModel[] = (
+                (await this.prismaService.$queryRaw`
                 SELECT
                     reader_configuration.id AS "id", 
                     reader_configuration.name AS "name", 
-                    reader_configuration.rssi_scan_count AS "rssiScanCount", 
-                    reader_configuration.rssi_scan_interval AS "rssiScanInterval", 
-                    reader_configuration.created_at AS "createdAt", 
-                    reader_configuration.updated_at AS "updatedAt", 
-                    COUNT(frequency_configuration)::INT AS "frequencyConfigurationCount" 
+                    reader_configuration.rssi_scan_count AS "rssi_scan_count", 
+                    reader_configuration.rssi_scan_interval AS "rssi_scan_interval", 
+                    reader_configuration.created_at AS "created_at", 
+                    reader_configuration.updated_at AS "updated_at", 
+                    COUNT(frequency_configuration)::INT AS "frequency_configuration_count" 
                     
                 FROM
                     reader_configuration 
@@ -62,8 +72,23 @@ export class ReaderConfigurationService
                     reader_configuration.id
                 
                 ORDER BY
-                    reader_configuration.id ASC
-            `;
+                    ${Prisma.sql([sortBy])} ${Prisma.sql([sortOrder === "desc" ? "desc" : "asc"])}
+
+                ${count !== 0 ? Prisma.sql([`LIMIT ${count}`]) : Prisma.sql([""])}
+
+                ${page !== 0 ? Prisma.sql([`OFFSET ${(page - 1) * count}`]) : Prisma.sql([""])}
+            `) as ReaderConfigurationTableRawModel[]
+            ).map((model: ReaderConfigurationTableRawModel): ReaderConfigurationTableModel => {
+                return {
+                    id: model.id,
+                    name: model.name,
+                    rssiScanCount: model.rssi_scan_count,
+                    rssiScanInterval: model.rssi_scan_interval,
+                    createdAt: model.created_at,
+                    updatedAt: model.updated_at,
+                    frequencyConfigurationCount: model.frequency_configuration_count,
+                };
+            });
 
             this.loggerService.debug(`Find Table Result: ${JSON.stringify(models)}`);
 

@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, Query, UseInterceptors } from "@nestjs/common";
 
 import { Override } from "./../../common/decorator/override.decorator";
 import { formatResponse, ResponseFormatInterceptor } from "./../../common/interceptor/response-format.interceptor";
@@ -16,7 +16,13 @@ import {
 import { FrequencyService } from "./frequency.service";
 
 interface FrequencyControllerInterface {
-    findTable(tagId: number): Promise<ResponseFormatInterface<FrequencyTableModel[] | null>>;
+    findTable(
+        tagId: number,
+        count: string,
+        page: string,
+        sortBy: string,
+        sortOrder: string
+    ): Promise<ResponseFormatInterface<FrequencyTableModel[] | null>>;
 }
 
 @Controller("frequency")
@@ -37,7 +43,11 @@ export class FrequencyController
 
     @Get("table/tag-id/:tagId")
     public async findTable(
-        @Param("tagId", ParseIntPipe) tagId: number
+        @Param("tagId", ParseIntPipe) tagId: number,
+        @Query("count") count: string = "0",
+        @Query("page") page: string = "0",
+        @Query("sortBy") sortBy: string = "id",
+        @Query("sortOrder") sortOrder: string = "asc"
     ): Promise<ResponseFormatInterface<FrequencyTableModel[] | null>> {
         try {
             this.loggerService.log("Find Table");
@@ -46,7 +56,7 @@ export class FrequencyController
                 true,
                 200,
                 "Table Found",
-                await this.modelService.findTable(tagId)
+                await this.modelService.findTable(tagId, parseInt(count), parseInt(page), sortBy, sortOrder)
             );
 
             return response;

@@ -21,11 +21,20 @@ GET {{url}}/id/1
 
 ###
 
-GET {{url}}/reader-configuration-id/1
+GET {{url}}/table/reader-configuration-id/1
 
 ###
 
-GET {{url}}/reader-configuration-id/1?page=1&count=5
+
+GET {{url}}/table/reader-configuration-id/1?count=5
+
+###
+
+GET {{url}}/table/reader-configuration-id/1?count=5&page=1
+
+###
+
+GET {{url}}/table/reader-configuration-id/1?sortBy=id&sortOrder=asc
 
 ###
 

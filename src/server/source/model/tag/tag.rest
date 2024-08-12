@@ -48,6 +48,18 @@ GET {{url}}/table
 
 ###
 
+GET {{url}}/table?count=5
+
+###
+
+GET {{url}}/table?count=5&page=1
+
+###
+
+GET {{url}}/table?sortBy=id&sortOrder=asc
+
+###
+
 POST {{url}}
 
 ###

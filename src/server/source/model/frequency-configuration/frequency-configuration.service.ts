@@ -1,4 +1,5 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
 
 import { PrismaModelInterface } from "./../../common/interface/prisma-model.interface";
 
@@ -10,14 +11,18 @@ import {
     FrequencyConfigurationModel,
     FrequencyConfigurationCreateDTO,
     FrequencyConfigurationUpdateDTO,
+    FrequencyConfigurationTableModel,
+    FrequencyConfigurationTableRawModel,
 } from "./frequency-configuration";
 
 interface FrequencyConfigurationServiceInterface {
-    findReaderConfigurationId(
+    findTable(
         readerConfigurationId: number,
+        count: number,
         page: number,
-        count: number
-    ): Promise<FrequencyConfigurationModel[]>;
+        sortBy: string,
+        sortOrder: string
+    ): Promise<FrequencyConfigurationTableModel[]>;
 }
 
 @Injectable()
@@ -25,42 +30,57 @@ export class FrequencyConfigurationService
     extends BaseService<FrequencyConfigurationModel, FrequencyConfigurationCreateDTO, FrequencyConfigurationUpdateDTO>
     implements FrequencyConfigurationServiceInterface
 {
-    constructor(prismaService: PrismaService) {
+    constructor(private readonly prismaService: PrismaService) {
         super(
             FrequencyConfigurationService.name,
             prismaService.frequencyConfiguration as unknown as PrismaModelInterface<FrequencyConfigurationModel>
         );
     }
 
-    public async findReaderConfigurationId(
+    public async findTable(
         readerConfigurationId: number,
+        count: number = 0,
         page: number = 0,
-        count: number = 0
-    ): Promise<FrequencyConfigurationModel[]> {
+        sortBy: string = "id",
+        sortOrder: string = "asc"
+    ): Promise<FrequencyConfigurationTableModel[]> {
         try {
-            this.loggerService.log("Find Reader Configuration Id");
+            this.loggerService.log("Find Table");
             this.loggerService.debug(
-                `Find Reader Configuration Id Argument: ${JSON.stringify({ readerConfigurationId, page, count })}`
+                `Find Table Argument: ${JSON.stringify({ readerConfigurationId, count, page, sortBy, sortOrder })}`
             );
 
-            const models: FrequencyConfigurationModel[] =
-                page !== 0 && count !== 0
-                    ? await this.prismaModel.findMany({
-                          where: { readerConfigurationId },
-                          skip: (page - 1) * count,
-                          take: count,
-                          orderBy: {
-                              id: "asc",
-                          },
-                      })
-                    : await this.prismaModel.findMany({
-                          where: { readerConfigurationId },
-                          orderBy: {
-                              id: "asc",
-                          },
-                      });
+            const models: FrequencyConfigurationTableModel[] = (
+                (await this.prismaService.$queryRaw`
+                SELECT
+                    frequency_configuration.id AS "id",
+                    frequency_configuration.frequency AS "frequency",
+                    frequency_configuration.created_at AS "created_at",
+                    frequency_configuration.updated_at AS "updated_at"
 
-            this.loggerService.debug(`Find Reader Configuration Id Result: ${JSON.stringify(models)}`);
+                FROM
+                    frequency_configuration
+
+                WHERE
+                    frequency_configuration.reader_configuration_id=${readerConfigurationId}
+
+                ORDER BY
+                    ${Prisma.sql([sortBy])} ${Prisma.sql([sortOrder === "desc" ? "desc" : "asc"])}
+
+                ${count !== 0 ? Prisma.sql([`LIMIT ${count}`]) : Prisma.sql([""])}
+
+                ${page !== 0 ? Prisma.sql([`OFFSET ${(page - 1) * count}`]) : Prisma.sql([""])}
+            `) as FrequencyConfigurationTableRawModel[]
+            ).map((model: FrequencyConfigurationTableRawModel): FrequencyConfigurationTableModel => {
+                return {
+                    id: model.id,
+                    frequency: model.frequency,
+                    createdAt: model.created_at,
+                    updatedAt: model.updated_at,
+                };
+            });
+
+            this.loggerService.debug(`Find Table Result: ${JSON.stringify(models)}`);
 
             return models;
         } catch (error) {

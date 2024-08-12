@@ -1,5 +1,6 @@
 import { Controller, Get, Param, ParseIntPipe, Query, UseInterceptors } from "@nestjs/common";
 
+import { ResponseFormatInterface } from "./../../common/interface/response-format.interface";
 import { formatResponse, ResponseFormatInterceptor } from "./../../common/interceptor/response-format.interceptor";
 
 import { BaseController } from "./../../global/base.controller";
@@ -8,16 +9,18 @@ import {
     FrequencyConfigurationModel,
     FrequencyConfigurationCreateDTO,
     FrequencyConfigurationUpdateDTO,
+    FrequencyConfigurationTableModel,
 } from "./frequency-configuration";
 import { FrequencyConfigurationService } from "./frequency-configuration.service";
-import { ResponseFormatInterface } from "source/common/interface/response-format.interface";
 
 interface FrequencyConfigurationControllerInterface {
-    findReaderConfigurationId(
+    findTable(
         readerConfigurationId: number,
+        count: string,
         page: string,
-        count: string
-    ): Promise<ResponseFormatInterface<FrequencyConfigurationModel[] | null>>;
+        sortBy: string,
+        sortOrder: string
+    ): Promise<ResponseFormatInterface<FrequencyConfigurationTableModel[] | null>>;
 }
 
 @Controller("frequency-configuration")
@@ -35,31 +38,35 @@ export class FrequencyConfigurationController
         super(FrequencyConfigurationController.name, modelService);
     }
 
-    @Get("reader-configuration-id/:readerConfigurationId")
-    public async findReaderConfigurationId(
+    @Get("table/reader-configuration-id/:readerConfigurationId")
+    public async findTable(
         @Param("readerConfigurationId", ParseIntPipe) readerConfigurationId: number,
+        @Query("count") count: string = "0",
         @Query("page") page: string = "0",
-        @Query("count") count: string = "0"
-    ): Promise<ResponseFormatInterface<FrequencyConfigurationModel[] | null>> {
+        @Query("sortBy") sortBy: string = "id",
+        @Query("sortOrder") sortOrder: string = "asc"
+    ): Promise<ResponseFormatInterface<FrequencyConfigurationTableModel[] | null>> {
         try {
-            this.loggerService.log("Find Reader Configuration Id");
+            this.loggerService.log("Find Table");
 
-            const response: ResponseFormatInterface<FrequencyConfigurationModel[]> = formatResponse<
-                FrequencyConfigurationModel[]
+            const response: ResponseFormatInterface<FrequencyConfigurationTableModel[]> = formatResponse<
+                FrequencyConfigurationTableModel[]
             >(
                 true,
                 200,
                 "Found",
-                await this.modelService.findReaderConfigurationId(
+                await this.modelService.findTable(
                     readerConfigurationId,
+                    parseInt(count),
                     parseInt(page),
-                    parseInt(count)
+                    sortBy,
+                    sortOrder
                 )
             );
 
             return response;
         } catch (error) {
-            this.loggerService.error(`Find Reader Configuration Id: ${error.message}`);
+            this.loggerService.error(`Find Table: ${error.message}`);
 
             return formatResponse<null>(false, 500, error.message, null);
         }

@@ -45,6 +45,18 @@ GET {{url}}/table/tag-id/1
 
 ###
 
+GET {{url}}/table/tag-id/1?count=5
+
+###
+
+GET {{url}}/table/tag-id/1?count=5&page=1
+
+###
+
+GET {{url}}/table/tag-id/1?sortBy=id&sortOrder=asc
+
+###
+
 POST {{url}}
 Content-Type: application/json
 

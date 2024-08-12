@@ -22,3 +22,8 @@ export class RSSICreateDTO {
 }
 
 export class RSSIUpdateDTO {}
+
+export class RSSITableModel {
+    id: number;
+    rssi: number;
+}

@@ -1,4 +1,4 @@
-import { Controller, Get, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Query, UseInterceptors } from "@nestjs/common";
 
 import { formatResponse, ResponseFormatInterceptor } from "./../../common/interceptor/response-format.interceptor";
 import { ResponseFormatInterface } from "./../../common/interface/response-format.interface";
@@ -15,7 +15,12 @@ import {
 import { ReaderConfigurationService } from "./reader-configuration.service";
 
 interface ReaderConfigurationControllerInterface {
-    findTable(): Promise<ResponseFormatInterface<ReaderConfigurationTableModel[] | null>>;
+    findTable(
+        count: string,
+        page: string,
+        sortBy: string,
+        sortOrder: string
+    ): Promise<ResponseFormatInterface<ReaderConfigurationTableModel[] | null>>;
 }
 
 @Controller("reader-configuration")
@@ -35,13 +40,23 @@ export class ReaderConfigurationController
     }
 
     @Get("table")
-    public async findTable(): Promise<ResponseFormatInterface<ReaderConfigurationTableModel[] | null>> {
+    public async findTable(
+        @Query("count") count: string = "0",
+        @Query("page") page: string = "0",
+        @Query("sortBy") sortBy: string = "id",
+        @Query("sortOrder") sortOrder: string = "asc"
+    ): Promise<ResponseFormatInterface<ReaderConfigurationTableModel[] | null>> {
         try {
             this.loggerService.log("Find Table");
 
             const response: ResponseFormatInterface<ReaderConfigurationTableModel[]> = formatResponse<
                 ReaderConfigurationTableModel[]
-            >(true, 200, "Table Found", await this.modelService.findTable());
+            >(
+                true,
+                200,
+                "Table Found",
+                await this.modelService.findTable(parseInt(count), parseInt(page), sortBy, sortOrder)
+            );
 
             return response;
         } catch (error) {

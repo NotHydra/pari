@@ -1,6 +1,5 @@
-import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Param, Query, UseInterceptors } from "@nestjs/common";
 
-import { Override } from "./../../common/decorator/override.decorator";
 import { ResponseFormatInterceptor, formatResponse } from "./../../common/interceptor/response-format.interceptor";
 import { ResponseFormatInterface } from "./../../common/interface/response-format.interface";
 
@@ -11,7 +10,12 @@ import { TagService } from "./tag.service";
 
 interface TagControllerInterface {
     findRSSIByTag(tag: string): Promise<ResponseFormatInterface<number | null>>;
-    findTable(): Promise<ResponseFormatInterface<TagTableModel[] | null>>;
+    findTable(
+        count: string,
+        page: string,
+        sortBy: string,
+        sortOrder: string
+    ): Promise<ResponseFormatInterface<TagTableModel[] | null>>;
 }
 
 @Controller("tag")
@@ -45,7 +49,12 @@ export class TagController
     }
 
     @Get("table")
-    public async findTable(): Promise<ResponseFormatInterface<TagTableModel[] | null>> {
+    public async findTable(
+        @Query("count") count: string = "0",
+        @Query("page") page: string = "0",
+        @Query("sortBy") sortBy: string = "id",
+        @Query("sortOrder") sortOrder: string = "asc"
+    ): Promise<ResponseFormatInterface<TagTableModel[] | null>> {
         try {
             this.loggerService.log("Find Table");
 
@@ -53,7 +62,7 @@ export class TagController
                 true,
                 200,
                 "Table Found",
-                await this.modelService.findTable()
+                await this.modelService.findTable(parseInt(count), parseInt(page), sortBy, sortOrder)
             );
 
             return response;

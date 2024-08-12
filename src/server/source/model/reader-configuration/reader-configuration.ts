@@ -28,10 +28,6 @@ export class ReaderConfigurationDetailedModel extends ReaderConfigurationModel {
     frequencyConfiguration: FrequencyConfigurationModel[];
 }
 
-export class ReaderConfigurationTableModel extends ReaderConfigurationModel {
-    frequencyConfigurationCount: number;
-}
-
 export class ReaderConfigurationCreateDTO {
     @IsString()
     name: string;
@@ -52,4 +48,24 @@ export class ReaderConfigurationUpdateDTO {
 
     @IsNumber()
     rssiScanInterval: number;
+}
+
+export class ReaderConfigurationTableRawModel {
+    id: number;
+    name: string;
+    rssi_scan_count: number;
+    rssi_scan_interval: number;
+    created_at: Date;
+    updated_at: Date;
+    frequency_configuration_count: number;
+}
+
+export class ReaderConfigurationTableModel {
+    id: number;
+    name: string;
+    rssiScanCount: number;
+    rssiScanInterval: number;
+    createdAt: Date;
+    updatedAt: Date;
+    frequencyConfigurationCount: number;
 }

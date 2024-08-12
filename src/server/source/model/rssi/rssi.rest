@@ -25,11 +25,23 @@ GET {{url}}/table/frequency-id/1
 
 ###
 
+GET {{url}}/table/frequency-id/1?count=5
+
+###
+
+GET {{url}}/table/frequency-id/1?count=5&page=1
+
+###
+
+GET {{url}}/table/frequency-id/1?sortBy=id&sortOrder=asc
+
+###
+
 POST {{url}}
 Content-Type: application/json
 
 {   
-    "frequencyId": 61,
+    "frequencyId": 1,
     "rssi": -40
 }
 

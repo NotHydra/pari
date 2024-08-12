@@ -31,3 +31,17 @@ export class FrequencyConfigurationUpdateDTO {
     @IsString()
     frequency: string;
 }
+
+export class FrequencyConfigurationTableRawModel {
+    id: number;
+    frequency: string;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export class FrequencyConfigurationTableModel {
+    id: number;
+    frequency: string;
+    createdAt: Date;
+    updatedAt: Date;
+}

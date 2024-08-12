@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, ForbiddenException, Get, Param, ParseIntPipe, Query, UseInterceptors } from "@nestjs/common";
 
 import { Override } from "./../../common/decorator/override.decorator";
 import { formatResponse, ResponseFormatInterceptor } from "./../../common/interceptor/response-format.interceptor";
@@ -6,11 +6,17 @@ import { ResponseFormatInterface } from "./../../common/interface/response-forma
 
 import { BaseController } from "./../../global/base.controller";
 
-import { RSSIModel, RSSICreateDTO, RSSIUpdateDTO } from "./rssi";
+import { RSSIModel, RSSICreateDTO, RSSIUpdateDTO, RSSITableModel } from "./rssi";
 import { RSSIService } from "./rssi.service";
 
 interface RSSIControllerInterface {
-    findTable(frequencyId: number): Promise<ResponseFormatInterface<RSSIModel[] | null>>;
+    findTable(
+        frequencyId: number,
+        count: string,
+        page: string,
+        sortBy: string,
+        sortOrder: string
+    ): Promise<ResponseFormatInterface<RSSITableModel[] | null>>;
 }
 
 @Controller("rssi")
@@ -25,16 +31,20 @@ export class RSSIController
 
     @Get("table/frequency-id/:frequencyId")
     public async findTable(
-        @Param("frequencyId", ParseIntPipe) frequencyId: number
-    ): Promise<ResponseFormatInterface<RSSIModel[] | null>> {
+        @Param("frequencyId", ParseIntPipe) frequencyId: number,
+        @Query("count") count: string = "0",
+        @Query("page") page: string = "0",
+        @Query("sortBy") sortBy: string = "id",
+        @Query("sortOrder") sortOrder: string = "asc"
+    ): Promise<ResponseFormatInterface<RSSITableModel[] | null>> {
         try {
             this.loggerService.log("Find Table");
 
-            const response: ResponseFormatInterface<RSSIModel[]> = formatResponse<RSSIModel[]>(
+            const response: ResponseFormatInterface<RSSITableModel[]> = formatResponse<RSSITableModel[]>(
                 true,
                 200,
                 "Table Found",
-                await this.modelService.findTable(frequencyId)
+                await this.modelService.findTable(frequencyId, parseInt(count), parseInt(page), sortBy, sortOrder)
             );
 
             return response;
