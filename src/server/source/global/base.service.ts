@@ -5,16 +5,40 @@ import { PrismaModelInterface } from "./../common/interface/prisma-model.interfa
 
 import { LoggerService } from "./../provider/logger.service";
 
-import { queryOptions } from "./../utility/query-options.utility";
+interface QueryOptionInterface {
+    take?: number;
+    skip?: number;
+    orderBy?: {
+        [key: string]: "asc" | "desc";
+    };
+}
 
 export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
     protected readonly loggerService: LoggerService;
 
-    constructor(
+    public constructor(
         serviceName: string,
         protected readonly prismaModel: PrismaModelInterface<ModelType>
     ) {
         this.loggerService = new LoggerService(serviceName);
+    }
+
+    protected queryOption(count: number, page: number, sortBy: string, sortOrder: string): QueryOptionInterface {
+        const queryOption: QueryOptionInterface = {};
+
+        if (count !== 0) {
+            queryOption.take = count;
+        }
+
+        if (page !== 0 && count !== 0) {
+            queryOption.skip = (page - 1) * count;
+        }
+
+        queryOption.orderBy = {
+            [sortBy]: sortOrder === "desc" ? "desc" : "asc",
+        };
+
+        return queryOption;
     }
 
     public async find(
@@ -27,7 +51,9 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
             this.loggerService.log("Find");
             this.loggerService.debug(`Find Argument: ${JSON.stringify({ count, page, sortBy, sortOrder })}`);
 
-            const models: ModelType[] = await this.prismaModel.findMany(queryOptions(count, page, sortBy, sortOrder));
+            const models: ModelType[] = await this.prismaModel.findMany(
+                this.queryOption(count, page, sortBy, sortOrder)
+            );
 
             this.loggerService.debug(`Find Result: ${JSON.stringify(models)}`);
 

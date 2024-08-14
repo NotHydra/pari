@@ -4,8 +4,6 @@ import { PrismaDetailedModelInterface } from "./../common/interface/prisma-model
 
 import { BaseService } from "./base.service";
 
-import { queryOptions } from "./../utility/query-options.utility";
-
 interface DetailedInterface {
     [key: string]: { include: DetailedInterface } | boolean;
 }
@@ -35,7 +33,7 @@ export class DetailedService<
             this.loggerService.debug(`Find Detailed Argument: ${JSON.stringify({ page, count, sortBy, sortOrder })}`);
 
             const models: ModelDetailedType[] = await this.prismaModel.findMany({
-                ...queryOptions(count, page, sortBy, sortOrder),
+                ...this.queryOption(count, page, sortBy, sortOrder),
                 ...{ include: this.detailed },
             });
 
