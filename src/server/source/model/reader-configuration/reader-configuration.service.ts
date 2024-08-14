@@ -33,6 +33,7 @@ export class ReaderConfigurationService
     constructor(private readonly prismaService: PrismaService) {
         super(
             ReaderConfigurationService.name,
+            ReaderConfigurationModel,
             prismaService.readerConfiguration as unknown as PrismaDetailedModelInterface<
                 ReaderConfigurationModel,
                 ReaderConfigurationDetailedModel

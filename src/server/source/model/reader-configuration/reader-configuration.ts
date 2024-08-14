@@ -5,6 +5,13 @@ import { IsNumber, IsString, IsDate } from "class-validator";
 import { FrequencyConfigurationModel } from "./../frequency-configuration/frequency-configuration";
 
 export class ReaderConfigurationModel implements Prisma.ReaderConfigurationCreateInput {
+    constructor() {
+        this.id = 0;
+        this.name = "";
+        this.rssiScanCount = 0;
+        this.rssiScanInterval = 0;
+    }
+
     @IsNumber()
     id: number;
 

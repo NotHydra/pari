@@ -11,19 +11,40 @@ interface QueryOptionInterface {
     orderBy?: {
         [key: string]: "asc" | "desc";
     };
+    where?: {
+        OR: { [key: string]: { equals: number } | { contains: string } }[];
+    };
+}
+
+interface SearchFieldInterface {
+    property: string;
+    type: string;
 }
 
 export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
     protected readonly loggerService: LoggerService;
+    protected readonly searchField: SearchFieldInterface[];
 
     public constructor(
         serviceName: string,
+        protected readonly baseModel: { new (): ModelType },
         protected readonly prismaModel: PrismaModelInterface<ModelType>
     ) {
         this.loggerService = new LoggerService(serviceName);
+
+        const instance: ModelType = new baseModel();
+        this.searchField = Object.getOwnPropertyNames(instance).map((property: string) => {
+            return { property: property, type: Reflect.getMetadata("design:type", instance as any, property).name };
+        });
     }
 
-    protected queryOption(count: number, page: number, sortBy: string, sortOrder: string): QueryOptionInterface {
+    protected queryOption(
+        count: number,
+        page: number,
+        search: string,
+        sortBy: string,
+        sortOrder: string
+    ): QueryOptionInterface {
         const queryOption: QueryOptionInterface = {};
 
         if (count !== 0) {
@@ -32,6 +53,18 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
 
         if (page !== 0 && count !== 0) {
             queryOption.skip = (page - 1) * count;
+        }
+
+        if (search !== "") {
+            queryOption.where = {
+                OR: this.searchField.map(
+                    (field: SearchFieldInterface): { [key: string]: { contains: string } | { equals: number } } => {
+                        return field.type === "Number"
+                            ? { [field.property]: { equals: parseInt(search) } }
+                            : { [field.property]: { contains: search } };
+                    }
+                ),
+            };
         }
 
         queryOption.orderBy = {
@@ -44,15 +77,16 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
     public async find(
         count: number = 0,
         page: number = 0,
+        search: string = "",
         sortBy: string = "id",
         sortOrder: string = "asc"
     ): Promise<ModelType[]> {
         try {
             this.loggerService.log("Find");
-            this.loggerService.debug(`Find Argument: ${JSON.stringify({ count, page, sortBy, sortOrder })}`);
+            this.loggerService.debug(`Find Argument: ${JSON.stringify({ count, page, search, sortBy, sortOrder })}`);
 
             const models: ModelType[] = await this.prismaModel.findMany(
-                this.queryOption(count, page, sortBy, sortOrder)
+                this.queryOption(count, page, search, sortBy, sortOrder)
             );
 
             this.loggerService.debug(`Find Result: ${JSON.stringify(models)}`);

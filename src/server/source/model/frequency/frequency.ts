@@ -5,6 +5,12 @@ import { IsNumber, IsString } from "class-validator";
 import { RSSIModel } from "./../rssi/rssi";
 
 export class FrequencyModel implements Prisma.FrequencyCreateInput {
+    constructor() {
+        this.id = 0;
+        this.tagId = 0;
+        this.frequency = "";
+    }
+
     @IsNumber()
     id: number;
 

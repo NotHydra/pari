@@ -16,24 +16,28 @@ export class DetailedService<
 > extends BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
     constructor(
         serviceName: string,
+        protected readonly baseModel: { new (): ModelType },
         protected readonly prismaModel: PrismaDetailedModelInterface<ModelType, ModelDetailedType>,
         protected readonly detailed: DetailedInterface
     ) {
-        super(serviceName, prismaModel);
+        super(serviceName, baseModel, prismaModel);
     }
 
     public async findDetailed(
-        page: number = 0,
         count: number = 0,
+        page: number = 0,
+        search: string = "",
         sortBy: string = "id",
         sortOrder: string = "asc"
     ): Promise<ModelDetailedType[]> {
         try {
             this.loggerService.log("Find Detailed");
-            this.loggerService.debug(`Find Detailed Argument: ${JSON.stringify({ page, count, sortBy, sortOrder })}`);
+            this.loggerService.debug(
+                `Find Detailed Argument: ${JSON.stringify({ count, page, search, sortBy, sortOrder })}`
+            );
 
             const models: ModelDetailedType[] = await this.prismaModel.findMany({
-                ...this.queryOption(count, page, sortBy, sortOrder),
+                ...this.queryOption(count, page, search, sortBy, sortOrder),
                 ...{ include: this.detailed },
             });
 

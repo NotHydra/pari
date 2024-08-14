@@ -32,7 +32,7 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
         prismaService: PrismaService,
         private readonly socketGateway: SocketGateway
     ) {
-        super(RSSIService.name, prismaService.rSSI as unknown as PrismaModelInterface<RSSIModel>);
+        super(RSSIService.name, RSSIModel, prismaService.rSSI as unknown as PrismaModelInterface<RSSIModel>);
 
         this.prismaService = prismaService;
     }

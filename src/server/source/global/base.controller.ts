@@ -38,6 +38,7 @@ export class BaseController<
     public async find(
         @Query("count") count: string = "0",
         @Query("page") page: string = "0",
+        @Query("search") search: string = "",
         @Query("sortBy") sortBy: string = "id",
         @Query("sortOrder") sortOrder: string = "asc"
     ): Promise<ResponseFormatInterface<ModelType[] | null>> {
@@ -48,7 +49,7 @@ export class BaseController<
                 true,
                 200,
                 "Found",
-                await this.modelService.find(parseInt(count), parseInt(page), sortBy, sortOrder)
+                await this.modelService.find(parseInt(count), parseInt(page), search, sortBy, sortOrder)
             );
 
             return response;

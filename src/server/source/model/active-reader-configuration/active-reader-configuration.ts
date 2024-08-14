@@ -5,6 +5,11 @@ import { IsNumber, IsDate } from "class-validator";
 import { ReaderConfigurationDetailedModel } from "./../reader-configuration/reader-configuration";
 
 export class ActiveReaderConfigurationModel implements Prisma.ActiveReaderConfigurationCreateInput {
+    constructor() {
+        this.id = 0;
+        this.readerConfigurationId = 0;
+    }
+
     @IsNumber()
     id: number;
 

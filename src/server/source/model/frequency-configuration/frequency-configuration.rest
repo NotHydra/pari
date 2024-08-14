@@ -17,6 +17,10 @@ GET {{url}}?sortBy=id&sortOrder=asc
 
 ###
 
+GET {{url}}?search=1
+
+###
+
 GET {{url}}/id/1
 
 ###

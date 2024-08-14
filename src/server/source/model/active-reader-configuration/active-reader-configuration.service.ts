@@ -33,6 +33,7 @@ export class ActiveReaderConfigurationService
     constructor(prismaService: PrismaService) {
         super(
             ActiveReaderConfigurationService.name,
+            ActiveReaderConfigurationModel,
             prismaService.activeReaderConfiguration as unknown as PrismaDetailedModelInterface<
                 ActiveReaderConfigurationModel,
                 ActiveReaderConfigurationDetailedModel

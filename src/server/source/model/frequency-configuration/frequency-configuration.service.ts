@@ -33,6 +33,7 @@ export class FrequencyConfigurationService
     constructor(private readonly prismaService: PrismaService) {
         super(
             FrequencyConfigurationService.name,
+            FrequencyConfigurationModel,
             prismaService.frequencyConfiguration as unknown as PrismaModelInterface<FrequencyConfigurationModel>
         );
     }

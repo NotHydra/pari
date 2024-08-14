@@ -21,6 +21,7 @@ export class DetailedController<
     public async findDetailed(
         @Query("page") page: string = "0",
         @Query("count") count: string = "0",
+        @Query("search") search: string = "",
         @Query("sortBy") sortBy: string = "id",
         @Query("sortOrder") sortOrder: string = "asc"
     ): Promise<ResponseFormatInterface<ModelDetailedType[] | null>> {
@@ -31,7 +32,7 @@ export class DetailedController<
                 true,
                 200,
                 "Detailed Found",
-                await this.modelService.findDetailed(parseInt(page), parseInt(count), sortBy, sortOrder)
+                await this.modelService.findDetailed(parseInt(page), parseInt(count), search, sortBy, sortOrder)
             );
 
             return response;

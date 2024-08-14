@@ -26,6 +26,7 @@ export class TagService
     constructor(private readonly prismaService: PrismaService) {
         super(
             TagService.name,
+            TagModel,
             prismaService.tag as unknown as PrismaDetailedModelInterface<TagModel, TagDetailedModel>,
             {
                 frequency: { include: { rssi: true } },

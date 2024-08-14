@@ -3,6 +3,12 @@ import { Prisma } from "@prisma/client";
 import { IsNumber, IsString, IsDate } from "class-validator";
 
 export class FrequencyConfigurationModel implements Prisma.FrequencyConfigurationCreateInput {
+    constructor() {
+        this.id = 0;
+        this.readerConfigurationId = 0;
+        this.frequency = "";
+    }
+
     @IsNumber()
     id: number;
 

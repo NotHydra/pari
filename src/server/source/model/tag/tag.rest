@@ -16,6 +16,11 @@ GET {{url}}?count=5&page=1
 GET {{url}}?sortBy=id&sortOrder=asc
 
 ###
+
+GET {{url}}?search=1
+
+###
+
 GET {{url}}/id/1
 
 ###
@@ -33,6 +38,10 @@ GET {{url}}/detailed?count=5&page=1
 ###
 
 GET {{url}}/detailed?sortBy=id&sortOrder=asc
+
+###
+
+GET {{url}}/detailed?search=1
 
 ###
 
