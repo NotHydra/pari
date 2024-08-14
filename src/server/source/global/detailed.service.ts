@@ -16,16 +16,12 @@ export class DetailedService<
     ModelCreateDTO,
     ModelUpdateDTO,
 > extends BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
-    protected readonly detailed: DetailedInterface;
-
     constructor(
         serviceName: string,
         protected readonly prismaModel: PrismaDetailedModelInterface<ModelType, ModelDetailedType>,
-        detailed: DetailedInterface
+        protected readonly detailed: DetailedInterface
     ) {
         super(serviceName, prismaModel);
-
-        this.detailed = detailed;
     }
 
     public async findDetailed(
