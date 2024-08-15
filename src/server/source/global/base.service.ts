@@ -5,6 +5,11 @@ import { PrismaModelInterface } from "./../common/interface/prisma-model.interfa
 
 import { LoggerService } from "./../provider/logger.service";
 
+interface SearchFieldInterface {
+    property: string;
+    type: string;
+}
+
 interface QueryOptionInterface {
     take?: number;
     skip?: number;
@@ -14,11 +19,6 @@ interface QueryOptionInterface {
     where?: {
         OR: { [key: string]: { equals: number } | { contains: string } }[];
     };
-}
-
-interface SearchFieldInterface {
-    property: string;
-    type: string;
 }
 
 export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
@@ -33,7 +33,7 @@ export class BaseService<ModelType, ModelCreateDTO, ModelUpdateDTO> {
         this.loggerService = new LoggerService(serviceName);
 
         const instance: ModelType = new baseModel();
-        this.searchField = Object.getOwnPropertyNames(instance).map((property: string) => {
+        this.searchField = Object.getOwnPropertyNames(instance).map((property: string): SearchFieldInterface => {
             return { property: property, type: Reflect.getMetadata("design:type", instance as any, property).name };
         });
     }
