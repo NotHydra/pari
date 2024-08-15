@@ -9,10 +9,10 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 import { FrequencyConfigurationModel } from "@/common/interface/frequency-configuration.interface";
 
-import ContentFormButtonContainer from "@/components/content/form/button/container.component";
-import ContentFormButton from "@/components/content/form/button/index.component";
-import ContentFormButtonBack from "@/components/content/form/button/back.component";
 import ContentContainer from "@/components/content/container.component";
+import ContentFormButtonContainer from "@/components/content/form/button/container.component";
+import ContentFormButtonChange from "@/components/content/form/button/change.component";
+import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
 export default function FrequencyConfigurationChangePage(): JSX.Element {
     const router: AppRouterInstance = useRouter();
@@ -156,7 +156,7 @@ export default function FrequencyConfigurationChangePage(): JSX.Element {
                 </div>
 
                 <ContentFormButtonContainer>
-                    <ContentFormButton type="change" />
+                    <ContentFormButtonChange />
 
                     <ContentFormButtonBack link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`} />
                 </ContentFormButtonContainer>

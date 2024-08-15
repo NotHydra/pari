@@ -11,7 +11,7 @@ import { FrequencyConfigurationModel } from "@/common/interface/frequency-config
 
 import ContentContainer from "@/components/content/container.component";
 import ContentFormButtonContainer from "@/components/content/form/button/container.component";
-import ContentFormButton from "@/components/content/form/button/index.component";
+import ContentFormButtonRemove from "@/components/content/form/button/remove.component";
 import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
 export default function FrequencyConfigurationChangePage(): JSX.Element {
@@ -154,7 +154,7 @@ export default function FrequencyConfigurationChangePage(): JSX.Element {
                 </div>
 
                 <ContentFormButtonContainer>
-                    <ContentFormButton type="remove" />
+                    <ContentFormButtonRemove />
 
                     <ContentFormButtonBack link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`} />
                 </ContentFormButtonContainer>

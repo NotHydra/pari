@@ -10,7 +10,7 @@ import { FrequencyConfigurationModel } from "@/common/interface/frequency-config
 
 import ContentContainer from "@/components/content/container.component";
 import ContentFormButtonContainer from "@/components/content/form/button/container.component";
-import ContentFormButton from "@/components/content/form/button/index.component";
+import ContentFormButtonAdd from "@/components/content/form/button/add.component";
 import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
 export default function FrequencyConfigurationAddPage(): JSX.Element {
@@ -100,7 +100,7 @@ export default function FrequencyConfigurationAddPage(): JSX.Element {
                 </div>
 
                 <ContentFormButtonContainer>
-                    <ContentFormButton type="add" />
+                    <ContentFormButtonAdd />
 
                     <ContentFormButtonBack link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration`} />
                 </ContentFormButtonContainer>

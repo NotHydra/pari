@@ -11,7 +11,7 @@ import { ReaderConfigurationModel } from "@/common/interface/reader-configuratio
 
 import ContentContainer from "@/components/content/container.component";
 import ContentFormButtonContainer from "@/components/content/form/button/container.component";
-import ContentFormButton from "@/components/content/form/button/index.component";
+import ContentFormButtonRemove from "@/components/content/form/button/remove.component";
 import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
 export default function ReaderConfigurationRemovePage(): JSX.Element {
@@ -182,7 +182,7 @@ export default function ReaderConfigurationRemovePage(): JSX.Element {
                 </div>
 
                 <ContentFormButtonContainer>
-                    <ContentFormButton type="remove" />
+                    <ContentFormButtonRemove/>
 
                     <ContentFormButtonBack link="/dashboard/reader-configuration" />
                 </ContentFormButtonContainer>

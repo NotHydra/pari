@@ -11,7 +11,7 @@ import { ReaderConfigurationModel } from "@/common/interface/reader-configuratio
 
 import ContentContainer from "@/components/content/container.component";
 import ContentFormButtonContainer from "@/components/content/form/button/container.component";
-import ContentFormButton from "@/components/content/form/button/index.component";
+import ContentFormButtonChange from "@/components/content/form/button/change.component";
 import ContentFormButtonBack from "@/components/content/form/button/back.component";
 
 export default function ReaderConfigurationChangePage(): JSX.Element {
@@ -199,7 +199,7 @@ export default function ReaderConfigurationChangePage(): JSX.Element {
                 </div>
 
                 <ContentFormButtonContainer>
-                    <ContentFormButton type="change" />
+                    <ContentFormButtonChange />
 
                     <ContentFormButtonBack link="/dashboard/reader-configuration" />
                 </ContentFormButtonContainer>
