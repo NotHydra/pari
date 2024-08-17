@@ -16,7 +16,7 @@ export default function ContentTableBar<TableType>({
     const [search, setSearch] = useState<string>("default");
     const [sortBy, setSortBy] = useState<string>("default");
     const [sortOrder, setSortOrder] = useState<string>("desc");
-    const debouncedSearch = useDebounce(search, 250);
+    const debouncedSearch: string = useDebounce(search, 250);
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>): void => {
         if (e.target.value === "") {
@@ -61,14 +61,7 @@ export default function ContentTableBar<TableType>({
         <>
             <div className="column m-0 mr-2 p-0">
                 <div className="control has-icons-left" title="Search Action">
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Search"
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            handleSearch(e);
-                        }}
-                    />
+                    <input className="input" type="text" placeholder="Search" onChange={(e: ChangeEvent<HTMLInputElement>): void => handleSearch(e)} />
 
                     <div className="icon is-small is-left">
                         <i className="fas fa-search"></i>
