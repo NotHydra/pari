@@ -3,7 +3,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 
-export default function ContentTableBarSort<TableType>({
+export default function ContentTableBar<TableType>({
     tableURL,
     setTableData,
     sortByOption,
@@ -12,26 +12,31 @@ export default function ContentTableBarSort<TableType>({
     setTableData: Dispatch<SetStateAction<TableType[]>>;
     sortByOption?: { [value: string]: string };
 }): JSX.Element {
+    const [search, setSearch] = useState<string>("");
     const [sortBy, setSortBy] = useState<string>("default");
     const [sortOrder, setSortOrder] = useState<string>("desc");
 
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>): void => {
+        setSearch(e.target.value);
+        handle(e.target.value, sortBy, sortOrder);
+    };
+
     const handleSortBy = (e: ChangeEvent<HTMLSelectElement>): void => {
         setSortBy(e.target.value);
-        handleSort(e.target.value, sortOrder);
+        handle(search, e.target.value, sortOrder);
     };
 
     const handleSortOrder = (e: ChangeEvent<HTMLSelectElement>): void => {
         setSortOrder(e.target.value);
-        handleSort(sortBy, e.target.value);
+        handle(search, sortBy, e.target.value);
     };
 
-    const handleSort = (sortBy: string, sortOrder: string): void => {
+    const handle = (search: string, sortBy: string, sortOrder: string): void => {
         try {
             axios
-                .get<ResponseFormatInterface<TableType[]>>(`${tableURL}?sortBy=${sortBy === "default" ? "id" : sortBy}&sortOrder=${sortOrder}`)
+                .get<ResponseFormatInterface<TableType[]>>(`${tableURL}?search=${search}&sortBy=${sortBy === "default" ? "id" : sortBy}&sortOrder=${sortOrder}`)
                 .then((response: AxiosResponse<ResponseFormatInterface<TableType[]>>): void => {
                     console.log(response.data);
-
                     setTableData(response.data.data);
                 });
         } catch (error) {
@@ -41,6 +46,23 @@ export default function ContentTableBarSort<TableType>({
 
     return (
         <>
+            <div className="column m-0 mr-2 p-0">
+                <div className="control has-icons-left" title="Search Action">
+                    <input
+                        className="input"
+                        type="text"
+                        placeholder="Search"
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            handleSearch(e);
+                        }}
+                    />
+
+                    <div className="icon is-small is-left">
+                        <i className="fas fa-search"></i>
+                    </div>
+                </div>
+            </div>
+
             <div className="column m-0 mr-2 p-0">
                 <div className="control has-icons-left" title="Sort By Action">
                     <div className="select is-fullwidth">
@@ -61,7 +83,6 @@ export default function ContentTableBarSort<TableType>({
                     </div>
                 </div>
             </div>
-
             <div className="column m-0 p-0">
                 <div className="control has-icons-left" title="Sort Order Action">
                     <div className="select is-fullwidth">

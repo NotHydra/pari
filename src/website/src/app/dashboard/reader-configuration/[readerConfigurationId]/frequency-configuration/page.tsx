@@ -11,7 +11,7 @@ import ContentContainer from "@/components/content/container.component";
 import ContentTableContainer from "@/components/content/table/container.component";
 import ContentTableBarContainer from "@/components/content/table/bar/container.component";
 import ContentTableBarAdd from "@/components/content/table/bar/add.component";
-import ContentTableBarSort from "@/components/content/table/bar/sort.component";
+import ContentTableBar from "@/components/content/table/bar/index.component";
 import ContentTable from "@/components/content/table/index.component";
 import ContentTableTimestampTitle from "@/components/content/table/timestamp/title.component";
 import ContentTableTimestampValue from "@/components/content/table/timestamp/value.component";
@@ -51,7 +51,7 @@ export default function FrequencyConfigurationPage(): JSX.Element {
                 <ContentTableBarContainer>
                     <ContentTableBarAdd link={`/dashboard/reader-configuration/${params.readerConfigurationId}/frequency-configuration/add`} />
 
-                    <ContentTableBarSort<FrequencyConfigurationTableModel>
+                    <ContentTableBar<FrequencyConfigurationTableModel>
                         tableURL={tableURL}
                         setTableData={setTableData}
                         sortByOption={{

@@ -10,7 +10,7 @@ import { RSSITableModel } from "@/common/interface/rssi.interface";
 import ContentContainer from "@/components/content/container.component";
 import ContentTableContainer from "@/components/content/table/container.component";
 import ContentTableBarContainer from "@/components/content/table/bar/container.component";
-import ContentTableBarSort from "@/components/content/table/bar/sort.component";
+import ContentTableBar from "@/components/content/table/bar/index.component";
 import ContentTable from "@/components/content/table/index.component";
 import ContentTableBack from "@/components/content/table/back.component";
 
@@ -42,7 +42,7 @@ export default function RSSIPage(): JSX.Element {
         <ContentContainer>
             <ContentTableContainer>
                 <ContentTableBarContainer>
-                    <ContentTableBarSort<RSSITableModel>
+                    <ContentTableBar<RSSITableModel>
                         tableURL={tableURL}
                         setTableData={setTableData}
                         sortByOption={{
