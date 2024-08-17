@@ -1,5 +1,6 @@
+import { useDebounce } from "@uidotdev/usehooks";
 import axios, { AxiosResponse } from "axios";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { ResponseFormatInterface } from "@/common/interface/response-format.interface";
 
@@ -12,37 +13,49 @@ export default function ContentTableBar<TableType>({
     setTableData: Dispatch<SetStateAction<TableType[]>>;
     sortByOption?: { [value: string]: string };
 }): JSX.Element {
-    const [search, setSearch] = useState<string>("");
+    const [search, setSearch] = useState<string>("default");
     const [sortBy, setSortBy] = useState<string>("default");
     const [sortOrder, setSortOrder] = useState<string>("desc");
+    const debouncedSearch = useDebounce(search, 250);
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>): void => {
+        if (e.target.value === "") {
+            setSearch("default");
+
+            return;
+        }
+
         setSearch(e.target.value);
-        handle(e.target.value, sortBy, sortOrder);
     };
 
     const handleSortBy = (e: ChangeEvent<HTMLSelectElement>): void => {
         setSortBy(e.target.value);
-        handle(search, e.target.value, sortOrder);
     };
 
     const handleSortOrder = (e: ChangeEvent<HTMLSelectElement>): void => {
         setSortOrder(e.target.value);
-        handle(search, sortBy, e.target.value);
     };
 
-    const handle = (search: string, sortBy: string, sortOrder: string): void => {
-        try {
-            axios
-                .get<ResponseFormatInterface<TableType[]>>(`${tableURL}?search=${search}&sortBy=${sortBy === "default" ? "id" : sortBy}&sortOrder=${sortOrder}`)
-                .then((response: AxiosResponse<ResponseFormatInterface<TableType[]>>): void => {
-                    console.log(response.data);
-                    setTableData(response.data.data);
-                });
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    useEffect(() => {
+        const handle = (): void => {
+            try {
+                if (debouncedSearch) {
+                    axios
+                        .get<
+                            ResponseFormatInterface<TableType[]>
+                        >(`${tableURL}?search=${search === "default" ? "" : search}&sortBy=${sortBy === "default" ? "id" : sortBy}&sortOrder=${sortOrder}`)
+                        .then((response: AxiosResponse<ResponseFormatInterface<TableType[]>>): void => {
+                            console.log(response.data);
+                            setTableData(response.data.data);
+                        });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        handle();
+    }, [debouncedSearch, sortBy, sortOrder]);
 
     return (
         <>
