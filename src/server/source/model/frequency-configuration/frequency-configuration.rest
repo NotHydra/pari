@@ -29,7 +29,6 @@ GET {{url}}/table/reader-configuration-id/1
 
 ###
 
-
 GET {{url}}/table/reader-configuration-id/1?count=5
 
 ###
@@ -42,6 +41,9 @@ GET {{url}}/table/reader-configuration-id/1?sortBy=id&sortOrder=asc
 
 ###
 
+GET {{url}}/table/reader-configuration-id/1?search=1
+
+###
 
 POST {{url}}
 Content-Type: application/json

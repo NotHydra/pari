@@ -65,6 +65,10 @@ GET {{url}}/table/tag-id/1?sortBy=id&sortOrder=asc
 
 ###
 
+GET {{url}}/table/tag-id/1?search=1
+
+###
+
 POST {{url}}
 Content-Type: application/json
 

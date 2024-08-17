@@ -20,6 +20,7 @@ interface FrequencyConfigurationServiceInterface {
         readerConfigurationId: number,
         count: number,
         page: number,
+        search: string,
         sortBy: string,
         sortOrder: string
     ): Promise<FrequencyConfigurationTableModel[]>;
@@ -42,13 +43,14 @@ export class FrequencyConfigurationService
         readerConfigurationId: number,
         count: number = 0,
         page: number = 0,
+        search: string = "",
         sortBy: string = "id",
         sortOrder: string = "asc"
     ): Promise<FrequencyConfigurationTableModel[]> {
         try {
             this.loggerService.log("Find Table");
             this.loggerService.debug(
-                `Find Table Argument: ${JSON.stringify({ readerConfigurationId, count, page, sortBy, sortOrder })}`
+                `Find Table Argument: ${JSON.stringify({ readerConfigurationId, count, page, search, sortBy, sortOrder })}`
             );
 
             const models: FrequencyConfigurationTableModel[] = (
@@ -64,6 +66,17 @@ export class FrequencyConfigurationService
 
                 WHERE
                     frequency_configuration.reader_configuration_id=${readerConfigurationId}
+                    ${
+                        search !== ""
+                            ? Prisma.sql([
+                                  `
+                                AND (
+                                    frequency_configuration.frequency LIKE '%${search}%'
+                                )
+                            `,
+                              ])
+                            : Prisma.sql([""])
+                    }
 
                 ORDER BY
                     ${Prisma.sql([sortBy])} ${Prisma.sql([sortOrder === "desc" ? "desc" : "asc"])}

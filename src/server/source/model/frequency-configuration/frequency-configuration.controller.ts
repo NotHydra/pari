@@ -18,6 +18,7 @@ interface FrequencyConfigurationControllerInterface {
         readerConfigurationId: number,
         count: string,
         page: string,
+        search: string,
         sortBy: string,
         sortOrder: string
     ): Promise<ResponseFormatInterface<FrequencyConfigurationTableModel[] | null>>;
@@ -43,6 +44,7 @@ export class FrequencyConfigurationController
         @Param("readerConfigurationId", ParseIntPipe) readerConfigurationId: number,
         @Query("count") count: string = "0",
         @Query("page") page: string = "0",
+        @Query("search") search: string = "",
         @Query("sortBy") sortBy: string = "id",
         @Query("sortOrder") sortOrder: string = "asc"
     ): Promise<ResponseFormatInterface<FrequencyConfigurationTableModel[] | null>> {
@@ -59,6 +61,7 @@ export class FrequencyConfigurationController
                     readerConfigurationId,
                     parseInt(count),
                     parseInt(page),
+                    search,
                     sortBy,
                     sortOrder
                 )

@@ -19,6 +19,7 @@ interface RSSIServiceInterface {
         frequencyId: number,
         count: number,
         page: number,
+        search: string,
         sortBy: string,
         sortOrder: string
     ): Promise<RSSITableModel[]>;
@@ -41,13 +42,14 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
         frequencyId: number,
         count: number = 0,
         page: number = 0,
+        search: string = "",
         sortBy: string = "id",
         sortOrder: string = "asc"
     ): Promise<RSSITableModel[]> {
         try {
             this.loggerService.log("Find Table");
             this.loggerService.debug(
-                `Find Table Argument: ${JSON.stringify({ frequencyId, count, page, sortBy, sortOrder })}`
+                `Find Table Argument: ${JSON.stringify({ frequencyId, count, page, search, sortBy, sortOrder })}`
             );
 
             const models: RSSITableModel[] = await this.prismaService.$queryRaw`
@@ -60,6 +62,17 @@ export class RSSIService extends BaseService<RSSIModel, RSSICreateDTO, RSSIUpdat
 
                 WHERE
                     rssi.frequency_id=${frequencyId}
+                    ${
+                        search !== "" && !isNaN(Number(search))
+                            ? Prisma.sql([
+                                  `
+                            AND (
+                                rssi.rssi=${search}
+                            )
+                            `,
+                              ])
+                            : Prisma.sql([""])
+                    }
 
                 ORDER BY
                     ${Prisma.sql([sortBy])} ${Prisma.sql([sortOrder === "desc" ? "desc" : "asc"])}

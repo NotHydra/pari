@@ -65,6 +65,10 @@ GET {{url}}/table?sortBy=id&sortOrder=asc
 
 ###
 
+GET {{url}}/table?search=1
+
+###
+
 POST {{url}}
 Content-Type: application/json
 

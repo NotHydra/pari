@@ -41,6 +41,10 @@ GET {{url}}/table/frequency-id/1?sortBy=id&sortOrder=asc
 
 ###
 
+GET {{url}}/table/frequency-id/1?search=-1
+
+###
+
 POST {{url}}
 Content-Type: application/json
 

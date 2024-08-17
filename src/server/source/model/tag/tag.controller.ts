@@ -13,6 +13,7 @@ interface TagControllerInterface {
     findTable(
         count: string,
         page: string,
+        search: string,
         sortBy: string,
         sortOrder: string
     ): Promise<ResponseFormatInterface<TagTableModel[] | null>>;
@@ -52,6 +53,7 @@ export class TagController
     public async findTable(
         @Query("count") count: string = "0",
         @Query("page") page: string = "0",
+        @Query("search") search: string = "",
         @Query("sortBy") sortBy: string = "id",
         @Query("sortOrder") sortOrder: string = "asc"
     ): Promise<ResponseFormatInterface<TagTableModel[] | null>> {
@@ -62,7 +64,7 @@ export class TagController
                 true,
                 200,
                 "Table Found",
-                await this.modelService.findTable(parseInt(count), parseInt(page), sortBy, sortOrder)
+                await this.modelService.findTable(parseInt(count), parseInt(page), search, sortBy, sortOrder)
             );
 
             return response;

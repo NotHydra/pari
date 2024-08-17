@@ -17,7 +17,13 @@ import {
 } from "./reader-configuration";
 
 interface ReaderConfigurationServiceInterface {
-    findTable(count: number, page: number, sortBy: string, sortOrder: string): Promise<ReaderConfigurationTableModel[]>;
+    findTable(
+        count: number,
+        page: number,
+        search: string,
+        sortBy: string,
+        sortOrder: string
+    ): Promise<ReaderConfigurationTableModel[]>;
 }
 
 @Injectable()
@@ -47,12 +53,15 @@ export class ReaderConfigurationService
     public async findTable(
         count: number = 0,
         page: number = 0,
+        search: string = "",
         sortBy: string = "id",
         sortOrder: string = "asc"
     ): Promise<ReaderConfigurationTableModel[]> {
         try {
             this.loggerService.log("Find Table");
-            this.loggerService.debug(`Find Table Argument: ${JSON.stringify({ count, page, sortBy, sortOrder })}`);
+            this.loggerService.debug(
+                `Find Table Argument: ${JSON.stringify({ count, page, search, sortBy, sortOrder })}`
+            );
 
             const models: ReaderConfigurationTableModel[] = (
                 (await this.prismaService.$queryRaw`
@@ -69,9 +78,31 @@ export class ReaderConfigurationService
                     reader_configuration 
                     LEFT JOIN frequency_configuration ON reader_configuration.id=frequency_configuration.reader_configuration_id 
                 
+                ${
+                    search !== ""
+                        ? Prisma.sql([
+                              `
+                        WHERE
+                            reader_configuration.name LIKE '%${search}%'
+                        `,
+                          ])
+                        : Prisma.sql([""])
+                }
+
+                ${
+                    search !== "" && !isNaN(Number(search))
+                        ? Prisma.sql([
+                              `
+                            OR reader_configuration.rssi_scan_count=${search}
+                            OR reader_configuration.rssi_scan_interval=${search}
+                        `,
+                          ])
+                        : Prisma.sql([""])
+                }
+
                 GROUP BY
                     reader_configuration.id
-                
+
                 ORDER BY
                     ${Prisma.sql([sortBy])} ${Prisma.sql([sortOrder === "desc" ? "desc" : "asc"])}
 

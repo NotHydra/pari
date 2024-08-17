@@ -14,6 +14,7 @@ interface RSSIControllerInterface {
         frequencyId: number,
         count: string,
         page: string,
+        search: string,
         sortBy: string,
         sortOrder: string
     ): Promise<ResponseFormatInterface<RSSITableModel[] | null>>;
@@ -34,6 +35,7 @@ export class RSSIController
         @Param("frequencyId", ParseIntPipe) frequencyId: number,
         @Query("count") count: string = "0",
         @Query("page") page: string = "0",
+        @Query("search") search: string = "",
         @Query("sortBy") sortBy: string = "id",
         @Query("sortOrder") sortOrder: string = "asc"
     ): Promise<ResponseFormatInterface<RSSITableModel[] | null>> {
@@ -44,7 +46,14 @@ export class RSSIController
                 true,
                 200,
                 "Table Found",
-                await this.modelService.findTable(frequencyId, parseInt(count), parseInt(page), sortBy, sortOrder)
+                await this.modelService.findTable(
+                    frequencyId,
+                    parseInt(count),
+                    parseInt(page),
+                    search,
+                    sortBy,
+                    sortOrder
+                )
             );
 
             return response;

@@ -20,6 +20,7 @@ interface FrequencyControllerInterface {
         tagId: number,
         count: string,
         page: string,
+        search: string,
         sortBy: string,
         sortOrder: string
     ): Promise<ResponseFormatInterface<FrequencyTableModel[] | null>>;
@@ -46,6 +47,7 @@ export class FrequencyController
         @Param("tagId", ParseIntPipe) tagId: number,
         @Query("count") count: string = "0",
         @Query("page") page: string = "0",
+        @Query("search") search: string = "",
         @Query("sortBy") sortBy: string = "id",
         @Query("sortOrder") sortOrder: string = "asc"
     ): Promise<ResponseFormatInterface<FrequencyTableModel[] | null>> {
@@ -56,7 +58,7 @@ export class FrequencyController
                 true,
                 200,
                 "Table Found",
-                await this.modelService.findTable(tagId, parseInt(count), parseInt(page), sortBy, sortOrder)
+                await this.modelService.findTable(tagId, parseInt(count), parseInt(page), search, sortBy, sortOrder)
             );
 
             return response;

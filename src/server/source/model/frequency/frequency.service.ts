@@ -20,6 +20,7 @@ interface FrequencyServiceInterface {
         tagId: number,
         count: number,
         page: number,
+        search: string,
         sortBy: string,
         sortOrder: string
     ): Promise<FrequencyTableModel[]>;
@@ -45,13 +46,14 @@ export class FrequencyService
         tagId: number,
         count: number = 0,
         page: number = 0,
+        search: string = "",
         sortBy: string = "id",
         sortOrder: string = "asc"
     ): Promise<FrequencyTableModel[]> {
         try {
             this.loggerService.log("Find Table");
             this.loggerService.debug(
-                `Find Table Argument: ${JSON.stringify({ tagId, count, page, sortBy, sortOrder })}`
+                `Find Table Argument: ${JSON.stringify({ tagId, count, page, search, sortBy, sortOrder })}`
             );
 
             const models: FrequencyTableModel[] = (
@@ -68,6 +70,17 @@ export class FrequencyService
 
                 WHERE
                     frequency.tag_id=${tagId}
+                    ${
+                        search !== ""
+                            ? Prisma.sql([
+                                  `
+                                AND (
+                                    frequency.frequency LIKE '%${search}%'
+                                )
+                            `,
+                              ])
+                            : Prisma.sql([""])
+                    }
                     
                 GROUP BY
                     frequency.id

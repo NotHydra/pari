@@ -78,12 +78,15 @@ export class TagService
     public async findTable(
         count: number = 0,
         page: number = 0,
+        search: string = "",
         sortBy: string = "id",
         sortOrder: string = "asc"
     ): Promise<TagTableModel[]> {
         try {
             this.loggerService.log("Find Table");
-            this.loggerService.debug(`Find Table Argument: ${JSON.stringify({ count, page, sortBy, sortOrder })}`);
+            this.loggerService.debug(
+                `Find Table Argument: ${JSON.stringify({ count, page, search, sortBy, sortOrder })}`
+            );
 
             const models: TagTableModel[] = (
                 (await this.prismaService.$queryRaw`
@@ -100,7 +103,19 @@ export class TagService
                     INNER JOIN reader_configuration ON tag.reader_configuration_id=reader_configuration.id
                     LEFT JOIN frequency ON tag.id=frequency.tag_id
                     LEFT JOIN rssi ON frequency.id=rssi.frequency_id
-                    
+                
+                ${
+                    search !== ""
+                        ? Prisma.sql([
+                              `
+                        WHERE
+                            tag.tag LIKE '%${search}%'
+                            OR reader_configuration.name LIKE '%${search}%'
+                        `,
+                          ])
+                        : Prisma.sql([""])
+                }
+
                 GROUP BY
                     tag.id,
                     reader_configuration.name
