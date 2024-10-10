@@ -21,9 +21,6 @@
 			"path": "src/script"
 		},
 		{
-			"path": "src/script/test/esp8266"
-		},
-		{
 			"path": "src/script/test/raspberry-pi-3-model-b+"
 		}
 	],
