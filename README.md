@@ -25,3 +25,13 @@
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
+## Folder Structure
+
+```bash
+diagram # Designs on how the system is developed
+src
+├── script # Raspbbery Pi 3 runner script using Python
+├── server # RESTful API & WebSocket server using NestJS, Prisma & PostgreSQL
+└── website # Web-Based dashboard page using NextJS
+```
