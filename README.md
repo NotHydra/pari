@@ -81,3 +81,36 @@ $ yarn run start:dev
 $ yarn run build
 $ yarn run start:prod
 ```
+
+<br>
+<br>
+<br>
+
+# Website Setup
+
+### 1. Navigate To Website Directory
+
+```bash
+$ cd src/website
+```
+
+### 2. Install Dependencies
+
+```bash
+$ yarn install
+```
+
+### 3. Running The Project
+
+### development
+
+```bash
+$ yarn run dev
+```
+
+### Production
+
+```bash
+$ yarn run build
+$ yarn run start
+```
