@@ -29,7 +29,7 @@
 ## Folder Structure
 
 ```bash
-diagram # Designs on how the system is developed
+diagram # System designs on how the system is developed
 src
 ├── script # Raspbbery Pi 3 runner script using Python
 ├── server # RESTful API & WebSocket server using NestJS, Prisma & PostgreSQL
@@ -45,7 +45,7 @@ src
 ### 1. Navigate To Server Directory
 
 ```bash
-$ cd src/server
+$ cd ~/program/pari/src/server
 ```
 
 ### 2. Install Dependencies
@@ -69,15 +69,13 @@ $ yarn run prisma:seed
 
 ### 5. Running The Project
 
-### development
-
 ```bash
+# Development
 $ yarn run start:dev
 ```
 
-### Production
-
 ```bash
+# Production
 $ yarn run build
 $ yarn run start:prod
 ```
@@ -91,7 +89,7 @@ $ yarn run start:prod
 ### 1. Navigate To Website Directory
 
 ```bash
-$ cd src/website
+$ cd ~/program/pari/src/website
 ```
 
 ### 2. Install Dependencies
@@ -102,15 +100,65 @@ $ yarn install
 
 ### 3. Running The Project
 
-### development
-
 ```bash
+# Development
 $ yarn run dev
 ```
 
-### Production
-
 ```bash
+# Production
 $ yarn run build
 $ yarn run start
+```
+
+<br>
+<br>
+<br>
+
+# Raspberry Pi 3 (Script) Setup
+
+### 1. Navigate To Script Directory
+
+```bash
+$ cd ~/program/pari/src/script
+```
+
+### 2. Activate Virtual Environment
+
+```bash
+$ source ~/program/pari/src/script/venv/bin/activate
+```
+
+### 3. Install Dependencies
+
+```bash
+$ pip install -r requirements.txt
+```
+
+### 4. Environment Variables Setup
+
+Make sure to change the "SERVER_URL" value to the server's URL
+
+```bash
+$ cp .env.example .env
+```
+
+### 5. Running The Project
+
+Make sure virtual environment is currently active
+
+```bash
+# Testing
+$ cd ~/program/pari/src/script/test/raspberry-pi-3-model-b+
+
+# Test these python script one by one
+$ python 2-pin-button.py
+$ python lcd-i2c-16x2.py
+$ python traffic-light.py
+$ python all.py
+```
+
+```bash
+# Production
+$ python script.py
 ```
