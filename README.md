@@ -35,3 +35,49 @@ src
 ├── server # RESTful API & WebSocket server using NestJS, Prisma & PostgreSQL
 └── website # Web-Based dashboard page using NextJS
 ```
+
+<br>
+<br>
+<br>
+
+# Server Setup
+
+### 1. Navigate To Server Directory
+
+```bash
+$ cd src/server
+```
+
+### 2. Install Dependencies
+
+```bash
+$ yarn install
+```
+
+### 3. Environment Variables Setup
+
+```bash
+$ cp .env.example .env
+```
+
+### 4. Prisma Setup
+
+```bash
+$ yarn run prisma:generate
+$ yarn run prisma:seed
+```
+
+### 5. Running The Project
+
+### development
+
+```bash
+$ yarn run start:dev
+```
+
+### Production
+
+```bash
+$ yarn run build
+$ yarn run start:prod
+```
